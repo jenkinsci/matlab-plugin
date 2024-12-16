@@ -12,7 +12,12 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-import com.gargoylesoftware.htmlunit.html.HtmlInput;
+
+import org.htmlunit.WebAssert;
+import org.htmlunit.html.HtmlCheckBoxInput;
+import org.htmlunit.html.HtmlInput;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSelect;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -20,10 +25,6 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-import com.gargoylesoftware.htmlunit.WebAssert;
-import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSelect;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.CoberturaArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.JunitArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.ModelCovArtifact;
@@ -44,6 +45,7 @@ import hudson.tasks.Builder;
 
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder;
 import com.mathworks.ci.freestyle.options.StartupOptions;
+import com.mathworks.ci.RunMatlabTestsBuilderTester;
 
 import static org.junit.Assert.*;
 

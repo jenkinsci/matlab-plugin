@@ -7,9 +7,6 @@ package com.mathworks.ci;
  * 
  */
 
-import com.gargoylesoftware.htmlunit.WebAssert;
-import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -18,6 +15,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+
+import org.htmlunit.WebAssert;
+import org.htmlunit.html.HtmlPage;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -41,6 +41,9 @@ import hudson.tasks.Builder;
 
 import com.mathworks.ci.freestyle.RunMatlabCommandBuilder;
 import com.mathworks.ci.freestyle.options.StartupOptions;
+import com.mathworks.ci.RunMatlabTestsBuilderTest;
+import com.mathworks.ci.TestMessage;
+import com.mathworks.ci.RunMatlabCommandBuilderTester;
 
 public class RunMatlabCommandBuilderTest {
 
