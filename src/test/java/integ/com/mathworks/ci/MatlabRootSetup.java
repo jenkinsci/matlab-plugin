@@ -57,19 +57,23 @@ public class MatlabRootSetup {
      * This method returns the bin path needed for scripted pipelines based on the testing platform -- Windows or Linux
      * or Mac
      */
-    public static void getBinPath(){
+    public static void getBinPath() {
+        installedPath = System.getenv("MATLAB_ROOT");
+        if (installedPath == null || installedPath.isEmpty()) {
+            installedPath = System.getProperty("MATLAB_ROOT");
+            if (installedPath == null || installedPath.isEmpty()) {
+                throw new IllegalStateException("MATLAB_ROOT is not set as an environment variable or system property.");
+            }
+        }
+
         if (System.getProperty("os.name").startsWith("Win")) {
-            installedPath = TestData.getPropValues("matlab.windows.installed.path");
-            binPath  = installedPath.replace("\\", "\\\\")  + "\\\\bin;";
-        }
-        else if(System.getProperty("os.name").startsWith("Linux")){
-            installedPath = TestData.getPropValues("matlab.linux.installed.path");
+            binPath = installedPath+ "\\bin;";
+        } else {
             binPath = installedPath + "/bin:";
         }
-        else {
-            installedPath = TestData.getPropValues("matlab.mac.installed.path");
-            binPath = installedPath + "/bin:";
-        }
+
+        // You may want to store or return binPath as needed
+//        System.out.println("Binary Path: " + binPath);
     }
 
     public static MatlabInstallation setMatlabInstallation(String name, String home, JenkinsRule jenkins) {
