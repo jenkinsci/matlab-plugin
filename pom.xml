@@ -317,6 +317,9 @@
 						<include>**/*Test.java</include>
 						<include>**/*Tester.java</include>
 					</includes>
+					<excludes>
+						<exclude>**/*IT.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>
