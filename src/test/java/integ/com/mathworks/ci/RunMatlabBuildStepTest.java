@@ -78,7 +78,7 @@ public class RunMatlabBuildStepTest {
     public void verifyPipelineOnSlave() throws Exception {
         DumbSlave s = j.createOnlineSlave();
         project.setDefinition(new CpsFlowDefinition(
-                "node('!master') { runMATLABBuild() }", true));
+                "node('!built-in') { runMATLABBuild() }", true));
 
         s.getWorkspaceFor(project);
         WorkflowRun build = project.scheduleBuild2(0).get();
