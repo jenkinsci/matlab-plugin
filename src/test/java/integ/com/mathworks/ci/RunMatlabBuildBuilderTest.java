@@ -334,6 +334,7 @@ public class RunMatlabBuildBuilderTest {
         String matlabRoot = getMatlabroot("R2018b");
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(
                 Message.getValue("matlab.custom.location"), matlabRoot.replace("R2018b", "$VERSION")));
+        System.out.println(matlabRoot.replace("R2018b", "$VERSION"));
         matrixProject.getBuildWrappersList().add(this.buildWrapper);
 
         scriptBuilder.setTasks("");
