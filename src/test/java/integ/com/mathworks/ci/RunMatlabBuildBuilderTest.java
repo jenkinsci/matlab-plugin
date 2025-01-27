@@ -346,7 +346,7 @@ public class RunMatlabBuildBuilderTest {
         Combination c1 = new Combination(vals);
         MatrixRun build1 = matrixProject.scheduleBuild2(0).get().getRun(c1);
 
-        jenkins.assertLogContains("buildtool", build1);
+        jenkins.assertLogContains("buildtool check", build1);
         jenkins.assertBuildStatus(Result.FAILURE, build1);
 
         // Check for second Matrix combination
