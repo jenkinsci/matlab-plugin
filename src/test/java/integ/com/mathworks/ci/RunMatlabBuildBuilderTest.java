@@ -337,7 +337,7 @@ public class RunMatlabBuildBuilderTest {
         System.out.println(matlabRoot.replace("R2018b", "$VERSION"));
         matrixProject.getBuildWrappersList().add(this.buildWrapper);
 
-        scriptBuilder.setTasks("");
+        scriptBuilder.setTasks("check");
         matrixProject.getBuildersList().add(scriptBuilder);
 
         // Check for first matrix combination.
