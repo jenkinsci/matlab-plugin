@@ -337,7 +337,7 @@ public class RunMatlabCommandBuilderTest {
                 Message.getValue("matlab.custom.location"), matlabRoot.replace("R2018b", "$VERSION")));
         matrixProject.getBuildWrappersList().add(this.buildWrapper);
 
-        scriptBuilder.setMatlabCommand("");
+        scriptBuilder.setMatlabCommand("pwd");
         matrixProject.getBuildersList().add(scriptBuilder);
         Map<String, String> vals = new HashMap<String, String>();
         vals.put("VERSION", "R2018a");
