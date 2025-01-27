@@ -1,2 +1,2 @@
-buildPlugin(platforms: ['windows'], jdkVersions: [11])
+buildPlugin(jdkVersions: [11])
 
