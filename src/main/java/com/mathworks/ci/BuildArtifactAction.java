@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -27,7 +28,7 @@ public class BuildArtifactAction implements Action {
     private int totalCount;
     private int skipCount;
     private int failCount;
-    private String actionID;
+    private final String actionID;
     private static final String ROOT_ELEMENT = "taskDetails";
 
     public BuildArtifactAction(Run<?, ?> build, String actionID) {
@@ -37,9 +38,7 @@ public class BuildArtifactAction implements Action {
         // Setting the counts of task when Action is created.
         try {
             setCounts();
-        } catch (ParseException e) {
-            throw new RuntimeException(e);
-        } catch (InterruptedException e) {
+        } catch (ParseException | InterruptedException e) {
             throw new RuntimeException(e);
         }
     }
@@ -67,7 +66,7 @@ public class BuildArtifactAction implements Action {
     }
 
     public List<BuildArtifactData> getBuildArtifact() throws ParseException, InterruptedException, IOException {
-        List<BuildArtifactData> artifactData = new ArrayList<BuildArtifactData>();
+        List<BuildArtifactData> artifactData = new ArrayList<>();
         FilePath fl;
         if (this.actionID == null) {
             fl = new FilePath(new File(build.getRootDir().getAbsolutePath() + "/" +
@@ -76,11 +75,10 @@ public class BuildArtifactAction implements Action {
             fl = new FilePath(new File(build.getRootDir().getAbsolutePath() + "/" +
                     MatlabBuilderConstants.BUILD_ARTIFACT + this.actionID + ".json"));
         }
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(new File(fl.toURI())), "UTF-8")) {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(new File(fl.toURI())), StandardCharsets.UTF_8)) {
             Object obj = new JSONParser().parse(reader);
             JSONObject jo = (JSONObject) obj;
-            if (jo.get(ROOT_ELEMENT) instanceof JSONArray) {
-                JSONArray ja = (JSONArray) jo.get(ROOT_ELEMENT);
+            if (jo.get(ROOT_ELEMENT) instanceof JSONArray ja) {
                 Iterator itr2 = ja.iterator();
                 Iterator<Entry> itr1;
                 while (itr2.hasNext()) {
@@ -144,7 +142,7 @@ public class BuildArtifactAction implements Action {
     }
 
     private void setCounts() throws InterruptedException, ParseException {
-        List<BuildArtifactData> artifactData = new ArrayList<BuildArtifactData>();
+        List<BuildArtifactData> artifactData = new ArrayList<>();
         FilePath fl;
         if (this.actionID == null) {
             fl = new FilePath(new File(build.getRootDir().getAbsolutePath() + "/" +
@@ -153,13 +151,12 @@ public class BuildArtifactAction implements Action {
             fl = new FilePath(new File(build.getRootDir().getAbsolutePath() + "/" +
                     MatlabBuilderConstants.BUILD_ARTIFACT + this.actionID + ".json"));
         }
-        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(new File(fl.toURI())), "UTF-8")) {
+        try (InputStreamReader reader = new InputStreamReader(new FileInputStream(new File(fl.toURI())), StandardCharsets.UTF_8)) {
             Object obj = new JSONParser().parse(reader);
             JSONObject jo = (JSONObject) obj;
 
             // getting taskDetails
-            if (jo.get(ROOT_ELEMENT) instanceof JSONArray) {
-                JSONArray ja = (JSONArray) jo.get(ROOT_ELEMENT);
+            if (jo.get(ROOT_ELEMENT) instanceof JSONArray ja) {
                 Iterator itr2 = ja.iterator();
                 Iterator<Entry> itr1;
                 while (itr2.hasNext()) {
@@ -223,22 +220,12 @@ public class BuildArtifactAction implements Action {
                 break;
             case "skipReason":
                 String skipReasonKey = pair.getValue().toString();
-                String skipReason;
-                switch (skipReasonKey) {
-                    case "UpToDate":
-                        skipReason = "up-to-date";
-                        break;
-                    case "UserSpecified":
-                    case "UserRequested":
-                        skipReason = "user requested";
-                        break;
-                    case "DependencyFailed":
-                        skipReason = "dependency failed";
-                        break;
-                    default:
-                        skipReason = skipReasonKey;
-                        break;
-                }
+                String skipReason = switch (skipReasonKey) {
+                    case "UpToDate" -> "up-to-date";
+                    case "UserSpecified", "UserRequested" -> "user requested";
+                    case "DependencyFailed" -> "dependency failed";
+                    default -> skipReasonKey;
+                };
                 data.setSkipReason(skipReason);
                 break;
             default:

@@ -3,7 +3,7 @@ package com.mathworks.ci.freestyle.options;
 
 /**
  * Copyright 2024 The MathWorks, Inc.
- *
+ * <p>
  * Describable class for Build Options.
  */
 
@@ -15,7 +15,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class BuildOptions extends AbstractDescribableImpl<BuildOptions> {
 
-    private String options;
+    private final String options;
 
     @DataBoundConstructor
     public BuildOptions(String options) {

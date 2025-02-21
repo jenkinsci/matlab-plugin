@@ -6,8 +6,11 @@ package com.mathworks.ci.utilities;
 
 import jenkins.security.MasterToSlaveCallable;
 
+import java.io.Serial;
+
 public class GetSystemProperties extends MasterToSlaveCallable<String[], InterruptedException> {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private final String[] properties;

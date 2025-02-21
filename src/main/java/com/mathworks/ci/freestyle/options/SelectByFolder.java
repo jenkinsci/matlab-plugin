@@ -15,7 +15,7 @@ import hudson.model.AbstractDescribableImpl;
 import hudson.model.Descriptor;
 
 public class SelectByFolder extends AbstractDescribableImpl<SelectByFolder> {
-    private List<TestFolders> testFolderPaths;
+    private final List<TestFolders> testFolderPaths;
     private static final String SELECT_BY_FOLDER = "SelectByFolder";
 
     @DataBoundConstructor
@@ -29,7 +29,7 @@ public class SelectByFolder extends AbstractDescribableImpl<SelectByFolder> {
 
     public List<String> getTestFolderStringPaths() {
         return this.testFolderPaths.stream().map(
-                p -> p.getTestFolders()).collect(Collectors.toList());
+                TestFolders::getTestFolders).collect(Collectors.toList());
     }
 
     public void addSourceToInputArgs(List<String> inputArgsList, String cellArraySourceVal) {

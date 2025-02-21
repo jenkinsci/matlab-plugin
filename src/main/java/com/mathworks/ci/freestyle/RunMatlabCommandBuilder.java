@@ -2,10 +2,11 @@ package com.mathworks.ci.freestyle;
 
 /**
  * Copyright 2019-2024 The MathWorks, Inc.
- * 
+ * <p>
  * Script builder used to run custom MATLAB commands or scripts.
  */
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.util.FormValidation;
 import java.io.IOException;
 import javax.annotation.Nonnull;
@@ -13,7 +14,8 @@ import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
+import org.kohsuke.stapler.verb.POST;
 import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
@@ -35,7 +37,7 @@ import com.mathworks.ci.parameters.CommandActionParameters;
 import com.mathworks.ci.actions.MatlabActionFactory;
 import com.mathworks.ci.actions.RunMatlabCommandAction;
 import com.mathworks.ci.freestyle.options.StartupOptions;
-import org.kohsuke.stapler.verb.POST;
+
 
 public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep {
     // Deprecated
@@ -91,13 +93,14 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
         }
 
         // Overridden Method used to show the text under build dropdown
+        @NonNull
         @Override
         public String getDisplayName() {
             return Message.getValue("Builder.script.builder.display.name");
         }
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+        public boolean configure(StaplerRequest2 req, JSONObject formData) throws FormException {
             save();
             return super.configure(req, formData);
         }
@@ -105,15 +108,15 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
         /*
          * This is to identify which project type in jenkins this should be
          * applicable.(non-Javadoc)
-         * 
+         *
          * @see hudson.tasks.BuildStepDescriptor#isApplicable(java.lang.Class)
-         * 
+         *
          * if it returns true then this build step will be applicable for all project
          * type.
          */
         @Override
         public boolean isApplicable(
-                @SuppressWarnings("rawtypes") Class<? extends AbstractProject> jobtype) {
+                Class<? extends AbstractProject> jobtype) {
             return true;
         }
 

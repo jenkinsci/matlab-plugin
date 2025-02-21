@@ -21,7 +21,7 @@ trigger:
 steps:
   - task: JavaToolInstaller@0
     inputs:
-      versionSpec: '11'
+      versionSpec: '17'
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'PreInstalled'
 
@@ -34,4 +34,4 @@ steps:
       codeCoverageToolOption: 'JaCoCo'
       goals: 'verify'
     displayName: 'Build $(imageName)'
-      
+

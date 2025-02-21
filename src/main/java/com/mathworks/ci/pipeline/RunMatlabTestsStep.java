@@ -4,9 +4,12 @@ package com.mathworks.ci.pipeline;
  * Copyright 2020-2024 The MathWorks, Inc.
  */
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Set;
+
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.jenkinsci.plugins.workflow.steps.Step;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.StepDescriptor;
@@ -26,6 +29,7 @@ import com.mathworks.ci.Message;
 
 public class RunMatlabTestsStep extends Step implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     private String testResultsPDF;
@@ -176,7 +180,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     }
 
     @Override
-    public StepExecution start(StepContext context) throws Exception {
+    public StepExecution start(StepContext context) {
         return new MatlabRunTestsStepExecution(context, this);
     }
 
@@ -194,6 +198,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
             return Message.getValue("matlab.tests.build.step.name");
         }
 
+        @NonNull
         @Override
         public String getDisplayName() {
             return Message.getValue("matlab.tests.step.display.name");

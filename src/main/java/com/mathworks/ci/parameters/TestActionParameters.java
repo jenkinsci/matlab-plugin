@@ -5,7 +5,6 @@ package com.mathworks.ci.parameters;
  */
 
 import java.util.List;
-import java.util.ArrayList;
 import java.io.IOException;
 import hudson.FilePath;
 import hudson.EnvVars;
@@ -15,19 +14,19 @@ import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 public class TestActionParameters extends MatlabActionParameters {
-    private String testResultsPDF;
-    private String testResultsTAP;
-    private String testResultsJUnit;
-    private String codeCoverageCobertura;
-    private String testResultsSimulinkTest;
-    private String modelCoverageCobertura;
-    private String selectByTag;
-    private String loggingLevel;
-    private String outputDetail;
-    private boolean useParallel;
-    private boolean strict;
-    private List<String> sourceFolder = new ArrayList<>();
-    private List<String> selectByFolder = new ArrayList<>();
+    private final String testResultsPDF;
+    private final String testResultsTAP;
+    private final String testResultsJUnit;
+    private final String codeCoverageCobertura;
+    private final String testResultsSimulinkTest;
+    private final String modelCoverageCobertura;
+    private final String selectByTag;
+    private final String loggingLevel;
+    private final String outputDetail;
+    private final boolean useParallel;
+    private final boolean strict;
+    private final List<String> sourceFolder;
+    private final List<String> selectByFolder;
 
     public TestActionParameters(StepContext context, String startupOpts,
             String testResultsPDF, String testResultsTAP, String testResultsJUnit,

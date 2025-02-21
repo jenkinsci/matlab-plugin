@@ -2,7 +2,7 @@ package com.mathworks.ci;
 
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- *
+ * <p>
  * Class to parse Stapler request for Use MATLAB Version build wrapper.
  */
 

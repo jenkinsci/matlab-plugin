@@ -13,13 +13,13 @@ import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 public class MatlabActionParameters {
-    private Run build;
-    private FilePath workspace;
-    private EnvVars env;
-    private Launcher launcher;
-    private TaskListener listener;
+    private final Run build;
+    private final FilePath workspace;
+    private final EnvVars env;
+    private final Launcher launcher;
+    private final TaskListener listener;
 
-    private String startupOptions;
+    private final String startupOptions;
 
     public MatlabActionParameters(StepContext context, String startupOpts) throws IOException, InterruptedException {
         this.build = context.get(Run.class);

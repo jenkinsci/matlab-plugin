@@ -11,6 +11,7 @@ import hudson.model.Run;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.io.Serial;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
@@ -67,10 +68,12 @@ public class BuildConsoleAnnotator extends LineTransformationOutputStream {
     }
 
     private static class ConsoleLogFilterImpl extends ConsoleLogFilter implements Serializable {
+        @Serial
         private static final long serialVersionUID = 1;
         private byte[][] buildNotes = createBuildNotes();
 
         // Taking care of old MATLAB build actions.
+        @Serial
         private Object readResolve() {
             if (buildNotes == null) {
                 buildNotes = createBuildNotes();
@@ -79,7 +82,7 @@ public class BuildConsoleAnnotator extends LineTransformationOutputStream {
         }
 
         @Override
-        public OutputStream decorateLogger(Run build, OutputStream logger) throws IOException, InterruptedException {
+        public OutputStream decorateLogger(Run build, OutputStream logger) {
             return new BuildConsoleAnnotator(logger, Charsets.UTF_8, buildNotes);
         }
     }

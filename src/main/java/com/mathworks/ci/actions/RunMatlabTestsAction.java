@@ -18,7 +18,7 @@ import com.mathworks.ci.parameters.TestActionParameters;
 import com.mathworks.ci.utilities.MatlabCommandRunner;
 
 public class RunMatlabTestsAction extends MatlabAction {
-    private TestActionParameters params;
+    private final TestActionParameters params;
 
     public RunMatlabTestsAction(MatlabCommandRunner runner, TestActionParameters params) {
         super(runner);
@@ -63,21 +63,21 @@ public class RunMatlabTestsAction extends MatlabAction {
     // readable as possible because it can get hairy.
     private String getParameterString() {
         // The final list to be concatted and returned
-        final List<String> inputArgsList = new ArrayList<String>();
+        final List<String> inputArgsList = new ArrayList<>();
 
         inputArgsList.add("'Test'");
 
         // Prepare source and test folder lists
         String sourceFolders = null;
         if (this.params.getSourceFolder() != null) {
-            sourceFolders = this.params.getSourceFolder().size() == 0
+            sourceFolders = this.params.getSourceFolder().isEmpty()
                     ? null
                     : Utilities.getCellArrayFromList(this.params.getSourceFolder());
         }
 
         String selectFolders = null;
         if (this.params.getSelectByFolder() != null) {
-            selectFolders = this.params.getSelectByFolder().size() == 0
+            selectFolders = this.params.getSelectByFolder().isEmpty()
                     ? null
                     : Utilities.getCellArrayFromList(this.params.getSelectByFolder());
         }

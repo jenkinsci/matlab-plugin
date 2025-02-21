@@ -2,7 +2,7 @@ package com.mathworks.ci.freestyle.options;
 
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- *
+ * <p>
  * Describable class for Source Folder Option in RunMATLABTest Build step.
  */
 
@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 public class SourceFolder extends AbstractDescribableImpl<SourceFolder> {
 
-    private List<SourceFolderPaths> sourceFolderPaths;
+    private final List<SourceFolderPaths> sourceFolderPaths;
     private static final String SOURCE_FOLDER = "SourceFolder";
 
     @DataBoundConstructor
@@ -30,7 +30,7 @@ public class SourceFolder extends AbstractDescribableImpl<SourceFolder> {
 
     public List<String> getSourceFolderStringPaths() {
         return this.sourceFolderPaths.stream().map(
-                (SourceFolderPaths p) -> p.getSrcFolderPath())
+                        SourceFolderPaths::getSrcFolderPath)
                 .collect(Collectors.toList());
     }
 

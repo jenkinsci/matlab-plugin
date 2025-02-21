@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.HashMap;
 import org.apache.commons.lang.RandomStringUtils;
@@ -25,14 +26,14 @@ import com.mathworks.ci.MatlabExecutionException;
 import com.mathworks.ci.parameters.MatlabActionParameters;
 
 public class MatlabCommandRunner {
-    private MatlabActionParameters params;
-    private FilePath tempFolder;
+    private final MatlabActionParameters params;
+    private final FilePath tempFolder;
     private OutputStream stdOut;
-    private Map<String, String> additionalEnvVars;
+    private final Map<String, String> additionalEnvVars;
 
     public MatlabCommandRunner(MatlabActionParameters params) throws IOException, InterruptedException {
         this.params = params;
-        this.additionalEnvVars = new HashMap<String, String>();
+        this.additionalEnvVars = new HashMap<>();
 
         FilePath workspace = params.getWorkspace();
 
@@ -156,7 +157,7 @@ public class MatlabCommandRunner {
 
     /**
      * Creates a file with the specified content in the temporary folder.
-     *
+     * <p>
      * Additionally, the file content will be prefixed with a statement returning to
      * the MATLAB starting folder.
      *
@@ -202,7 +203,7 @@ public class MatlabCommandRunner {
                     .join();
 
             String runnerSource;
-            String kernelArch = kernelStream.toString("UTF-8");
+            String kernelArch = kernelStream.toString(StandardCharsets.UTF_8);
             if (kernelArch.contains("Linux")) {
                 runnerSource = "glnxa64/run-matlab-command";
             } else if (kernelArch.contains("arm64")) {

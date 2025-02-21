@@ -2,7 +2,7 @@ package com.mathworks.ci.freestyle.options;
 
 /**
  * Copyright 2023-2024 The MathWorks, Inc.
- *
+ * <p>
  * Describable class for Startup Options.
  */
 
@@ -14,7 +14,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class StartupOptions extends AbstractDescribableImpl<StartupOptions> {
 
-    private String options;
+    private final String options;
 
     @DataBoundConstructor
     public StartupOptions(String options) {

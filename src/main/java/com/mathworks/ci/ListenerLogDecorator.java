@@ -7,14 +7,16 @@ package com.mathworks.ci;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+
 import hudson.console.LineTransformationOutputStream;
 import hudson.model.TaskListener;
 
 public class ListenerLogDecorator extends LineTransformationOutputStream {
-    private OutputStream listener;
-    private final Charset charsetUtf8 = Charset.forName("UTF-8");
+    private final OutputStream listener;
+    private final Charset charsetUtf8 = StandardCharsets.UTF_8;
 
-    public ListenerLogDecorator(TaskListener listner) throws IOException {
+    public ListenerLogDecorator(TaskListener listner) {
         this.listener = listner != null ? listner.getLogger() : null;
     }
 

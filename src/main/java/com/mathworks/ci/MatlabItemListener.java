@@ -2,7 +2,7 @@ package com.mathworks.ci;
 
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- *
+ * <p>
  * Item listener class to provide functionality to check UI element states for a
  * Multi-configuration project.
  */

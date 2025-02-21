@@ -4,7 +4,8 @@ package com.mathworks.ci.pipeline;
  * Copyright 2023-2024 The MathWorks, Inc.
  */
 
-import java.io.IOException;
+import java.io.Serial;
+
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
 import hudson.model.Result;
@@ -15,21 +16,20 @@ import com.mathworks.ci.actions.RunMatlabCommandAction;
 
 public class MatlabCommandStepExecution extends SynchronousNonBlockingStepExecution<Void> {
 
+    @Serial
     private static final long serialVersionUID = 1957239693658914450L;
 
-    private MatlabActionFactory factory;
-    private RunMatlabCommandStep step;
+    private final MatlabActionFactory factory;
+    private final RunMatlabCommandStep step;
 
-    public MatlabCommandStepExecution(MatlabActionFactory factory, StepContext context, RunMatlabCommandStep step)
-            throws IOException, InterruptedException {
+    public MatlabCommandStepExecution(MatlabActionFactory factory, StepContext context, RunMatlabCommandStep step) {
         super(context);
 
         this.factory = factory;
         this.step = step;
     }
 
-    public MatlabCommandStepExecution(StepContext context, RunMatlabCommandStep step)
-            throws IOException, InterruptedException {
+    public MatlabCommandStepExecution(StepContext context, RunMatlabCommandStep step) {
         this(new MatlabActionFactory(), context, step);
     }
 
@@ -52,7 +52,7 @@ public class MatlabCommandStepExecution extends SynchronousNonBlockingStepExecut
     }
 
     @Override
-    public void stop(Throwable cause) throws Exception {
+    public void stop(Throwable cause) {
         getContext().onFailure(cause);
     }
 }
