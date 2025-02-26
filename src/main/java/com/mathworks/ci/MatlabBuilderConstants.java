@@ -41,7 +41,7 @@ public class MatlabBuilderConstants {
     public static final String TASK_RUN_PROGRESS_PLUGIN = "+ciplugins/+jenkins/TaskRunProgressPlugin.m";
     public static final String BUILD_ARTIFACT = "buildArtifact";
 
-    public static final String NEW_LINE = System.getProperty("line.separator");
+    public static final String NEW_LINE = System.lineSeparator();
 
     // MATLAB Runner Script
     public static final String TEST_RUNNER_SCRIPT = String.join(NEW_LINE,

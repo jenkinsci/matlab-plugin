@@ -2,11 +2,12 @@ package com.mathworks.ci;
 
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- *
+ * <p>
  * Describable class for MATLAB Axis that provides a list of configured MATLAB installation for
  * generating matrix configurations.
  */
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.matrix.Axis;
 import hudson.matrix.AxisDescriptor;
@@ -14,7 +15,6 @@ import hudson.matrix.MatrixProject;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MatlabInstallationAxis extends Axis {
@@ -27,7 +27,7 @@ public class MatlabInstallationAxis extends Axis {
     static private List<String> evaluateValues(List<String> values) {
         // Add default configuration is values are null or not selected.
         if (values == null || values.isEmpty()) {
-            values = new ArrayList<>(Arrays.asList("default"));
+            values = new ArrayList<>(List.of("default"));
         }
         return values;
     }
@@ -35,6 +35,7 @@ public class MatlabInstallationAxis extends Axis {
     @Extension
     public static class DescriptorImpl extends AxisDescriptor {
 
+        @NonNull
         @Override
         public String getDisplayName() {
             return Message.getValue("Axis.matlab.key");

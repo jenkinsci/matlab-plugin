@@ -4,7 +4,7 @@ package com.mathworks.ci.pipeline;
  * Copyright 2020-2024 The MathWorks, Inc.
  */
 
-import java.io.IOException;
+import java.io.Serial;
 
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 import org.jenkinsci.plugins.workflow.steps.SynchronousNonBlockingStepExecution;
@@ -17,21 +17,20 @@ import com.mathworks.ci.parameters.TestActionParameters;
 
 public class MatlabRunTestsStepExecution extends SynchronousNonBlockingStepExecution<Void> {
 
+    @Serial
     private static final long serialVersionUID = 6704588180717665100L;
 
-    private MatlabActionFactory factory;
-    private RunMatlabTestsStep step;
+    private final MatlabActionFactory factory;
+    private final RunMatlabTestsStep step;
 
-    public MatlabRunTestsStepExecution(MatlabActionFactory factory, StepContext context, RunMatlabTestsStep step)
-            throws IOException, InterruptedException {
+    public MatlabRunTestsStepExecution(MatlabActionFactory factory, StepContext context, RunMatlabTestsStep step) {
         super(context);
 
         this.factory = factory;
         this.step = step;
     }
 
-    public MatlabRunTestsStepExecution(StepContext context, RunMatlabTestsStep step)
-            throws IOException, InterruptedException {
+    public MatlabRunTestsStepExecution(StepContext context, RunMatlabTestsStep step) {
         this(new MatlabActionFactory(), context, step);
     }
 
@@ -65,7 +64,7 @@ public class MatlabRunTestsStepExecution extends SynchronousNonBlockingStepExecu
     }
 
     @Override
-    public void stop(Throwable cause) throws Exception {
+    public void stop(Throwable cause) {
         getContext().onFailure(cause);
     }
 }

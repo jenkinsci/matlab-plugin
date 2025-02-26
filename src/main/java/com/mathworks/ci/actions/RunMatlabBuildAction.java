@@ -14,7 +14,7 @@ import com.mathworks.ci.utilities.MatlabCommandRunner;
 import hudson.model.Run;
 
 public class RunMatlabBuildAction extends MatlabAction {
-    private BuildActionParameters params;
+    private final BuildActionParameters params;
 
     public RunMatlabBuildAction(MatlabCommandRunner runner, BuildConsoleAnnotator annotator,
             BuildActionParameters params) {

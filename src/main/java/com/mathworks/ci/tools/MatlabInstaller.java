@@ -8,6 +8,7 @@ import com.mathworks.ci.MatlabInstallation;
 import com.mathworks.ci.Message;
 import com.mathworks.ci.utilities.GetSystemProperties;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.FilePath;
 import hudson.Launcher;
@@ -41,7 +42,7 @@ public class MatlabInstaller extends ToolInstaller {
 
     private String release;
     private String products;
-    private static String DEFAULT_PRODUCT = "MATLAB";
+    private static final String DEFAULT_PRODUCT = "MATLAB";
 
     @DataBoundConstructor
     public MatlabInstaller(String id) {
@@ -83,7 +84,7 @@ public class MatlabInstaller extends ToolInstaller {
             matlabRoot = new FilePath(toolRoot, release.name);
         }
         String platform = getPlatform(systemProperties[0], systemProperties[1]);
-        if (platform == "win64") {
+        if (platform.equals("win64")) {
             extension = ".exe";
         }
 
@@ -178,23 +179,16 @@ public class MatlabInstaller extends ToolInstaller {
     }
 
     private FilePath fetchMpm(String platform, FilePath destination)
-            throws IOException, InterruptedException {
+            throws IOException {
         URL mpmUrl;
         String extension = "";
 
-        switch (platform) {
-            case "glnxa64":
-                mpmUrl = new URL(Message.getValue("tools.matlab.mpm.installer.linux"));
-                break;
-            case "maci64":
-                mpmUrl = new URL(Message.getValue("tools.matlab.mpm.installer.maci64"));
-                break;
-            case "maca64":
-                mpmUrl = new URL(Message.getValue("tools.matlab.mpm.installer.maca64"));
-                break;
-            default:
-                throw new InstallationFailedException("Unsupported OS");
-        }
+        mpmUrl = switch (platform) {
+            case "glnxa64" -> new URL(Message.getValue("tools.matlab.mpm.installer.linux"));
+            case "maci64" -> new URL(Message.getValue("tools.matlab.mpm.installer.maci64"));
+            case "maca64" -> new URL(Message.getValue("tools.matlab.mpm.installer.maca64"));
+            default -> throw new InstallationFailedException("Unsupported OS");
+        };
 
         // Download mpm
         FilePath mpmPath = new FilePath(destination, "mpm" + extension);
@@ -209,23 +203,16 @@ public class MatlabInstaller extends ToolInstaller {
     }
 
     private FilePath fetchMatlabBatch(String platform, FilePath destination)
-            throws IOException, InterruptedException {
+            throws IOException {
         URL matlabBatchUrl;
         String extension = "";
 
-        switch (platform) {
-            case "glnxa64":
-                matlabBatchUrl = new URL(Message.getValue("tools.matlab.batch.executable.linux"));
-                break;
-            case "maci64":
-                matlabBatchUrl = new URL(Message.getValue("tools.matlab.batch.executable.maci64"));
-                break;
-            case "maca64":
-                matlabBatchUrl = new URL(Message.getValue("tools.matlab.batch.executable.maca64"));
-                break;
-            default:
-                throw new InstallationFailedException("Unsupported OS");
-        }
+        matlabBatchUrl = switch (platform) {
+            case "glnxa64" -> new URL(Message.getValue("tools.matlab.batch.executable.linux"));
+            case "maci64" -> new URL(Message.getValue("tools.matlab.batch.executable.maci64"));
+            case "maca64" -> new URL(Message.getValue("tools.matlab.batch.executable.maca64"));
+            default -> throw new InstallationFailedException("Unsupported OS");
+        };
 
         // Download matlab-batch
         FilePath matlabBatchPath = new FilePath(destination, "matlab-batch" + extension);
@@ -238,8 +225,7 @@ public class MatlabInstaller extends ToolInstaller {
         return matlabBatchPath;
     }
 
-    private void addMatlabProductsToArgs(ArgumentListBuilder args, String products)
-            throws IOException, InterruptedException {
+    private void addMatlabProductsToArgs(ArgumentListBuilder args, String products) {
         args.add("--products");
         if (products.isEmpty()) {
             args.add(DEFAULT_PRODUCT);
@@ -283,6 +269,8 @@ public class MatlabInstaller extends ToolInstaller {
     @Extension
     public static final class DescriptorImpl extends ToolInstallerDescriptor<MatlabInstaller> {
 
+        @NonNull
+        @Override
         public String getDisplayName() {
             return Message.getValue("matlab.tools.auto.install.display.name");
         }

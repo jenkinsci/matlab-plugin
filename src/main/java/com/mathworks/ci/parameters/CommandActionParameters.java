@@ -13,7 +13,7 @@ import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 public class CommandActionParameters extends MatlabActionParameters {
-    private String command;
+    private final String command;
 
     public CommandActionParameters(StepContext context, String startupOpts, String command)
             throws IOException, InterruptedException {

@@ -2,11 +2,12 @@ package com.mathworks.ci;
 
 /**
  * Copyright 2019-2024 The MathWorks, Inc.
- *
+ * <p>
  * This class is BuildWrapper which accepts the "matlabroot" from user and updates the PATH varible with it.
  * which could be later used across build.
  */
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.model.Item;
 import java.io.File;
 import java.io.IOException;
@@ -104,6 +105,7 @@ public class UseMatlabVersionBuildWrapper extends SimpleBuildWrapper {
             return true;
         }
 
+        @NonNull
         @Override
         public String getDisplayName() {
             return Message.getValue("Buildwrapper.display.name");
@@ -150,21 +152,21 @@ public class UseMatlabVersionBuildWrapper extends SimpleBuildWrapper {
                 return FormValidation.ok();
             }
             item.checkPermission(Item.CONFIGURE);
-            List<Function<String, FormValidation>> listOfCheckMethods = new ArrayList<Function<String, FormValidation>>();
+            List<Function<String, FormValidation>> listOfCheckMethods = new ArrayList<>();
             listOfCheckMethods.add(chkMatlabEmpty);
             listOfCheckMethods.add(chkMatlabSupportsRunTests);
 
             return FormValidationUtil.getFirstErrorOrWarning(listOfCheckMethods, matlabRootFolder);
         }
 
-        Function<String, FormValidation> chkMatlabEmpty = (String matlabRootFolder) -> {
+        final Function<String, FormValidation> chkMatlabEmpty = (String matlabRootFolder) -> {
             if (matlabRootFolder.isEmpty()) {
                 return FormValidation.error(Message.getValue("Builder.matlab.root.empty.error"));
             }
             return FormValidation.ok();
         };
 
-        Function<String, FormValidation> chkMatlabSupportsRunTests = (String matlabRootFolder) -> {
+        final Function<String, FormValidation> chkMatlabSupportsRunTests = (String matlabRootFolder) -> {
             final MatrixPatternResolver resolver = new MatrixPatternResolver(matlabRootFolder);
             if (!resolver.hasVariablePattern()) {
                 try {
@@ -207,7 +209,6 @@ public class UseMatlabVersionBuildWrapper extends SimpleBuildWrapper {
         context.env("matlabroot", nodeSpecificMatlab);
         // Add matlab bin to path to invoke MATLAB directly on command line.
         context.env("PATH+matlabroot", matlabBinDir.getRemote());
-        ;
         listener.getLogger().println("\n" + String.format(Message.getValue("matlab.added.to.path.from"),
                 matlabBinDir.getRemote()) + "\n");
     }

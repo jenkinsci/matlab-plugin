@@ -6,9 +6,10 @@ package com.mathworks.ci.freestyle;
 
 import java.io.IOException;
 import javax.annotation.Nonnull;
+
+import edu.umd.cs.findbugs.annotations.NonNull;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
 import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
@@ -30,6 +31,7 @@ import com.mathworks.ci.actions.MatlabActionFactory;
 import com.mathworks.ci.actions.RunMatlabBuildAction;
 import com.mathworks.ci.parameters.BuildActionParameters;
 import com.mathworks.ci.freestyle.options.*;
+import org.kohsuke.stapler.StaplerRequest2;
 
 public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
     // Deprecated
@@ -100,13 +102,14 @@ public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
         }
 
         // Overridden Method used to show the text under build dropdown
+        @NonNull
         @Override
         public String getDisplayName() {
             return Message.getValue("Builder.build.builder.display.name");
         }
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+        public boolean configure(StaplerRequest2 req, JSONObject formData) throws FormException {
             save();
             return super.configure(req, formData);
         }
@@ -114,15 +117,15 @@ public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
         /*
          * This is to identify which project type in jenkins this should be
          * applicable.(non-Javadoc)
-         * 
+         *
          * @see hudson.tasks.BuildStepDescriptor#isApplicable(java.lang.Class)
-         * 
+         *
          * if it returns true then this build step will be applicable for all project
          * type.
          */
         @Override
         public boolean isApplicable(
-                @SuppressWarnings("rawtypes") Class<? extends AbstractProject> jobtype) {
+                Class<? extends AbstractProject> jobtype) {
             return true;
         }
     }
