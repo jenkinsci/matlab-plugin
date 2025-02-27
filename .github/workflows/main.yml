@@ -24,6 +24,10 @@ jobs:
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
+        env:
+          MATLAB_ROOT: ${{ steps.setup-matlab.outputs.matlabroot }}
+          MATLAB_ROOT_22b: ${{ steps.setup-matlab-22b.outputs.matlabroot }}
+          MLM_LICENSE_TOKEN:  ${{ secrets.MLM_LICENSE_TOKEN}}
 
       - name: Sanity check
         uses: matlab-actions/run-command@v2
