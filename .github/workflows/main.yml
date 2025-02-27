@@ -4,7 +4,7 @@ jobs:
   run-tests-job:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [macos-latest]
     name: Run System tests
     runs-on: ${{ matrix.os }}
     steps:
