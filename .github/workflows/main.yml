@@ -22,6 +22,9 @@ jobs:
         id: setup-matlab
         uses: matlab-actions/setup-matlab@v2
 
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+
       - name: Sanity check
         uses: matlab-actions/run-command@v2
         with:
