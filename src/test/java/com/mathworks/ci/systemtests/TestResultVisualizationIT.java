@@ -37,7 +37,6 @@ public class TestResultVisualizationIT {
     @Rule
     public JenkinsRule jenkins = new JenkinsRule();
 
-
     @BeforeClass
     public static void checkMatlabRoot() {
         // Check if the MATLAB_ROOT environment variable is defined
@@ -73,8 +72,8 @@ public class TestResultVisualizationIT {
         FreeStyleBuild build = project.scheduleBuild2(0).get();
 
         // Verify MATLAB Test Result summary
-        String[] buildResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
-        List.of(buildResultSummaries ).forEach(summary -> {
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        List.of(testResultSummaries).forEach(summary -> {
             assertTrue(summary.contains("Tests run: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
@@ -187,8 +186,8 @@ public class TestResultVisualizationIT {
 
         Combination c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1"))), "MATLAB_PATH_1");
         MatrixRun run = build.getRun(c);
-        String[] buildResultSummaries = getTestResultSummaryFromBuildStatusPage(run);
-        List.of(buildResultSummaries).forEach(summary -> {
+        String[] firstTestResultSummaries = getTestResultSummaryFromBuildStatusPage(run);
+        List.of(firstTestResultSummaries).forEach(summary -> {
             assertTrue(summary.contains("Tests run: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
@@ -198,8 +197,8 @@ public class TestResultVisualizationIT {
 
         c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_22b"))), "MATLAB_PATH_22b");
         run = build.getRun(c);
-        String[] secondBuildResultSummary= getTestResultSummaryFromBuildStatusPage(run);
-        assertEquals(secondBuildResultSummary.length,0); // As for R2022b the view is not generated
+        String[] secondTestResultSummary = getTestResultSummaryFromBuildStatusPage(run);
+        assertEquals(secondTestResultSummary.length,0); // As for R2022b the view is not generated
         jenkins.assertLogContains(matlabRoot22b,run);
 
         jenkins.assertBuildStatus(Result.FAILURE, run); // As the test task fails
@@ -261,7 +260,7 @@ public class TestResultVisualizationIT {
 
     private String[] getTestResultSummaryFromBuildStatusPage(Run<?, ?> build) throws IOException, SAXException {
         HtmlPage buildPage = jenkinsWebClient.getPage(build);
-        List<HtmlElement> summaryElement =  buildPage.getByXPath("//*[starts-with(@id, 'matlabTestResults')]");
+        List<HtmlElement> summaryElement = buildPage.getByXPath("//*[starts-with(@id, 'matlabTestResults')]");
         return summaryElement.stream()
                 .map(element -> (HtmlElement) element)
                 .map(HtmlElement::getTextContent)
@@ -277,7 +276,7 @@ public class TestResultVisualizationIT {
 
     private String getTestResultTabLinkFromSidePanel(FreeStyleBuild build) throws IOException, SAXException {
         HtmlPage buildPage = jenkinsWebClient.getPage(build);
-        HtmlElement jenkinsSidePanelElement  = buildPage.getFirstByXPath("//*[@id='side-panel']/div");
+        HtmlElement jenkinsSidePanelElement = buildPage.getFirstByXPath("//*[@id='side-panel']/div");
         HtmlElement buildResultTab = (HtmlElement) jenkinsSidePanelElement.getChildNodes().get(5);
         HtmlAnchor href = (HtmlAnchor) buildResultTab.getChildNodes().get(0).getByXPath("//a[span[text()='MATLAB Test Results']]").get(0);
         return href.getHrefAttribute();
