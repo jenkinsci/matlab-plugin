@@ -12,7 +12,7 @@ import hudson.model.Descriptor;
 
 public class TestFolders extends AbstractDescribableImpl<TestFolders> {
 
-    private String testFolders;
+    private final String testFolders;
 
     @DataBoundConstructor
     public TestFolders(String testFolders) {

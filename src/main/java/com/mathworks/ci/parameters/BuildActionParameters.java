@@ -13,8 +13,8 @@ import hudson.model.TaskListener;
 import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 public class BuildActionParameters extends MatlabActionParameters {
-    private String tasks;
-    private String buildOptions;
+    private final String tasks;
+    private final String buildOptions;
 
     public BuildActionParameters(StepContext context, String startupOpts, String tasks, String buildOpts)
             throws IOException, InterruptedException {

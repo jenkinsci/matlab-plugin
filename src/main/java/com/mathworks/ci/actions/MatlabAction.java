@@ -16,7 +16,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class MatlabAction {
-    MatlabCommandRunner runner;
+    final MatlabCommandRunner runner;
     BuildConsoleAnnotator annotator;
     String actionID;
 
@@ -43,7 +43,7 @@ public class MatlabAction {
                 MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN);
     }
 
-    public void setBuildEnvVars() throws IOException, InterruptedException {
+    public void setBuildEnvVars() {
         // Set environment variable
         runner.addEnvironmentVariable(
                 "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE",
@@ -51,7 +51,7 @@ public class MatlabAction {
         runner.addEnvironmentVariable("MW_BUILD_PLUGIN_ACTION_ID", this.getActionID());
         runner.addEnvironmentVariable(
                 "MW_MATLAB_TEMP_FOLDER",
-                runner.getTempFolder().toString());
+                runner.getTempFolder().getRemote());
     }
 
     public void teardownAction(Run<?, ?> build) {
@@ -63,7 +63,7 @@ public class MatlabAction {
         try {
             this.runner.removeTempFolder();
         } catch (Exception e) {
-            System.err.println(e.toString());
+            System.err.println(e);
         }
     }
 
@@ -82,7 +82,7 @@ public class MatlabAction {
         } catch (Exception e) {
             // Don't want to override more important error
             // thrown in catch block
-            System.err.println(e.toString());
+            System.err.println(e);
         }
     }
 }
