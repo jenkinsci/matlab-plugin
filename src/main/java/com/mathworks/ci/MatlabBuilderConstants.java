@@ -38,6 +38,7 @@ public class MatlabBuilderConstants {
     // MATLAB default function/plugin paths
     public static final String DEFAULT_PLUGIN = "+ciplugins/+jenkins/getDefaultPlugins.m";
     public static final String BUILD_REPORT_PLUGIN = "+ciplugins/+jenkins/BuildReportPlugin.m";
+    public static final String PAR_BUILD_REPORT_PLUGIN = "+ciplugins/+jenkins/ParallelizableBuildReportPlugin.m";
     public static final String TASK_RUN_PROGRESS_PLUGIN = "+ciplugins/+jenkins/TaskRunProgressPlugin.m";
     public static final String BUILD_ARTIFACT = "buildArtifact";
 

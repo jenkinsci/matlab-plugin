@@ -17,15 +17,16 @@ classdef ParallelizableBuildReportPlugin < matlab.buildtool.plugins.BuildRunnerP
         function runBuild(plugin, pluginData)
             % Create temp folder
             mkdir(plugin.TempFolder);
-            cleanup = onCleanup(@()rmdirplugin.TempFolder, "s");
+            cleanup = onCleanup(@()rmdir(plugin.TempFolder, "s"));
  
             runBuild@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
 
             % Construct task details
             taskDetails = {};
             fs = what(plugin.TempFolder).mat;
-            for f = fs(:)'
-                s = load(fullfile(plugin.TempFolder, fs{1}));
+            for i = 1:numel(fs)
+                f = fs{i};
+                s = load(fullfile(plugin.TempFolder, f));
                 taskDetails = [taskDetails s.taskDetail]; %#ok<AGROW>
             end
 
