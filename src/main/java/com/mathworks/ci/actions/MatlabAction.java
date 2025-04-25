@@ -1,7 +1,7 @@
 package com.mathworks.ci.actions;
 
 /**
- * Copyright 2024, The MathWorks Inc.
+ * Copyright 2024-2025, The MathWorks Inc.
  */
 
 import com.mathworks.ci.BuildArtifactAction;
