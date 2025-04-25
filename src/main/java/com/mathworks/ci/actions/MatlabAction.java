@@ -1,7 +1,7 @@
 package com.mathworks.ci.actions;
 
 /**
- * Copyright 2024-25, The MathWorks Inc.
+ * Copyright 2024-2025, The MathWorks Inc.
  */
 
 import com.mathworks.ci.BuildArtifactAction;
@@ -43,6 +43,7 @@ public class MatlabAction {
         if(this.annotator != null) {
             runner.copyFileToTempFolder(MatlabBuilderConstants.DEFAULT_PLUGIN, MatlabBuilderConstants.DEFAULT_PLUGIN);
             runner.copyFileToTempFolder(MatlabBuilderConstants.BUILD_REPORT_PLUGIN, MatlabBuilderConstants.BUILD_REPORT_PLUGIN);
+            runner.copyFileToTempFolder(MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN, MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN);
             runner.copyFileToTempFolder(MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN, MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN);
         }
 
