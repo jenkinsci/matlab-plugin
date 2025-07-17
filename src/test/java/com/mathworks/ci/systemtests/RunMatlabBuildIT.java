@@ -248,15 +248,15 @@ public class RunMatlabBuildIT {
         return href.getHrefAttribute();
     }
 
-    // private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
-    //     HtmlPage buildPage = jenkins.createWebClient().getPage(build);
-    //     HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody/tr[3]/td[2]").get(0);
-    //     return summaryElement.getTextContent();
-    // }
-
     private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
         HtmlPage buildPage = jenkins.createWebClient().getPage(build);
-        HtmlElement summaryDiv = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/div/div[1]").get(0);
-        return summaryDiv.getTextContent();
+        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody/tr[3]/td[2]").get(0);
+        return summaryElement.getTextContent();
     }
+
+    // private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
+    //     HtmlPage buildPage = jenkins.createWebClient().getPage(build);
+    //     HtmlElement summaryDiv = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/div/div[1]").get(0);
+    //     return summaryDiv.getTextContent();
+    // }
 }
