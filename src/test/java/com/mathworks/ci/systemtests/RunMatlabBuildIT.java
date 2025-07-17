@@ -202,6 +202,9 @@ public class RunMatlabBuildIT {
 
         // Verify MATLAB Build Result summary
         String summary = getSummaryFromBuildStatus(build);
+        System.out.println("=== SUMMARY DUMP ===");
+        System.out.println(summary);
+        System.out.println("====================");
         assertTrue(summary.contains("Tasks run: 3"));
         assertTrue(summary.contains("Failed: 1"));
         assertTrue(summary.contains("Skipped: 1"));
