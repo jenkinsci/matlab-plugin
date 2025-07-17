@@ -203,12 +203,12 @@ public class RunMatlabBuildIT {
         // Verify MATLAB Build Result summary
         String BuildResultSummary= getSummaryFromBuildStatus(build);
         System.out.println(BuildResultSummary);
-        // assertTrue(BuildResultSummary.contains("Tasks run: 3"));
-        // assertTrue(BuildResultSummary.contains("Failed: 1"));
-        // assertTrue(BuildResultSummary.contains("Skipped: 1"));
+        assertTrue(BuildResultSummary.contains("Tasks run: 3"));
+        assertTrue(BuildResultSummary.contains("Failed: 1"));
+        assertTrue(BuildResultSummary.contains("Skipped: 1"));
 
-        // jenkins.assertBuildStatus(Result.FAILURE, build);
-        // jenkins.assertLogContains("buildtool check test dummy -continueOnFailure -skip dummy", build);
+        jenkins.assertBuildStatus(Result.FAILURE, build);
+        jenkins.assertLogContains("buildtool check test dummy -continueOnFailure -skip dummy", build);
     }
 
     @Test
