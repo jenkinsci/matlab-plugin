@@ -202,9 +202,6 @@ public class RunMatlabBuildIT {
 
         // Verify MATLAB Build Result summary
         String summary = getSummaryFromBuildStatus(build);
-        System.out.println("=== SUMMARY DUMP ===");
-        System.out.println(summary);
-        System.out.println("====================");
         assertTrue("Summary was: " + summary, summary.contains("Tasks run: 3"));
         assertTrue("Summary was: " + summary, summary.contains("Failed: 1"));
         assertTrue("Summary was: " + summary, summary.contains("Skipped: 1"));
@@ -250,7 +247,7 @@ public class RunMatlabBuildIT {
 
     private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
         HtmlPage buildPage = jenkins.createWebClient().getPage(build);
-        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//table[@id='buildresults']/tbody/tr[3]/td[2]").get(0);
+        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody/tr[3]/td[2]").get(1);
         return summaryElement.getTextContent();
     }
 }
