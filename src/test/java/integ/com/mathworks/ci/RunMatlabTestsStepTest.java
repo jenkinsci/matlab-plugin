@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import hudson.model.Result;
+import hudson.model.Descriptor.FormException;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
@@ -193,14 +194,13 @@ public class RunMatlabTestsStepTest {
         outputDetail.put("detailed", "'OutputDetail', 3");
         outputDetail.put("verbose", "'OutputDetail', 4");
         outputDetail.forEach((key, val) -> {
-            project.setDefinition(new CpsFlowDefinition(
-                    "node {runMATLABTests(outputDetail: '" + key + "')}", true));
-            WorkflowRun build;
-
             try {
+                project.setDefinition(new CpsFlowDefinition(
+                        "node {runMATLABTests(outputDetail: '" + key + "')}", true));
+                WorkflowRun build;
                 build = project.scheduleBuild2(0).get();
                 j.assertLogContains(val, build);
-            } catch (InterruptedException | ExecutionException | IOException e) {
+            } catch (InterruptedException | ExecutionException | FormException | IOException e) {
                 System.out.println("Build Failed, refer logs for details");
                 e.printStackTrace();
             }
@@ -220,15 +220,14 @@ public class RunMatlabTestsStepTest {
         outputDetail.put("detailed", "'LoggingLevel', 3");
         outputDetail.put("verbose", "'LoggingLevel', 4");
         outputDetail.forEach((key, val) -> {
-            project.setDefinition(new CpsFlowDefinition(
-                    "node {runMATLABTests(loggingLevel: '" + key + "', outputDetail: 'None')}",
-                    true));
-            WorkflowRun build;
-
             try {
+                project.setDefinition(new CpsFlowDefinition(
+                        "node {runMATLABTests(loggingLevel: '" + key + "', outputDetail: 'None')}",
+                        true));
+                WorkflowRun build;
                 build = project.scheduleBuild2(0).get();
                 j.assertLogContains(val, build);
-            } catch (InterruptedException | ExecutionException | IOException e) {
+            } catch (InterruptedException | ExecutionException | FormException | IOException e) {
                 System.out.println("Build Failed, refer logs for details");
                 e.printStackTrace();
             }
