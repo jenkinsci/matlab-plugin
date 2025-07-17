@@ -201,11 +201,10 @@ public class RunMatlabBuildIT {
         FreeStyleBuild build = project.scheduleBuild2(0).get();
 
         // Verify MATLAB Build Result summary
-        String BuildResultSummary= getSummaryFromBuildStatus(build);
-        System.out.println(BuildResultSummary);
-        assertTrue(BuildResultSummary.contains("Tasks run: 3"));
-        assertTrue(BuildResultSummary.contains("Failed: 1"));
-        assertTrue(BuildResultSummary.contains("Skipped: 1"));
+        String summary = getSummaryFromBuildStatus(build);
+        assertTrue(summary.contains("Tasks run: 3"));
+        assertTrue(summary.contains("Failed: 1"));
+        assertTrue(summary.contains("Skipped: 1"));
 
         jenkins.assertBuildStatus(Result.FAILURE, build);
         jenkins.assertLogContains("buildtool check test dummy -continueOnFailure -skip dummy", build);
@@ -246,10 +245,15 @@ public class RunMatlabBuildIT {
         return href.getHrefAttribute();
     }
 
+    // private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
+    //     HtmlPage buildPage = jenkins.createWebClient().getPage(build);
+    //     HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody/tr[3]/td[2]").get(0);
+    //     return summaryElement.getTextContent();
+    // }
+
     private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
         HtmlPage buildPage = jenkins.createWebClient().getPage(build);
-        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody/tr[3]/td[2]").get(0);
-        return summaryElement.getTextContent();
-
+        HtmlElement summaryDiv = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/div/div[1]").get(0);
+        return summaryDiv.getTextContent();
     }
 }
