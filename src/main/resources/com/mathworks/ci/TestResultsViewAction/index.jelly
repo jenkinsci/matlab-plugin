@@ -5,32 +5,32 @@
         
         <l:main-panel>
             <l:app-bar title="MATLAB Test Results">
-                <t:help href="https://github.com/jenkinsci/matlab-plugin/blob/master/CONFIGDOC.md" tooltip="Plugin Configuration Guide" />
+                <t:help href="https://github.com/jenkinsci/matlab-plugin/blob/master/CONFIGDOC.md#view-test-results" tooltip="Plugin Configuration Guide" />
             </l:app-bar>
 
-            <button id="TOTAL" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Total tests">
+            <button id="TOTAL" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Total tests">
                 <p>${it.totalCount}<br /><br />Total Tests</p>
             </button>
 
-            <button id="PASSED" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Passed tests">
+            <button id="PASSED" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Passed tests">
                 <p>${it.passedCount}<br>
                     <l:icon class="symbol-checkmark-circle-outline plugin-ionicons-api icon-lg jenkins-!-success-color"/>
                 </br><br />Passed</p>
             </button>
 
-            <button id="FAILED" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Failed tests">
+            <button id="FAILED" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Failed tests">
                 <p>${it.failedCount}<br>
                     <l:icon class="symbol-close-circle-outline plugin-ionicons-api icon-lg jenkins-!-error-color"/>
                 </br><br />Failed</p>
             </button>
 
-            <button id="INCOMPLETE" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Incomplete tests">
+            <button id="INCOMPLETE" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Incomplete tests">
                 <p>${it.incompleteCount}<br>
                     <l:icon class="symbol-alert-circle-outline plugin-ionicons-api icon-lg jenkins-!-warning-color"/>
                 </br><br />Incomplete</p>
             </button>
 
-            <button id="NOT_RUN" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Tests that have not run">
+            <button id="NOT_RUN" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Tests that have not run">
                 <p>${it.notRunCount}<br>
                     <l:icon class="symbol-remove-circle-outline plugin-ionicons-api icon-lg"/>
                 </br><br />Not Run</p>
@@ -187,6 +187,30 @@
 
         <![CDATA[
         function showTests(status) {
+            // Get all filter buttons
+            let filterButtons = document.querySelectorAll('[id="TOTAL"], [id="PASSED"], [id="FAILED"], [id="INCOMPLETE"], [id="NOT_RUN"]');
+            let activeButton = document.getElementById(status);
+            
+            // Check if clicking already active button
+            if (activeButton.classList.contains('jenkins-button--active')) {
+                // Remove highlight and show all tests
+                activeButton.classList.remove('jenkins-button--active');
+                activeButton.classList.remove('jenkins-!-background-color-primary');
+                showAllTests();
+                return;
+            }
+
+            // Remove highlight from all buttons
+            filterButtons.forEach(button => {
+                button.classList.remove('jenkins-button--active');
+                button.classList.remove('jenkins-!-background-color-primary');
+            });
+
+            // Add highlight to clicked button
+            activeButton.classList.add('jenkins-button--active');
+            activeButton.classList.add('jenkins-!-background-color-primary');
+
+            // Filter the tests
             let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
             allMatlabTestCaseRows.forEach(function(row) {
                 if (status === 'TOTAL' || row.classList.contains(status)) {
@@ -196,17 +220,26 @@
                 }
             });
 
+            // Show/hide test file rows based on visible test cases
             let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
             matlabTestFileRows.forEach(function(row) {
-                allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
-                visibleRows = Array.from(allNestedRows).filter(function(nestedRow) {
+                let allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
+                let visibleRows = Array.from(allNestedRows).filter(function(nestedRow) {
                     return nestedRow.style.display === '';
                 });
-                if (visibleRows.length === 0) {
-                    row.style.display = 'none';
-                } else {
-                    row.style.display = '';
-                }
+                row.style.display = visibleRows.length === 0 ? 'none' : '';
+            });
+        }
+
+        function showAllTests() {
+            let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
+            allMatlabTestCaseRows.forEach(function(row) {
+                row.style.display = '';
+            });
+
+            let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
+            matlabTestFileRows.forEach(function(row) {
+                row.style.display = '';
             });
         }
         ]]>

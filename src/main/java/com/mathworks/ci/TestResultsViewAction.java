@@ -8,7 +8,9 @@ package com.mathworks.ci;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -40,6 +42,7 @@ public class TestResultsViewAction implements RunAction2 {
     private int failedCount;
     private int incompleteCount;
     private int notRunCount;
+    private PrintStream logger;
 
     public enum TestStatus {
         PASSED,
@@ -48,10 +51,11 @@ public class TestResultsViewAction implements RunAction2 {
         NOT_RUN
     }
 
-    public TestResultsViewAction(Run<?, ?> build, FilePath workspace, String actionID) throws InterruptedException, IOException {
+    public TestResultsViewAction(Run<?, ?> build, FilePath workspace, String actionID, PrintStream logger) throws InterruptedException, IOException {
         this.build = build;
         this.workspace = workspace;
         this.actionID = actionID;
+        this.logger = logger;
         
         this.totalCount = 0;
         this.passedCount = 0;
@@ -61,6 +65,7 @@ public class TestResultsViewAction implements RunAction2 {
 
          try{
             // Set test results counts
+            logger.println("in the constructor");
              getTestResults();
          } catch (InterruptedException | IOException e) {
              throw e;
@@ -71,7 +76,10 @@ public class TestResultsViewAction implements RunAction2 {
 
     public List<List<MatlabTestFile>> getTestResults() throws ParseException, InterruptedException, IOException {
         List<List<MatlabTestFile>> testResults = new ArrayList<>();
-        FilePath fl = new FilePath(new File(build.getRootDir().getAbsolutePath(), MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json"));
+        // FilePath fl = new FilePath(new File(build.getRootDir().getAbsolutePath(), MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json"));
+        logger.println("in getTestResults method");
+        FilePath fl = new FilePath(build.getRootDir()).child(MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json");
+        logger.println("Test results file path: " + fl.getRemote());
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(Paths.get(fl.toURI())), StandardCharsets.UTF_8)) {
             this.totalCount = 0;
             this.passedCount = 0;
@@ -133,11 +141,12 @@ public class TestResultsViewAction implements RunAction2 {
         Path baseFolderPath = Paths.get(baseFolder.toURI());
         Path workspacePath = Paths.get(this.workspace.toURI());
         Path relativePath = workspacePath.relativize(baseFolderPath);
+        Path normalizedPath = relativePath.normalize();
 
-        matlabTestFile.setPath(this.workspace.getName() + File.separator + relativePath.toString());
+        matlabTestFile.setPath(this.workspace.getName() + File.separator + normalizedPath.toString() + File.separator + matlabTestFile.getName());
 
         MatlabTestCase matlabTestCase = new MatlabTestCase(matlabTestCaseName);
-            matlabTestCase.setDuration(new BigDecimal(matlabTestCaseResult.get("Duration").toString()));
+        matlabTestCase.setDuration(new BigDecimal(matlabTestCaseResult.get("Duration").toString()).setScale(2, RoundingMode.HALF_UP));
 
         if ((boolean) matlabTestCaseResult.get("Failed")){
             matlabTestCase.setStatus(TestStatus.FAILED);

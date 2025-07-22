@@ -99,7 +99,7 @@ public class MatlabAction {
                         build.addAction(new BuildArtifactAction(build, this.getActionID()));
                         break;
                     case MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT:
-                            build.addAction(new TestResultsViewAction(build, workspace, this.getActionID()));
+                        build.addAction(new TestResultsViewAction(build, workspace, this.getActionID(), params.getTaskListener().getLogger()));
                         break;
                     default:
                 }
