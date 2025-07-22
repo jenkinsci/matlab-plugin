@@ -79,7 +79,7 @@ public class RunMatlabBuildIT {
     public void verifyBuildFailureWhenMatlabBuildFails() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(Utilities.getRunMATLABTestsData()));
 
         this.runBuilder.setTasks("invalid_task");
 
@@ -97,7 +97,7 @@ public class RunMatlabBuildIT {
     public void verifyBuildPassesWhenMatlabBuildPasses() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(Utilities.getRunMATLABTestsData()));
 
         this.runBuilder.setTasks("check");
         project.getBuildersList().add(this.runBuilder);
@@ -111,7 +111,7 @@ public class RunMatlabBuildIT {
     public void verifyDefaultTaskForNoTaskInput() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(Utilities.getRunMATLABTestsData()));
 
         project.getBuildersList().add(this.runBuilder);
         FreeStyleBuild build = project.scheduleBuild2(0).get();
@@ -126,7 +126,7 @@ public class RunMatlabBuildIT {
     public void verifyRunningMultipleTasks() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(Utilities.getRunMATLABTestsData()));
 
         this.runBuilder.setTasks("check dummy");
         project.getBuildersList().add(this.runBuilder);
@@ -141,7 +141,7 @@ public class RunMatlabBuildIT {
     public void verifySpecifyingBuildOptions() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(Utilities.getRunMATLABTestsData()));
 
         this.runBuilder.setTasks("check test dummy");
         this.runBuilder.setBuildOptions(new BuildOptions("-continueOnFailure -skip check"));
@@ -193,7 +193,7 @@ public class RunMatlabBuildIT {
     public void verifyBuildSummaryInBuildStatusPage() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(Utilities.getRunMATLABTestsData()));
 
         this.runBuilder.setTasks("check test dummy");
         this.runBuilder.setBuildOptions(new BuildOptions("-continueOnFailure -skip dummy"));
@@ -201,10 +201,10 @@ public class RunMatlabBuildIT {
         FreeStyleBuild build = project.scheduleBuild2(0).get();
 
         // Verify MATLAB Build Result summary
-        String summary = getSummaryFromBuildStatus(build);
-        assertTrue("Summary was: " + summary, summary.contains("Tasks run: 3"));
-        assertTrue("Summary was: " + summary, summary.contains("Failed: 1"));
-        assertTrue("Summary was: " + summary, summary.contains("Skipped: 1"));
+        String BuildResultSummary= getSummaryFromBuildStatus(build);
+        assertTrue(BuildResultSummary.contains("Tasks run: 3"));
+        assertTrue(BuildResultSummary.contains("Failed: 1"));
+        assertTrue(BuildResultSummary.contains("Skipped: 1"));
 
         jenkins.assertBuildStatus(Result.FAILURE, build);
         jenkins.assertLogContains("buildtool check test dummy -continueOnFailure -skip dummy", build);
@@ -214,7 +214,7 @@ public class RunMatlabBuildIT {
     public void verifyHyperlinkFromSummaryAndSidePanelAreSame() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(Utilities.getRunMATLABTestsData()));
 
         this.runBuilder.setTasks("check test dummy");
         this.runBuilder.setBuildOptions(new BuildOptions("-continueOnFailure -skip dummy"));
@@ -247,7 +247,8 @@ public class RunMatlabBuildIT {
 
     private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
         HtmlPage buildPage = jenkins.createWebClient().getPage(build);
-        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody").get(1);
+        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody/tr[3]/td[2]").get(0);
         return summaryElement.getTextContent();
+
     }
 }
