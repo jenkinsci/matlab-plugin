@@ -15,7 +15,7 @@
     },
     {
       "TestResult": {
-        "Duration": 0.1,
+        "Duration": 0.11,
         "Details": {
           "SimulinkTestManagerResults": []
         },
@@ -28,7 +28,7 @@
     },
     {
       "TestResult": {
-        "Duration": 0.1,
+        "Duration": 0.111,
         "Details": {
           "SimulinkTestManagerResults": []
         },
@@ -41,7 +41,7 @@
     },
     {
       "TestResult": {
-        "Duration": 0.1,
+        "Duration": 0.1111,
         "Details": {
           "SimulinkTestManagerResults": []
         },
