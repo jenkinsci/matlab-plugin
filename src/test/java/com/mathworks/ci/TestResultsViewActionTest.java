@@ -162,7 +162,7 @@ public class TestResultsViewActionTest {
         final String actionID = "abc123";
         final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
         FilePath artifactRoot = new FilePath(build.getRootDir());
-        String os = "";
+        String os = System.getProperty("os.name").toLowerCase();
         if (os.contains("win")) {
             os = "windows";
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
