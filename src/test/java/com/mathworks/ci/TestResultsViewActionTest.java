@@ -229,6 +229,45 @@ public class TestResultsViewActionTest {
     }
 
     /**
+     *  Verify if test file path for the view is correct
+     *
+     */
+
+     @Test
+     public void verifyMatlabTestFileLinuxStylePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+         FreeStyleBuild build = getFreestyleBuild();
+         final String actionID = "abc123";
+         final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
+         FilePath artifactRoot = new FilePath(build.getRootDir());
+ 
+         String os = System.getProperty("os.name").toLowerCase();
+         String testFolder = "testArtifacts/t1/";
+         String workspaceParent = "";
+         String expectedParentPath = "workspace/visualization/";
+         if (os.contains("win")) {
+             testFolder += "windows/";
+             workspaceParent = "C:\\";
+         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+             testFolder += "linux/";
+             workspaceParent = "/home/user/";
+         } else if (os.contains("mac")) {
+             testFolder += "mac/";
+             workspaceParent = "/Users/username/";
+         } else {
+             throw new RuntimeException("Unsupported OS: " + os);
+         }
+         copyFileInWorkspace(testFolder + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
+         final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
+ 
+         TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+         List<List<MatlabTestFile>> ta = ac.getTestResults();
+         String actualPath1 = ta.get(0).get(0).getLinuxStylePath();
+         Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests/" + "TestExamples1",actualPath1);
+         String actualPath2 = ta.get(1).get(0).getLinuxStylePath();
+         Assert.assertEquals("Incorrect test file path",expectedParentPath + "duplicate_tests/" + "TestExamples2",actualPath2);
+     }
+
+    /**
      *  Verify if test file name is correct
      *
      */
