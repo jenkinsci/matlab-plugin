@@ -157,34 +157,20 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestFilePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
+        TestResultsViewAction ac = setupTestResultsViewAction();
 
         String os = System.getProperty("os.name").toLowerCase();
-        String testFolder = "testArtifacts/t1/";
-        String workspaceParent = "";
         String expectedParentPath = "";
         if (os.contains("win")) {
-            testFolder += "windows/";
-            workspaceParent = "C:\\";
             expectedParentPath = "workspace\\visualization\\";
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-            testFolder += "linux/";
-            workspaceParent = "/home/user/";
             expectedParentPath = "workspace/visualization/";
         } else if (os.contains("mac")) {
-            testFolder += "mac/";
-            workspaceParent = "/Users/username/";
             expectedParentPath = "workspace/visualization/";
         } else {
             throw new RuntimeException("Unsupported OS: " + os);
         }
-        copyFileInWorkspace(testFolder + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
-
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         String actualPath1 = ta.get(0).get(0).getPath();
         Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests" + File.separator + "TestExamples1",actualPath1);
@@ -197,39 +183,17 @@ public class TestResultsViewActionTest {
      *
      */
 
-     @Test
-     public void verifyMatlabTestFileLinuxStylePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-         FreeStyleBuild build = getFreestyleBuild();
-         final String actionID = "abc123";
-         final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-         FilePath artifactRoot = new FilePath(build.getRootDir());
- 
-         String os = System.getProperty("os.name").toLowerCase();
-         String testFolder = "testArtifacts/t1/";
-         String workspaceParent = "";
-         String expectedParentPath = "workspace/visualization/";
-         if (os.contains("win")) {
-             testFolder += "windows/";
-             workspaceParent = "C:\\";
-         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-             testFolder += "linux/";
-             workspaceParent = "/home/user/";
-         } else if (os.contains("mac")) {
-             testFolder += "mac/";
-             workspaceParent = "/Users/username/";
-         } else {
-             throw new RuntimeException("Unsupported OS: " + os);
-         }
-         copyFileInWorkspace(testFolder + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-         final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
- 
-         TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
-         List<List<MatlabTestFile>> ta = ac.getTestResults();
-         String actualPath1 = ta.get(0).get(0).getLinuxStylePath();
-         Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests/" + "TestExamples1",actualPath1);
-         String actualPath2 = ta.get(1).get(0).getLinuxStylePath();
-         Assert.assertEquals("Incorrect test file path",expectedParentPath + "duplicate_tests/" + "TestExamples2",actualPath2);
-     }
+    @Test
+    public void verifyMatlabTestFileLinuxStylePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        TestResultsViewAction ac = setupTestResultsViewAction();
+        String expectedParentPath = "workspace/visualization/";
+        
+        List<List<MatlabTestFile>> ta = ac.getTestResults();
+        String actualPath1 = ta.get(0).get(0).getLinuxStylePath();
+        Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests/" + "TestExamples1",actualPath1);
+        String actualPath2 = ta.get(1).get(0).getLinuxStylePath();
+        Assert.assertEquals("Incorrect test file path",expectedParentPath + "duplicate_tests/" + "TestExamples2",actualPath2);
+    }
 
     /**
      *  Verify if test file name is correct
@@ -369,44 +333,34 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyActionID() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = build.getWorkspace();
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("win")) {
-            os = "windows";
-        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-            os = "linux";
-        } else if (os.contains("mac")) {
-            os = "mac";
-        } else {
-            throw new RuntimeException("Unsupported OS: " + os);
-        }
-        copyFileInWorkspace("testArtifacts/t1/" + os + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         String actualActionID = ac.getActionID();
-        Assert.assertEquals("Incorrect action ID",actionID,actualActionID);
+        Assert.assertEquals("Incorrect action ID","abc123",actualActionID);
     }
 
     private TestResultsViewAction setupTestResultsViewAction() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = build.getWorkspace();
         final String actionID = "abc123";
         final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
         FilePath artifactRoot = new FilePath(build.getRootDir());
+
         String os = System.getProperty("os.name").toLowerCase();
+        String osName = "";
+        String workspaceParent = "";
         if (os.contains("win")) {
-            os = "windows";
+            osName = "windows";
+            workspaceParent = "C:\\";
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-            os = "linux";
+            osName = "linux";
+            workspaceParent = "/home/user/";
         } else if (os.contains("mac")) {
-            os = "mac";
+            osName = "mac";
+            workspaceParent = "/Users/username/";
         } else {
             throw new RuntimeException("Unsupported OS: " + os);
         }
-        copyFileInWorkspace("testArtifacts/t1/" + os + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
+        final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
+        copyFileInWorkspace("testArtifacts/t1/" + osName + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
         return new TestResultsViewAction(build, workspace, actionID);
     }
 
