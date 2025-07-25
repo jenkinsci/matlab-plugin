@@ -76,8 +76,6 @@ public class TestResultsViewAction implements RunAction2 {
 
     public List<List<MatlabTestFile>> getTestResults() throws ParseException, InterruptedException, IOException {
         List<List<MatlabTestFile>> testResults = new ArrayList<>();
-        // FilePath fl = new FilePath(new File(build.getRootDir().getAbsolutePath(), MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json"));
-        logger.println("in getTestResults method");
         FilePath fl = new FilePath(build.getRootDir()).child(MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json");
         logger.println("Test results file path: " + fl.getRemote());
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(Paths.get(fl.toURI())), StandardCharsets.UTF_8)) {
@@ -137,9 +135,9 @@ public class TestResultsViewAction implements RunAction2 {
             testSessionResults.add(matlabTestFile);
         }
 
-        // Calculate the relative path
-        Path baseFolderPath = Paths.get(baseFolder.toURI());
-        Path workspacePath = Paths.get(this.workspace.toURI());
+        // Find relative path
+        Path baseFolderPath = Paths.get(baseFolder.getRemote());
+        Path workspacePath = Paths.get(this.workspace.getRemote());
         Path relativePath = workspacePath.relativize(baseFolderPath);
         Path normalizedPath = relativePath.normalize();
 

@@ -62,6 +62,11 @@ public class MatlabTestFile {
         return this.path;
     }
 
+    // To always show linux based path in test results view
+    public String getLinuxStylePath() {
+        return this.path.replace('\\', '/');
+    }
+
     public void setPath(String path) {
         this.path = path;
     }

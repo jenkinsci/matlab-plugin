@@ -65,7 +65,7 @@
                                     <j:if test="${matlabTestFile.status.toString().contains('NOT_RUN')}">
                                         <l:icon class="symbol-remove-circle-outline plugin-ionicons-api icon-lg" tooltip="Not Run" />
                                     </j:if>
-                                    <div style="display: inline;" tooltip="${matlabTestFile.path}">
+                                    <div style="display: inline;" tooltip="${matlabTestFile.linuxStylePath}">
                                         <j:whitespace trim="false"> ${matlabTestFile.name} </j:whitespace> 
                                     </div>
 
