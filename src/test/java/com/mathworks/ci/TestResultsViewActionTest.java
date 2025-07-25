@@ -23,13 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import com.mathworks.ci.MatlabBuildWrapperContent;
-import com.mathworks.ci.MatlabBuilderConstants;
-import com.mathworks.ci.MatlabTestDiagnostics;
-import com.mathworks.ci.MatlabTestFile;
-import com.mathworks.ci.TestResultsViewAction;
 import com.mathworks.ci.TestResultsViewAction.*;
-import com.mathworks.ci.UseMatlabVersionBuildWrapper;
 import com.mathworks.ci.freestyle.RunMatlabBuildBuilder;
 
 import hudson.FilePath;
@@ -373,7 +367,7 @@ public class TestResultsViewActionTest {
         BigDecimal actualDuration1_5 = ta.get(0).get(0).getMatlabTestCases().get(4).getDuration();
         Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.40"),actualDuration1_5);
         BigDecimal actualDuration1_9 = ta.get(0).get(0).getMatlabTestCases().get(8).getDuration();
-        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0"),actualDuration1_9);
+        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.00"),actualDuration1_9);
         BigDecimal actualDuration2 = ta.get(1).get(0).getMatlabTestCases().get(0).getDuration();
         Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.10"),actualDuration2);
     }
