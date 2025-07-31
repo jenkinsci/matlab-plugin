@@ -41,6 +41,7 @@ public class TestResultsViewAction implements RunAction2 {
     private int failedCount;
     private int incompleteCount;
     private int notRunCount;
+    private BigDecimal totalDuration;
 
     public enum TestStatus {
         PASSED,
@@ -59,6 +60,7 @@ public class TestResultsViewAction implements RunAction2 {
         this.failedCount = 0;
         this.incompleteCount = 0;
         this.notRunCount = 0;
+        this.totalDuration = new BigDecimal("0.0");
 
          try{
             // Set test results counts
@@ -72,13 +74,14 @@ public class TestResultsViewAction implements RunAction2 {
 
     public List<List<MatlabTestFile>> getTestResults() throws ParseException, InterruptedException, IOException {
         List<List<MatlabTestFile>> testResults = new ArrayList<>();
-        FilePath fl = new FilePath(build.getRootDir()).child(MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json");
+        FilePath fl = new FilePath(this.build.getRootDir()).child(MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json");
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(Paths.get(fl.toURI())), StandardCharsets.UTF_8)) {
             this.totalCount = 0;
             this.passedCount = 0;
             this.failedCount = 0;
             this.incompleteCount = 0;
             this.notRunCount = 0;
+            this.totalDuration = new BigDecimal("0.0");
 
             JSONArray testArtifact = (JSONArray) new JSONParser().parse(reader);
             Iterator<JSONArray> testArtifactIterator = testArtifact.iterator();
@@ -171,10 +174,10 @@ public class TestResultsViewAction implements RunAction2 {
         }
 
         matlabTestFile.addTestCase(matlabTestCase);
-        updateCount(matlabTestCase);
+        updateStats(matlabTestCase);
     }
 
-    private void updateCount(MatlabTestCase matlabTestCase) {
+    private void updateStats(MatlabTestCase matlabTestCase) {
         this.totalCount += 1;
         if (matlabTestCase.getStatus().equals(TestStatus.NOT_RUN)) {
             this.notRunCount += 1;
@@ -188,6 +191,8 @@ public class TestResultsViewAction implements RunAction2 {
         else if (matlabTestCase.getStatus().equals(TestStatus.INCOMPLETE)) {
             this.incompleteCount += 1;
         }
+
+        this.totalDuration = this.totalDuration.add(matlabTestCase.getDuration()).setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -268,5 +273,13 @@ public class TestResultsViewAction implements RunAction2 {
 
     public int getNotRunCount() {
         return this.notRunCount;
+    }
+
+    public void setTotalDuration(BigDecimal totalDuration) {
+        this.totalDuration = totalDuration;
+    }
+
+    public BigDecimal getTotalDuration() {
+        return this.totalDuration;
     }
 }

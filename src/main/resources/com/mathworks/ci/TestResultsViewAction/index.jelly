@@ -44,7 +44,7 @@
                                 Test File
                             </th>
                             <th class="pane-header" style="width: auto; min-width: 10em; text-align: right;">
-                                Duration (s)
+                                Duration (s) = ${totalDuration}
                             </th>
                         </tr>
                     </thead>
@@ -212,7 +212,7 @@
 
             // Filter the tests
             let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
-            allMatlabTestCaseRows.forEach(function(row) {
+            allMatlabTestCaseRows.forEach((row) => {
                 if (status === 'TOTAL' || row.classList.contains(status)) {
                     row.style.display = '';
                 } else {
@@ -222,9 +222,9 @@
 
             // Show/hide test file rows based on visible test cases
             let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
-            matlabTestFileRows.forEach(function(row) {
+            matlabTestFileRows.forEach((row) => {
                 let allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
-                let visibleRows = Array.from(allNestedRows).filter(function(nestedRow) {
+                let visibleRows = Array.from(allNestedRows).filter((nestedRow) => {
                     return nestedRow.style.display === '';
                 });
                 row.style.display = visibleRows.length === 0 ? 'none' : '';
@@ -233,12 +233,12 @@
 
         function showAllTests() {
             let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
-            allMatlabTestCaseRows.forEach(function(row) {
+            allMatlabTestCaseRows.forEach((row) => {
                 row.style.display = '';
             });
 
             let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
-            matlabTestFileRows.forEach(function(row) {
+            matlabTestFileRows.forEach((row) => {
                 row.style.display = '';
             });
         }

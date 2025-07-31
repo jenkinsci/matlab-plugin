@@ -9,6 +9,7 @@ package com.mathworks.ci;
 
 import java.util.List;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 
 import org.apache.commons.lang.RandomStringUtils;
@@ -33,7 +34,7 @@ public class MatlabTestFile {
     }
 
     private void incrementDuration(BigDecimal matlabTestCaseDuration) {
-        this.duration = this.duration.add(matlabTestCaseDuration);
+        this.duration = this.duration.add(matlabTestCaseDuration).setScale(2, RoundingMode.HALF_UP);
     }
 
     private void updateStatus(MatlabTestCase matlabTestCase) {
