@@ -44,7 +44,7 @@
                                 Test File
                             </th>
                             <th class="pane-header" style="width: auto; min-width: 10em; text-align: right;">
-                                Duration (s) = ${totalDuration}
+                                Duration (s)
                             </th>
                         </tr>
                     </thead>
@@ -147,101 +147,101 @@
         </l:main-panel>
     </l:layout>
     <script type="text/javascript">
-        function toggleVisibilty(id) {
-            const matlabTestFile = document.getElementById(id);
-            const matlabTestCasesTable = document.getElementById("matlabTestCases-"+id);
-            const plusSymbol = document.getElementById("plus-"+id);
-            const minusSymbol = document.getElementById("minus-"+id);
-            const duration = document.getElementById("duration-"+id);
-
-            if (matlabTestCasesTable.style.display == "none"){
-                matlabTestFile.colSpan = "2";
-                matlabTestCasesTable.style.display = "inline";
-                plusSymbol.style.display = "none";
-                minusSymbol.style.display = "inline";
-                duration.style.display = "none";
-            } else {
-                matlabTestFile.colSpan = "1";
-                matlabTestCasesTable.style.display = "none";
-                plusSymbol.style.display = "inline";
-                minusSymbol.style.display = "none";
-                duration.style.display = "table-cell";
-            }
-        }
-
-        function stackTrace(id){
-            const matlabTestCaseStack = document.getElementById("stack-"+id);
-            const plusSymbol = document.getElementById("plus-"+id);
-            const minusSymbol = document.getElementById("minus-"+id);
-
-            if (matlabTestCaseStack.style.display == "none"){
-                matlabTestCaseStack.style.display = "block";
-                plusSymbol.style.display = "none";
-                minusSymbol.style.display = "inline";
-            } else {
-                matlabTestCaseStack.style.display = "none";
-                plusSymbol.style.display = "inline";
-                minusSymbol.style.display = "none";
-            }
-        }
-
         <![CDATA[
-        function showTests(status) {
-            // Get all filter buttons
-            let filterButtons = document.querySelectorAll('[id="TOTAL"], [id="PASSED"], [id="FAILED"], [id="INCOMPLETE"], [id="NOT_RUN"]');
-            let activeButton = document.getElementById(status);
-            
-            // Check if clicking already active button
-            if (activeButton.classList.contains('jenkins-button--active')) {
-                // Remove highlight and show all tests
-                activeButton.classList.remove('jenkins-button--active');
-                activeButton.classList.remove('jenkins-!-background-color-primary');
-                showAllTests();
-                return;
+            function toggleVisibilty(id) {
+                const matlabTestFile = document.getElementById(id);
+                const matlabTestCasesTable = document.getElementById("matlabTestCases-"+id);
+                const plusSymbol = document.getElementById("plus-"+id);
+                const minusSymbol = document.getElementById("minus-"+id);
+                const duration = document.getElementById("duration-"+id);
+
+                if (matlabTestCasesTable.style.display == "none"){
+                    matlabTestFile.colSpan = "2";
+                    matlabTestCasesTable.style.display = "inline";
+                    plusSymbol.style.display = "none";
+                    minusSymbol.style.display = "inline";
+                    duration.style.display = "none";
+                } else {
+                    matlabTestFile.colSpan = "1";
+                    matlabTestCasesTable.style.display = "none";
+                    plusSymbol.style.display = "inline";
+                    minusSymbol.style.display = "none";
+                    duration.style.display = "table-cell";
+                }
             }
 
-            // Remove highlight from all buttons
-            filterButtons.forEach(button => {
-                button.classList.remove('jenkins-button--active');
-                button.classList.remove('jenkins-!-background-color-primary');
-            });
+            function stackTrace(id){
+                const matlabTestCaseStack = document.getElementById("stack-"+id);
+                const plusSymbol = document.getElementById("plus-"+id);
+                const minusSymbol = document.getElementById("minus-"+id);
 
-            // Add highlight to clicked button
-            activeButton.classList.add('jenkins-button--active');
-            activeButton.classList.add('jenkins-!-background-color-primary');
-
-            // Filter the tests
-            let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
-            allMatlabTestCaseRows.forEach((row) => {
-                if (status === 'TOTAL' || row.classList.contains(status)) {
-                    row.style.display = '';
+                if (matlabTestCaseStack.style.display == "none"){
+                    matlabTestCaseStack.style.display = "block";
+                    plusSymbol.style.display = "none";
+                    minusSymbol.style.display = "inline";
                 } else {
-                    row.style.display = 'none';
+                    matlabTestCaseStack.style.display = "none";
+                    plusSymbol.style.display = "inline";
+                    minusSymbol.style.display = "none";
                 }
-            });
+            }
 
-            // Show/hide test file rows based on visible test cases
-            let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
-            matlabTestFileRows.forEach((row) => {
-                let allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
-                let visibleRows = Array.from(allNestedRows).filter((nestedRow) => {
-                    return nestedRow.style.display === '';
+            let lastActiveButton = null;
+
+            function showTests(status){
+                const activeButton = document.getElementById(status);
+                
+                if (activeButton.classList.contains('jenkins-button--active')) {
+                    activeButton.classList.remove('jenkins-button--active');
+                    activeButton.classList.remove('jenkins-!-background-color-primary');
+                    showAllTests();
+                    lastActiveButton = null;
+                    return;
+                }
+
+                // Remove highlight only from last active button
+                if (lastActiveButton) {
+                    lastActiveButton.classList.remove('jenkins-button--active');
+                    lastActiveButton.classList.remove('jenkins-!-background-color-primary');
+                }
+
+                // Add highlight to clicked button
+                activeButton.classList.add('jenkins-button--active');
+                activeButton.classList.add('jenkins-!-background-color-primary');
+                lastActiveButton = activeButton;
+
+                // Filter the tests
+                let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
+                allMatlabTestCaseRows.forEach((row) => {
+                    if (status === 'TOTAL' || row.classList.contains(status)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
                 });
-                row.style.display = visibleRows.length === 0 ? 'none' : '';
-            });
-        }
 
-        function showAllTests() {
-            let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
-            allMatlabTestCaseRows.forEach((row) => {
-                row.style.display = '';
-            });
+                // Show/hide test file rows based on visible test cases
+                let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
+                matlabTestFileRows.forEach((row) => {
+                    let allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
+                    let visibleRows = Array.from(allNestedRows).filter((nestedRow) => {
+                        return nestedRow.style.display === '';
+                    });
+                    row.style.display = visibleRows.length === 0 ? 'none' : '';
+                });
+            }
 
-            let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
-            matlabTestFileRows.forEach((row) => {
-                row.style.display = '';
-            });
-        }
+            function showAllTests() {
+                let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
+                allMatlabTestCaseRows.forEach((row) => {
+                    row.style.display = '';
+                });
+
+                let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
+                matlabTestFileRows.forEach((row) => {
+                    row.style.display = '';
+                });
+            }
         ]]>
     </script>
 </j:jelly>

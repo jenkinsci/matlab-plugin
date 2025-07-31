@@ -41,7 +41,6 @@ public class TestResultsViewAction implements RunAction2 {
     private int failedCount;
     private int incompleteCount;
     private int notRunCount;
-    private BigDecimal totalDuration;
 
     public enum TestStatus {
         PASSED,
@@ -60,7 +59,6 @@ public class TestResultsViewAction implements RunAction2 {
         this.failedCount = 0;
         this.incompleteCount = 0;
         this.notRunCount = 0;
-        this.totalDuration = new BigDecimal("0.0");
 
          try{
             // Set test results counts
@@ -81,7 +79,6 @@ public class TestResultsViewAction implements RunAction2 {
             this.failedCount = 0;
             this.incompleteCount = 0;
             this.notRunCount = 0;
-            this.totalDuration = new BigDecimal("0.0");
 
             JSONArray testArtifact = (JSONArray) new JSONParser().parse(reader);
             Iterator<JSONArray> testArtifactIterator = testArtifact.iterator();
@@ -191,8 +188,6 @@ public class TestResultsViewAction implements RunAction2 {
         else if (matlabTestCase.getStatus().equals(TestStatus.INCOMPLETE)) {
             this.incompleteCount += 1;
         }
-
-        this.totalDuration = this.totalDuration.add(matlabTestCase.getDuration()).setScale(2, RoundingMode.HALF_UP);
     }
 
     @Override
@@ -273,13 +268,5 @@ public class TestResultsViewAction implements RunAction2 {
 
     public int getNotRunCount() {
         return this.notRunCount;
-    }
-
-    public void setTotalDuration(BigDecimal totalDuration) {
-        this.totalDuration = totalDuration;
-    }
-
-    public BigDecimal getTotalDuration() {
-        return this.totalDuration;
     }
 }
