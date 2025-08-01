@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.Nonnull;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
@@ -130,7 +130,7 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
         }
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+        public boolean configure(StaplerRequest2 req, JSONObject formData) throws FormException {
             save();
             return super.configure(req, formData);
         }

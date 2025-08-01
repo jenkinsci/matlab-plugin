@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>4.75</version>
+		<version>5.18</version>
 		<relativePath />
 	</parent>
 
@@ -15,14 +15,6 @@
 	<name>MATLAB Plugin</name>
 	<url>https://github.com/jenkinsci/matlab-plugin</url>
 	<description>Jenkins plugin for MATLAB</description>
-
-	<developers>
-		<developer>
-			<id>mathworks_ci_team</id>
-			<name>MathWorks</name>
-			<email>continuous-integration@mathworks.com</email>
-		</developer>
-	</developers>
 
 	<licenses>
 		<license>
@@ -46,7 +38,7 @@
 	</pluginRepositories>
 
 	<scm>
-		<connection>scm:git:ssh://github.com/${gitHubRepo}.git</connection>
+		<connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
 		<developerConnection>scm:git:ssh://git@github.com/${gitHubRepo}.git</developerConnection>
 		<url>https://github.com/${gitHubRepo}</url>
 		<tag>${scmTag}</tag>
@@ -56,7 +48,7 @@
 		<changelist>999999-SNAPSHOT</changelist>
 		<gitHubRepo>jenkinsci/matlab-plugin</gitHubRepo>
 		<!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-		<jenkins.baseline>2.387</jenkins.baseline>
+		<jenkins.baseline>2.492</jenkins.baseline>
 		<jenkins.version>${jenkins.baseline}.3</jenkins.version>
 	</properties>
 
@@ -65,7 +57,7 @@
 			<dependency>
 				<groupId>io.jenkins.tools.bom</groupId>
 				<artifactId>bom-${jenkins.baseline}.x</artifactId>
-				<version>2543.vfb_1a_5fb_9496d</version>
+				<version>5165.vdfd66a_57c648</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -116,7 +108,6 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>3.1.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -250,14 +241,9 @@
 						</lifecycleMappingMetadata>
 					</configuration>
 				</plugin>
-				<plugin>
-					<artifactId>maven-site-plugin</artifactId>
-					<version>3.7.1</version>
-				</plugin>
 				<!-- Delete the runner files during clean operation -->
 				<plugin>
 					<artifactId>maven-clean-plugin</artifactId>
-					<version>3.0.0</version>
 					<executions>
 						<execution>
 							<id>default-clean</id>

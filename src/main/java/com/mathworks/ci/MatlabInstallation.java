@@ -29,7 +29,7 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 
 public class MatlabInstallation extends ToolInstallation
         implements EnvironmentSpecific<MatlabInstallation>, NodeSpecific<MatlabInstallation> {
@@ -105,7 +105,7 @@ public class MatlabInstallation extends ToolInstallation
         }
 
         @Override
-        public MatlabInstallation newInstance(StaplerRequest req, JSONObject formData) {
+        public MatlabInstallation newInstance(StaplerRequest2 req, JSONObject formData) {
             return (MatlabInstallation) req.bindJSON(clazz, formData);
         }
 
