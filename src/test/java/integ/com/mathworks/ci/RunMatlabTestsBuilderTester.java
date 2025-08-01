@@ -114,7 +114,7 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
         this.env = env;
     }
 
-    public void geetEnv(EnvVars env) {
+    public void getEnv(EnvVars env) {
         this.env = env;
     }
 
