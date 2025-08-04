@@ -74,7 +74,7 @@ public class TestResultVisualizationIT {
         // Verify MATLAB Test Result summary
         String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
         List.of(testResultSummaries).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
@@ -188,7 +188,7 @@ public class TestResultVisualizationIT {
         MatrixRun run = build.getRun(c);
         String[] firstTestResultSummaries = getTestResultSummaryFromBuildStatusPage(run);
         List.of(firstTestResultSummaries).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
@@ -247,7 +247,7 @@ public class TestResultVisualizationIT {
         // Verify MATLAB Test Result summary
         String[] BuildResultSummary= getTestResultSummaryFromBuildStatusPage(build);
         List.of(BuildResultSummary).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
