@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.mathworks.ci.systemtests.Utilities.getURLForTestData;
 import static org.junit.Assert.*;
 
 public class TestResultVisualizationIT {
@@ -53,7 +54,7 @@ public class TestResultVisualizationIT {
     @Test
     public void verifyTestResultsSummary() throws Exception {
         FreeStyleProject project = jenkins.createFreeStyleProject();
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(getURLForTestData()));
 
         UseMatlabVersionBuildWrapper buildWrapper = new UseMatlabVersionBuildWrapper();
         buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
@@ -85,7 +86,7 @@ public class TestResultVisualizationIT {
     @Test
     public void verifyHyperlinkInSummary() throws Exception {
         FreeStyleProject project = jenkins.createFreeStyleProject();
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(getURLForTestData()));
 
         UseMatlabVersionBuildWrapper buildWrapper = new UseMatlabVersionBuildWrapper();
         buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
@@ -108,7 +109,7 @@ public class TestResultVisualizationIT {
     @Test
     public void verifyContentInTestResultsTable() throws Exception{
         FreeStyleProject project = jenkins.createFreeStyleProject();
-        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        project.setScm(new ExtractResourceSCM(getURLForTestData()));
 
         UseMatlabVersionBuildWrapper buildWrapper = new UseMatlabVersionBuildWrapper();
         buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
@@ -175,7 +176,7 @@ public class TestResultVisualizationIT {
         MatrixProject matrixProject = jenkins.createProject(MatrixProject.class);
         MatlabInstallationAxis MATLABAxis = new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1", "MATLAB_PATH_22b"));
         matrixProject.setAxes(new AxisList(MATLABAxis));
-        matrixProject.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        matrixProject.setScm(new ExtractResourceSCM(getURLForTestData()));
 
         // Run tests through Run Build step
         RunMatlabBuildBuilder buildtoolBuilder = new RunMatlabBuildBuilder();
@@ -215,7 +216,7 @@ public class TestResultVisualizationIT {
                 "            steps\n" +
                 "            {\n" +
                 addTestData() + "\n" +
-                "              runMATLABBuild('test')"+
+                "              runMATLABBuild()"+
                 "            }\n" +
                 "        }\n" +
                 "    }\n" +
@@ -223,9 +224,9 @@ public class TestResultVisualizationIT {
         WorkflowRun build = getPipelineBuild(script);
 
         // Verify MATLAB Test Result summary
-        String[] buildResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
-        List.of(buildResultSummaries).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        List.of(testResultSummaries).forEach(summary -> {
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
@@ -255,6 +256,43 @@ public class TestResultVisualizationIT {
         });
 
         jenkins.assertLogNotContains("Running on Jenkins", build);
+    }
+
+    @Test
+    public void verifyMultipleTestResultBuild() throws Exception{
+        String script = "pipeline {\n" +
+                "  agent any\n" +
+                Utilities.getEnvironmentDSL() + "\n" +
+                "    stages{\n" +
+                "        stage('Run MATLAB Command') {\n" +
+                "            steps\n" +
+                "            {\n" +
+                addTestData() + "\n" +
+                "              runMATLABBuild(tasks: 'passingTest')\n"+
+                "              runMATLABCommand(command: 'runtests(\"IncludeSubfolder\", true)') "+
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+        WorkflowRun build = getPipelineBuild(script);
+
+        // Verify MATLAB Test Result summary
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        assertEquals(testResultSummaries.length, 2);
+
+        String testResultSummaryFromBuildStep = testResultSummaries[0];
+        assertTrue(testResultSummaryFromBuildStep.contains("Total tests: 4"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Passed: 4"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Failed: 0"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Incomplete: 0"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Not Run: 0"));
+
+        String testResultSummaryFromCommandStep = testResultSummaries[1];
+        assertTrue(testResultSummaryFromCommandStep.contains("Total tests: 4"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Passed: 1"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Failed: 3"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Incomplete: 0"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Not Run: 0"));
     }
 
 
@@ -325,7 +363,7 @@ public class TestResultVisualizationIT {
     }
 
     private String addTestData() throws MalformedURLException {
-        URL zipFile = Utilities.getURLForTestData();
+        URL zipFile = getURLForTestData();
         String path = "  unzip '" + zipFile.getPath() + "'" + "\n";
         return path;
     }
