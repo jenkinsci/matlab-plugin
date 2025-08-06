@@ -186,7 +186,7 @@ public class TestResultsViewActionTest {
     @Test
     public void verifyMatlabTestFileLinuxStylePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         TestResultsViewAction ac = setupTestResultsViewAction();
-        String expectedParentPath = "workspace/visualization/";
+        String expectedParentPath = "visualization/";
         
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         String actualPath1 = ta.get(0).get(0).getLinuxStylePath();
