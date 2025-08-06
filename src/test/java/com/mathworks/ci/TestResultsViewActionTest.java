@@ -162,11 +162,11 @@ public class TestResultsViewActionTest {
         String os = System.getProperty("os.name").toLowerCase();
         String expectedParentPath = "";
         if (os.contains("win")) {
-            expectedParentPath = "workspace\\visualization\\";
+            expectedParentPath = "visualization\\";
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-            expectedParentPath = "workspace/visualization/";
+            expectedParentPath = "visualization/";
         } else if (os.contains("mac")) {
-            expectedParentPath = "workspace/visualization/";
+            expectedParentPath = "visualization/";
         } else {
             throw new RuntimeException("Unsupported OS: " + os);
         }

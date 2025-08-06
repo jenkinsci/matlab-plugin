@@ -136,7 +136,7 @@ public class TestResultsViewAction implements RunAction2 {
         Path relativePath = workspacePath.relativize(baseFolderPath);
         Path normalizedPath = relativePath.normalize();
 
-        matlabTestFile.setPath(this.workspace.getName() + File.separator + normalizedPath.toString() + File.separator + matlabTestFile.getName());
+        matlabTestFile.setPath(normalizedPath.toString() + File.separator + matlabTestFile.getName());
 
         MatlabTestCase matlabTestCase = new MatlabTestCase(matlabTestCaseName);
         matlabTestCase.setDuration(new BigDecimal(matlabTestCaseResult.get("Duration").toString()).setScale(2, RoundingMode.HALF_UP));
