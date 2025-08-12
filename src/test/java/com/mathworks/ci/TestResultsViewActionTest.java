@@ -23,13 +23,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import com.mathworks.ci.MatlabBuildWrapperContent;
-import com.mathworks.ci.MatlabBuilderConstants;
-import com.mathworks.ci.MatlabTestDiagnostics;
-import com.mathworks.ci.MatlabTestFile;
-import com.mathworks.ci.TestResultsViewAction;
 import com.mathworks.ci.TestResultsViewAction.*;
-import com.mathworks.ci.UseMatlabVersionBuildWrapper;
 import com.mathworks.ci.freestyle.RunMatlabBuildBuilder;
 
 import hudson.FilePath;
@@ -82,13 +76,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyAllTestsReturned() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         int actualTestSessions = ta.size();
         Assert.assertEquals("Incorrect test sessions",2,actualTestSessions);
@@ -109,13 +97,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyTotalTestsCount() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         int actualCount = ac.getTotalCount();
         Assert.assertEquals("Incorrect total tests count",10,actualCount);
     }
@@ -127,13 +109,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyPassedTestsCount() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         int actualCount = ac.getPassedCount();
         Assert.assertEquals("Incorrect passed tests count",4,actualCount);
     }
@@ -145,13 +121,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyFailedTestsCount() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         int actualCount = ac.getFailedCount();
         Assert.assertEquals("Incorrect failed tests count",3,actualCount);
     }
@@ -163,13 +133,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyIncompleteTestsCount() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         int actualCount = ac.getIncompleteCount();
         Assert.assertEquals("Incorrect incomplete tests count",2,actualCount);
     }
@@ -181,13 +145,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyNotRunTestsCount() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:\\workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         int actualCount = ac.getNotRunCount();
         Assert.assertEquals("Incorrect not run tests count",1,actualCount);
     }
@@ -199,39 +157,42 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestFilePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
+        TestResultsViewAction ac = setupTestResultsViewAction();
 
         String os = System.getProperty("os.name").toLowerCase();
-        String testFolder = "testArtifacts/t1/";
-        String workspaceParent = "";
         String expectedParentPath = "";
         if (os.contains("win")) {
-            testFolder += "windows/";
-            workspaceParent = "C:\\";
-            expectedParentPath = "workspace\\visualization\\";
+            expectedParentPath = "visualization\\";
         } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
-            testFolder += "linux/";
-            workspaceParent = "/home/user/";
-            expectedParentPath = "workspace/visualization/";
+            expectedParentPath = "visualization/";
         } else if (os.contains("mac")) {
-            testFolder += "mac/";
-            workspaceParent = "/Users/username/";
-            expectedParentPath = "workspace/visualization/";
+            expectedParentPath = "visualization/";
         } else {
             throw new RuntimeException("Unsupported OS: " + os);
         }
-        copyFileInWorkspace(testFolder + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
-
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         String actualPath1 = ta.get(0).get(0).getPath();
-        Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests",actualPath1);
+        Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests" + File.separator + "TestExamples1",actualPath1);
         String actualPath2 = ta.get(1).get(0).getPath();
-        Assert.assertEquals("Incorrect test file path",expectedParentPath + "duplicate_tests",actualPath2);
+        Assert.assertEquals("Incorrect test file path",expectedParentPath + "duplicate_tests" + File.separator + "TestExamples2",actualPath2);
+    }
+
+    /**
+     *  Verify if test file path for the view is correct
+     *
+     */
+
+    @Test
+    public void verifyMatlabTestFileLinuxStylePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        TestResultsViewAction ac = setupTestResultsViewAction();
+        String expectedParentPath = "visualization/";
+        
+        List<List<MatlabTestFile>> ta = ac.getTestResults();
+        String actualPath1 = ta.get(0).get(0).getLinuxStylePath();
+        Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests/" + "TestExamples1",actualPath1);
+        String actualPath2 = ta.get(1).get(0).getLinuxStylePath();
+        Assert.assertEquals("Incorrect test file path",expectedParentPath + "duplicate_tests/" + "TestExamples2",actualPath2);
     }
 
     /**
@@ -241,13 +202,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestFileName() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         String actualName1 = ta.get(0).get(0).getName();
         Assert.assertEquals("Incorrect test file name","TestExamples1",actualName1);
@@ -262,18 +217,12 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestFileDuration() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         BigDecimal actualDuration1 = ta.get(0).get(0).getDuration();
-        Assert.assertEquals("Incorrect test file duration",new BigDecimal("1.7"),actualDuration1);
+        Assert.assertEquals("Incorrect test file duration",new BigDecimal("1.73"),actualDuration1);
         BigDecimal actualDuration2 = ta.get(1).get(0).getDuration();
-        Assert.assertEquals("Incorrect test file duration",new BigDecimal("0.1"),actualDuration2);
+        Assert.assertEquals("Incorrect test file duration",new BigDecimal("0.10"),actualDuration2);
     }
 
     /**
@@ -283,13 +232,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestFileStatus() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         TestStatus actualStatus1 = ta.get(0).get(0).getStatus();
         Assert.assertEquals("Incorrect test file status",TestStatus.FAILED,actualStatus1);
@@ -304,13 +247,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestCaseName() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         String actualName1_1 = ta.get(0).get(0).getMatlabTestCases().get(0).getName();
         Assert.assertEquals("Incorrect test case name","testNonLeapYear",actualName1_1);
@@ -331,13 +268,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestCaseStatus() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         TestStatus actualStatus1_1 = ta.get(0).get(0).getMatlabTestCases().get(0).getStatus();
         Assert.assertEquals("Incorrect test case status",TestStatus.PASSED,actualStatus1_1);
@@ -356,22 +287,20 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestCaseDuration() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         BigDecimal actualDuration1_1 = ta.get(0).get(0).getMatlabTestCases().get(0).getDuration();
-        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.1"),actualDuration1_1);
+        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.10"),actualDuration1_1);
+        BigDecimal actualDuration1_2 = ta.get(0).get(0).getMatlabTestCases().get(1).getDuration();
+        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.11"),actualDuration1_2);
+        BigDecimal actualDuration1_3 = ta.get(0).get(0).getMatlabTestCases().get(2).getDuration();
+        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.11"),actualDuration1_3);
         BigDecimal actualDuration1_5 = ta.get(0).get(0).getMatlabTestCases().get(4).getDuration();
-        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.4"),actualDuration1_5);
+        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.40"),actualDuration1_5);
         BigDecimal actualDuration1_9 = ta.get(0).get(0).getMatlabTestCases().get(8).getDuration();
-        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0"),actualDuration1_9);
+        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.00"),actualDuration1_9);
         BigDecimal actualDuration2 = ta.get(1).get(0).getMatlabTestCases().get(0).getDuration();
-        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.1"),actualDuration2);
+        Assert.assertEquals("Incorrect test case duration",new BigDecimal("0.10"),actualDuration2);
     }
 
     /**
@@ -381,13 +310,7 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyMatlabTestCaseDiagnostics() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
-        FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
-        final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
-        FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
+        TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         
         MatlabTestDiagnostics diagnostics1 = ta.get(0).get(0).getMatlabTestCases().get(4).getDiagnostics().get(0);
@@ -410,15 +333,44 @@ public class TestResultsViewActionTest {
 
     @Test
     public void verifyActionID() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        TestResultsViewAction ac = setupTestResultsViewAction();
+        String actualActionID = ac.getActionID();
+        Assert.assertEquals("Incorrect action ID","abc123",actualActionID);
+    }
+
+    private TestResultsViewAction setupTestResultsViewAction() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         FreeStyleBuild build = getFreestyleBuild();
-        final FilePath workspace = new FilePath(new File("C:", "workspace"));
         final String actionID = "abc123";
         final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
         FilePath artifactRoot = new FilePath(build.getRootDir());
-        copyFileInWorkspace("testArtifacts/t1/windows/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
-        TestResultsViewAction ac = new TestResultsViewAction(build, workspace, actionID);
-        String actualActionID = ac.getActionID();
-        Assert.assertEquals("Incorrect action ID",actionID,actualActionID);
+
+        String os = System.getProperty("os.name").toLowerCase();
+        String osName = "";
+        String workspaceParent = "";
+        if (os.contains("win")) {
+            osName = "windows";
+            workspaceParent = "C:\\";
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            osName = "linux";
+            workspaceParent = "/home/user/";
+        } else if (os.contains("mac")) {
+            osName = "mac";
+            workspaceParent = "/Users/username/";
+        } else {
+            throw new RuntimeException("Unsupported OS: " + os);
+        }
+        final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
+        copyFileInWorkspace("testArtifacts/t1/" + osName + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
+        return new TestResultsViewAction(build, workspace, actionID);
+    }
+
+    private FreeStyleBuild getFreestyleBuild() throws ExecutionException, InterruptedException, URISyntaxException {
+        this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), getMatlabroot("R2017a")));
+        project.getBuildWrappersList().add(this.buildWrapper);
+        scriptBuilder.setTasks("");
+        project.getBuildersList().add(this.scriptBuilder);
+        FreeStyleBuild build = project.scheduleBuild2(0).get();
+        return build;
     }
 
     private void copyFileInWorkspace(String sourceFile, String targetFile, FilePath targetWorkspace)
@@ -429,14 +381,5 @@ public class TestResultsViewActionTest {
         targetFilePath.copyFrom(in);
         // set executable permission
         targetFilePath.chmod(0777);
-    }
-
-    private FreeStyleBuild getFreestyleBuild() throws ExecutionException, InterruptedException, URISyntaxException {
-        this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), getMatlabroot("R2017a")));
-        project.getBuildWrappersList().add(this.buildWrapper);
-        scriptBuilder.setTasks("");
-        project.getBuildersList().add(this.scriptBuilder);
-        FreeStyleBuild build = project.scheduleBuild2(0).get();
-        return build;
     }
 }

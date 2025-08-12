@@ -5,32 +5,32 @@
         
         <l:main-panel>
             <l:app-bar title="MATLAB Test Results">
-                <t:help href="https://github.com/jenkinsci/matlab-plugin/blob/master/CONFIGDOC.md" tooltip="Plugin Configuration Guide" />
+                <t:help href="https://github.com/jenkinsci/matlab-plugin/blob/master/CONFIGDOC.md#view-test-results" tooltip="Plugin Configuration Guide" />
             </l:app-bar>
 
-            <button id="TOTAL" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Total tests">
+            <button id="TOTAL" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Total tests">
                 <p>${it.totalCount}<br /><br />Total Tests</p>
             </button>
 
-            <button id="PASSED" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Passed tests">
+            <button id="PASSED" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Passed tests">
                 <p>${it.passedCount}<br>
                     <l:icon class="symbol-checkmark-circle-outline plugin-ionicons-api icon-lg jenkins-!-success-color"/>
                 </br><br />Passed</p>
             </button>
 
-            <button id="FAILED" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Failed tests">
+            <button id="FAILED" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Failed tests">
                 <p>${it.failedCount}<br>
                     <l:icon class="symbol-close-circle-outline plugin-ionicons-api icon-lg jenkins-!-error-color"/>
                 </br><br />Failed</p>
             </button>
 
-            <button id="INCOMPLETE" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Incomplete tests">
+            <button id="INCOMPLETE" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Incomplete tests">
                 <p>${it.incompleteCount}<br>
                     <l:icon class="symbol-alert-circle-outline plugin-ionicons-api icon-lg jenkins-!-warning-color"/>
                 </br><br />Incomplete</p>
             </button>
 
-            <button id="NOT_RUN" onclick="showTests(id)" class="jenkins-button jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Tests that have not run">
+            <button id="NOT_RUN" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Tests that have not run">
                 <p>${it.notRunCount}<br>
                     <l:icon class="symbol-remove-circle-outline plugin-ionicons-api icon-lg"/>
                 </br><br />Not Run</p>
@@ -65,7 +65,7 @@
                                     <j:if test="${matlabTestFile.status.toString().contains('NOT_RUN')}">
                                         <l:icon class="symbol-remove-circle-outline plugin-ionicons-api icon-lg" tooltip="Not Run" />
                                     </j:if>
-                                    <div style="display: inline;" tooltip="${matlabTestFile.path}">
+                                    <div style="display: inline;" tooltip="${matlabTestFile.linuxStylePath}">
                                         <j:whitespace trim="false"> ${matlabTestFile.name} </j:whitespace> 
                                     </div>
 
@@ -147,68 +147,101 @@
         </l:main-panel>
     </l:layout>
     <script type="text/javascript">
-        function toggleVisibilty(id) {
-            const matlabTestFile = document.getElementById(id);
-            const matlabTestCasesTable = document.getElementById("matlabTestCases-"+id);
-            const plusSymbol = document.getElementById("plus-"+id);
-            const minusSymbol = document.getElementById("minus-"+id);
-            const duration = document.getElementById("duration-"+id);
-
-            if (matlabTestCasesTable.style.display == "none"){
-                matlabTestFile.colSpan = "2";
-                matlabTestCasesTable.style.display = "inline";
-                plusSymbol.style.display = "none";
-                minusSymbol.style.display = "inline";
-                duration.style.display = "none";
-            } else {
-                matlabTestFile.colSpan = "1";
-                matlabTestCasesTable.style.display = "none";
-                plusSymbol.style.display = "inline";
-                minusSymbol.style.display = "none";
-                duration.style.display = "table-cell";
-            }
-        }
-
-        function stackTrace(id){
-            const matlabTestCaseStack = document.getElementById("stack-"+id);
-            const plusSymbol = document.getElementById("plus-"+id);
-            const minusSymbol = document.getElementById("minus-"+id);
-
-            if (matlabTestCaseStack.style.display == "none"){
-                matlabTestCaseStack.style.display = "block";
-                plusSymbol.style.display = "none";
-                minusSymbol.style.display = "inline";
-            } else {
-                matlabTestCaseStack.style.display = "none";
-                plusSymbol.style.display = "inline";
-                minusSymbol.style.display = "none";
-            }
-        }
-
         <![CDATA[
-        function showTests(status) {
-            let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
-            allMatlabTestCaseRows.forEach(function(row) {
-                if (status === 'TOTAL' || row.classList.contains(status)) {
-                    row.style.display = '';
-                } else {
-                    row.style.display = 'none';
-                }
-            });
+            function toggleVisibilty(id) {
+                const matlabTestFile = document.getElementById(id);
+                const matlabTestCasesTable = document.getElementById("matlabTestCases-"+id);
+                const plusSymbol = document.getElementById("plus-"+id);
+                const minusSymbol = document.getElementById("minus-"+id);
+                const duration = document.getElementById("duration-"+id);
 
-            let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
-            matlabTestFileRows.forEach(function(row) {
-                allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
-                visibleRows = Array.from(allNestedRows).filter(function(nestedRow) {
-                    return nestedRow.style.display === '';
-                });
-                if (visibleRows.length === 0) {
-                    row.style.display = 'none';
+                if (matlabTestCasesTable.style.display == "none"){
+                    matlabTestFile.colSpan = "2";
+                    matlabTestCasesTable.style.display = "inline";
+                    plusSymbol.style.display = "none";
+                    minusSymbol.style.display = "inline";
+                    duration.style.display = "none";
                 } else {
-                    row.style.display = '';
+                    matlabTestFile.colSpan = "1";
+                    matlabTestCasesTable.style.display = "none";
+                    plusSymbol.style.display = "inline";
+                    minusSymbol.style.display = "none";
+                    duration.style.display = "table-cell";
                 }
-            });
-        }
+            }
+
+            function stackTrace(id){
+                const matlabTestCaseStack = document.getElementById("stack-"+id);
+                const plusSymbol = document.getElementById("plus-"+id);
+                const minusSymbol = document.getElementById("minus-"+id);
+
+                if (matlabTestCaseStack.style.display == "none"){
+                    matlabTestCaseStack.style.display = "block";
+                    plusSymbol.style.display = "none";
+                    minusSymbol.style.display = "inline";
+                } else {
+                    matlabTestCaseStack.style.display = "none";
+                    plusSymbol.style.display = "inline";
+                    minusSymbol.style.display = "none";
+                }
+            }
+
+            let lastActiveButton = null;
+
+            function showTests(status){
+                const activeButton = document.getElementById(status);
+                
+                if (activeButton.classList.contains('jenkins-button--active')) {
+                    activeButton.classList.remove('jenkins-button--active');
+                    activeButton.classList.remove('jenkins-!-background-color-primary');
+                    showAllTests();
+                    lastActiveButton = null;
+                    return;
+                }
+
+                // Remove highlight only from last active button
+                if (lastActiveButton) {
+                    lastActiveButton.classList.remove('jenkins-button--active');
+                    lastActiveButton.classList.remove('jenkins-!-background-color-primary');
+                }
+
+                // Add highlight to clicked button
+                activeButton.classList.add('jenkins-button--active');
+                activeButton.classList.add('jenkins-!-background-color-primary');
+                lastActiveButton = activeButton;
+
+                // Filter the tests
+                let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
+                allMatlabTestCaseRows.forEach((row) => {
+                    if (status === 'TOTAL' || row.classList.contains(status)) {
+                        row.style.display = '';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                });
+
+                // Show/hide test file rows based on visible test cases
+                let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
+                matlabTestFileRows.forEach((row) => {
+                    let allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
+                    let visibleRows = Array.from(allNestedRows).filter((nestedRow) => {
+                        return nestedRow.style.display === '';
+                    });
+                    row.style.display = visibleRows.length === 0 ? 'none' : '';
+                });
+            }
+
+            function showAllTests() {
+                let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
+                allMatlabTestCaseRows.forEach((row) => {
+                    row.style.display = '';
+                });
+
+                let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
+                matlabTestFileRows.forEach((row) => {
+                    row.style.display = '';
+                });
+            }
         ]]>
     </script>
 </j:jelly>

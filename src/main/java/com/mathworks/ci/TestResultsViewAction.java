@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -71,7 +72,7 @@ public class TestResultsViewAction implements RunAction2 {
 
     public List<List<MatlabTestFile>> getTestResults() throws ParseException, InterruptedException, IOException {
         List<List<MatlabTestFile>> testResults = new ArrayList<>();
-        FilePath fl = new FilePath(new File(build.getRootDir().getAbsolutePath(), MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json"));
+        FilePath fl = new FilePath(this.build.getRootDir()).child(MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json");
         try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(Paths.get(fl.toURI())), StandardCharsets.UTF_8)) {
             this.totalCount = 0;
             this.passedCount = 0;
@@ -129,15 +130,16 @@ public class TestResultsViewAction implements RunAction2 {
             testSessionResults.add(matlabTestFile);
         }
 
-        // Calculate the relative path
-        Path baseFolderPath = Paths.get(baseFolder.toURI());
-        Path workspacePath = Paths.get(this.workspace.toURI());
+        // Find relative path
+        Path baseFolderPath = Paths.get(baseFolder.getRemote());
+        Path workspacePath = Paths.get(this.workspace.getRemote());
         Path relativePath = workspacePath.relativize(baseFolderPath);
+        Path normalizedPath = relativePath.normalize();
 
-        matlabTestFile.setPath(this.workspace.getName() + File.separator + relativePath.toString());
+        matlabTestFile.setPath(normalizedPath.toString() + File.separator + matlabTestFile.getName());
 
         MatlabTestCase matlabTestCase = new MatlabTestCase(matlabTestCaseName);
-            matlabTestCase.setDuration(new BigDecimal(matlabTestCaseResult.get("Duration").toString()));
+        matlabTestCase.setDuration(new BigDecimal(matlabTestCaseResult.get("Duration").toString()).setScale(2, RoundingMode.HALF_UP));
 
         if ((boolean) matlabTestCaseResult.get("Failed")){
             matlabTestCase.setStatus(TestStatus.FAILED);
@@ -169,10 +171,10 @@ public class TestResultsViewAction implements RunAction2 {
         }
 
         matlabTestFile.addTestCase(matlabTestCase);
-        updateCount(matlabTestCase);
+        updateStats(matlabTestCase);
     }
 
-    private void updateCount(MatlabTestCase matlabTestCase) {
+    private void updateStats(MatlabTestCase matlabTestCase) {
         this.totalCount += 1;
         if (matlabTestCase.getStatus().equals(TestStatus.NOT_RUN)) {
             this.notRunCount += 1;

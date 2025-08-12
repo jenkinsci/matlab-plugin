@@ -73,8 +73,9 @@ public class TestResultVisualizationIT {
 
         // Verify MATLAB Test Result summary
         String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        assertEquals(testResultSummaries.length, 2);
         List.of(testResultSummaries).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
@@ -187,8 +188,9 @@ public class TestResultVisualizationIT {
         Combination c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1"))), "MATLAB_PATH_1");
         MatrixRun run = build.getRun(c);
         String[] firstTestResultSummaries = getTestResultSummaryFromBuildStatusPage(run);
+        assertEquals(firstTestResultSummaries.length, 1);
         List.of(firstTestResultSummaries).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
@@ -215,7 +217,7 @@ public class TestResultVisualizationIT {
                 "            steps\n" +
                 "            {\n" +
                 addTestData() + "\n" +
-                "              runMATLABBuild('test')"+
+                "              runMATLABBuild()"+
                 "            }\n" +
                 "        }\n" +
                 "    }\n" +
@@ -223,9 +225,10 @@ public class TestResultVisualizationIT {
         WorkflowRun build = getPipelineBuild(script);
 
         // Verify MATLAB Test Result summary
-        String[] buildResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
-        List.of(buildResultSummaries).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        assertEquals(testResultSummaries.length,1);
+        List.of(testResultSummaries).forEach(summary -> {
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
@@ -247,7 +250,7 @@ public class TestResultVisualizationIT {
         // Verify MATLAB Test Result summary
         String[] BuildResultSummary= getTestResultSummaryFromBuildStatusPage(build);
         List.of(BuildResultSummary).forEach(summary -> {
-            assertTrue(summary.contains("Tests run: 4"));
+            assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
             assertTrue(summary.contains("Incomplete: 0"));
@@ -255,6 +258,43 @@ public class TestResultVisualizationIT {
         });
 
         jenkins.assertLogNotContains("Running on Jenkins", build);
+    }
+
+    @Test
+    public void verifyMultipleTestResultBuild() throws Exception{
+        String script = "pipeline {\n" +
+                "  agent any\n" +
+                Utilities.getEnvironmentDSL() + "\n" +
+                "    stages{\n" +
+                "        stage('Run MATLAB Command') {\n" +
+                "            steps\n" +
+                "            {\n" +
+                addTestData() + "\n" +
+                "              runMATLABBuild(tasks: 'passingTest')\n"+
+                "              runMATLABCommand(command: 'runtests(\"IncludeSubfolder\", true)') "+
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+        WorkflowRun build = getPipelineBuild(script);
+
+        // Verify MATLAB Test Result summary
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        assertEquals(testResultSummaries.length, 2);
+
+        String testResultSummaryFromBuildStep = testResultSummaries[0];
+        assertTrue(testResultSummaryFromBuildStep.contains("Total tests: 4"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Passed: 4"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Failed: 0"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Incomplete: 0"));
+        assertTrue(testResultSummaryFromBuildStep.contains("Not Run: 0"));
+
+        String testResultSummaryFromCommandStep = testResultSummaries[1];
+        assertTrue(testResultSummaryFromCommandStep.contains("Total tests: 4"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Passed: 1"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Failed: 3"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Incomplete: 0"));
+        assertTrue(testResultSummaryFromCommandStep.contains("Not Run: 0"));
     }
 
 

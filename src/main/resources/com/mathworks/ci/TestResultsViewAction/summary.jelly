@@ -5,7 +5,7 @@
             <p><a href="${it.urlName}">MATLAB Test Results</a></p>
             <p>
                 <b>
-                    Tests run: ${it.totalCount}
+                    Total tests: ${it.totalCount}
                 </b>
             </p>
             <br />
