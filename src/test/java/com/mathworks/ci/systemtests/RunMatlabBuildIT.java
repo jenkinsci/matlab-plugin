@@ -247,7 +247,7 @@ public class RunMatlabBuildIT {
 
     private String getSummaryFromBuildStatus(FreeStyleBuild build) throws IOException, SAXException {
         HtmlPage buildPage = jenkins.createWebClient().getPage(build);
-        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//*[@id='main-panel']/table[1]/tbody/tr[3]/td[2]").get(0);
+        HtmlElement summaryElement = (HtmlElement) buildPage.getByXPath("//div[starts-with(@id, 'buildresults')]").get(0);
         return summaryElement.getTextContent();
 
     }
