@@ -13,7 +13,7 @@ import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
@@ -97,7 +97,7 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
         }
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+        public boolean configure(StaplerRequest2 req, JSONObject formData) throws FormException {
             save();
             return super.configure(req, formData);
         }

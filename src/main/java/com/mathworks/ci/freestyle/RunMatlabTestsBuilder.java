@@ -28,7 +28,7 @@ import hudson.model.Items;
 import hudson.model.TaskListener;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ListBoxModel;
@@ -334,7 +334,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         }
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+        public boolean configure(StaplerRequest2 req, JSONObject formData) throws FormException {
             save();
             return super.configure(req, formData);
         }
