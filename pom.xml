@@ -50,6 +50,7 @@
 		<!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
 		<jenkins.baseline>2.492</jenkins.baseline>
 		<jenkins.version>${jenkins.baseline}.3</jenkins.version>
+		<hpi.compatibleSinceVersion>2.0.0</hpi.compatibleSinceVersion>
 	</properties>
 
 	<dependencyManagement>
