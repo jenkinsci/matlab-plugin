@@ -4,7 +4,7 @@ First, familiarize yourself with [Jenkins Plugin Release Using GitHub Actions](h
 
 To contribute to this plugin, create a new branch. Make your code changes on this new branch.
 
-Verify changes by running tests and building locally with this command.
+Verify changes by running tests and building locally with this command:
 
 ```
 mvn verify
