@@ -1,10 +1,10 @@
 package com.mathworks.ci.freestyle;
 
-/** 
- * Copyright 2019-2024 The MathWorks, Inc.  
- *  
- * MATLAB test run builder used to run all MATLAB & Simulink tests automatically and generate   
- * selected test artifacts. 
+/**
+ * Copyright 2019-2024 The MathWorks, Inc.
+ * <p>
+ * MATLAB test run builder used to run all MATLAB & Simulink tests automatically and generate
+ * selected test artifacts.
  */
 
 import java.io.IOException;
@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.List;
 import java.util.Optional;
 import javax.annotation.Nonnull;
+
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.EnvVars;
 import hudson.Extension;
 import hudson.FilePath;
@@ -28,7 +30,7 @@ import hudson.model.Items;
 import hudson.model.TaskListener;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 import hudson.tasks.BuildStepDescriptor;
 import hudson.tasks.Builder;
 import hudson.util.ListBoxModel;
@@ -207,7 +209,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         return this.selectByTag == null
                 ? null
                 : selectByTag.getTestTag();
-    };
+    }
 
     public SourceFolder getSourceFolder() {
         return this.sourceFolder;
@@ -328,13 +330,14 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         }
 
         // Overridden Method used to show the text under build dropdown
+        @NonNull
         @Override
         public String getDisplayName() {
             return Message.getBuilderDisplayName();
         }
 
         @Override
-        public boolean configure(StaplerRequest req, JSONObject formData) throws FormException {
+        public boolean configure(StaplerRequest2 req, JSONObject formData) throws FormException {
             save();
             return super.configure(req, formData);
         }
@@ -367,15 +370,15 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         /*
          * This is to identify which project type in jenkins this should be
          * applicable.(non-Javadoc)
-         * 
+         *
          * @see hudson.tasks.BuildStepDescriptor#isApplicable(java.lang.Class)
-         * 
+         *
          * if it returns true then this build step will be applicable for all project
          * type.
          */
         @Override
         public boolean isApplicable(
-                @SuppressWarnings("rawtypes") Class<? extends AbstractProject> jobtype) {
+                Class<? extends AbstractProject> jobtype) {
             return true;
         }
     }
@@ -426,7 +429,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
      * https://groups.google.com/forum/#!searchin/jenkinsci-dev/
      * OptionalBlock$20action$20class%
      * 7Csort:date/jenkinsci-dev/AFYHSG3NUEI/UsVJIKoE4B8J
-     * 
+     *
      */
 
     public static class PdfArtifact extends AbstractArtifactImpl {
@@ -560,15 +563,15 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     }
 
     public interface Artifact {
-        public void addFilePathArgTo(Map<String, String> inputArgs);
+        void addFilePathArgTo(Map<String, String> inputArgs);
 
-        public String getFilePath();
+        String getFilePath();
 
-        public boolean getSelected();
+        boolean getSelected();
     }
 
     public static final class SelectByTag extends AbstractDescribableImpl<SelectByTag> {
-        private String testTag;
+        private final String testTag;
         private static final String SELECT_BY_TAG = "SelectByTag";
 
         @DataBoundConstructor

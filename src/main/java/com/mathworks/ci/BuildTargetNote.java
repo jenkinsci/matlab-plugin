@@ -5,6 +5,7 @@ package com.mathworks.ci;
  */
 
 import com.google.common.annotations.VisibleForTesting;
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import hudson.MarkupText;
 import hudson.console.ConsoleAnnotationDescriptor;
@@ -31,6 +32,8 @@ public class BuildTargetNote extends ConsoleNote {
 
     @Extension
     public static final class DescriptorImpl extends ConsoleAnnotationDescriptor {
+        @NonNull
+        @Override
         public String getDisplayName() {
             return "Build targets";
         }

@@ -11,7 +11,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
 import java.io.BufferedReader;
-import java.lang.InterruptedException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.NotDirectoryException;
 import java.util.HashMap;
@@ -31,7 +30,7 @@ import org.xml.sax.SAXException;
 import hudson.FilePath;
 
 public class MatlabReleaseInfo {
-    private FilePath matlabRoot;
+    private final FilePath matlabRoot;
     private static final String VERSION_INFO_FILE = "VersionInfo.xml";
     private static final String CONTENTS_FILE = "toolbox/matlab/general/Contents.m";
     private static final String VERSION_PATTERN = "(\\d+)\\.(\\d+)";
@@ -41,7 +40,7 @@ public class MatlabReleaseInfo {
     private static final String DESCRIPTION_TAG = "description";
     private static final String DATE_TAG = "date";
 
-    private Map<String, String> versionInfoCache = new HashMap<String, String>();
+    private final Map<String, String> versionInfoCache = new HashMap<>();
 
     public MatlabReleaseInfo(FilePath matlabRoot) {
         this.matlabRoot = matlabRoot;
@@ -69,11 +68,7 @@ public class MatlabReleaseInfo {
     public boolean verLessThan(double version) throws MatlabVersionNotFoundException {
         double matlabVersion = Double
                 .parseDouble(getMatlabMajorVersionNumber() + "." + getMatlabMinorVersionNumber());
-        if (Double.compare(matlabVersion, version) < 0) {
-            return true;
-        } else {
-            return false;
-        }
+        return Double.compare(matlabVersion, version) < 0;
     }
 
     private Map<String, String> getVersionInfoFromFile() throws MatlabVersionNotFoundException {
@@ -82,7 +77,7 @@ public class MatlabReleaseInfo {
                 FilePath versionFile = new FilePath(this.matlabRoot, VERSION_INFO_FILE);
                 if (versionFile.exists()) {
                     DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-                    String FEATURE = null;
+                    String FEATURE;
                     try {
                         FEATURE = "http://apache.org/xml/features/disallow-doctype-decl";
                         dbFactory.setFeature(FEATURE, true);

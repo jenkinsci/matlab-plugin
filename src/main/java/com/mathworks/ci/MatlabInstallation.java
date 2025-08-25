@@ -2,14 +2,14 @@ package com.mathworks.ci;
 
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- *
+ * <p>
  * Describable class for adding MATLAB installations in Jenkins Global Tool configuration.
  */
 
+import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.CopyOnWrite;
 import hudson.EnvVars;
 import hudson.Extension;
-import hudson.FilePath;
 import hudson.Util;
 import hudson.model.EnvironmentSpecific;
 import hudson.model.Node;
@@ -18,8 +18,9 @@ import hudson.slaves.NodeSpecific;
 import hudson.tools.ToolDescriptor;
 import hudson.tools.ToolInstallation;
 import hudson.tools.ToolProperty;
-import java.io.File;
+
 import java.io.IOException;
+import java.io.Serial;
 import java.util.Arrays;
 import java.util.List;
 import javax.annotation.CheckForNull;
@@ -29,10 +30,11 @@ import jenkins.model.Jenkins;
 import net.sf.json.JSONObject;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
-import org.kohsuke.stapler.StaplerRequest;
+import org.kohsuke.stapler.StaplerRequest2;
 
 public class MatlabInstallation extends ToolInstallation
         implements EnvironmentSpecific<MatlabInstallation>, NodeSpecific<MatlabInstallation> {
+    @Serial
     private static final long serialVersionUID = 1L;
 
     @DataBoundConstructor
@@ -94,6 +96,7 @@ public class MatlabInstallation extends ToolInstallation
             load();
         }
 
+        @NonNull
         @Override
         public String getDisplayName() {
             return "MATLAB";
@@ -105,7 +108,7 @@ public class MatlabInstallation extends ToolInstallation
         }
 
         @Override
-        public MatlabInstallation newInstance(StaplerRequest req, JSONObject formData) {
+        public MatlabInstallation newInstance(StaplerRequest2 req, @NonNull JSONObject formData) {
             return (MatlabInstallation) req.bindJSON(clazz, formData);
         }
 

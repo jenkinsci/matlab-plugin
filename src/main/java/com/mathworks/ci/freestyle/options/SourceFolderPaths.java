@@ -2,7 +2,7 @@ package com.mathworks.ci.freestyle.options;
 
 /**
  * Copyright 2020-2024 The MathWorks, Inc.
- *
+ * <p>
  * Describable class for Repeatable Source Folder text boxes in Source Folder option
  * in RunMATLABTest Build step.
  */
@@ -14,7 +14,7 @@ import org.kohsuke.stapler.DataBoundConstructor;
 
 public class SourceFolderPaths extends AbstractDescribableImpl<SourceFolderPaths> {
 
-    private String srcFolderPath;
+    private final String srcFolderPath;
 
     @DataBoundConstructor
     public SourceFolderPaths(String srcFolderPath) {
