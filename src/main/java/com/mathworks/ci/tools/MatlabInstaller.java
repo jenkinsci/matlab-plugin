@@ -36,6 +36,7 @@ import org.apache.commons.io.IOUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.verb.POST;
 
 public class MatlabInstaller extends ToolInstaller {
 
@@ -292,6 +293,7 @@ public class MatlabInstaller extends ToolInstaller {
             return toolType == MatlabInstallation.class;
         }
 
+	@POST
         public FormValidation doCheckRelease(@QueryParameter String value) {
             Jenkins.get().checkPermission(Jenkins.ADMINISTER);
             if (value.isEmpty()) {
