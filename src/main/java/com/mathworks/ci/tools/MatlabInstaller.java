@@ -293,7 +293,7 @@ public class MatlabInstaller extends ToolInstaller {
             return toolType == MatlabInstallation.class;
         }
 
-	@POST
+        @POST
         public FormValidation doCheckRelease(@QueryParameter String value) {
             Jenkins.get().checkPermission(Jenkins.ADMINISTER);
             if (value.isEmpty()) {
