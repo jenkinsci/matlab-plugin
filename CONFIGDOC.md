@@ -502,11 +502,11 @@ After your build runs, the Jenkins build summary page displays the number of tes
 
 <img width="1920" height="528" alt="Table of MATLAB test results including one test file. The row in the table displays an Incomplete status, filename, expander, and duration." src="https://github.com/user-attachments/assets/6eca6b5d-3f20-4ffd-a6cd-ae3db1a2a843" />
 
-You can interact with the table of test results. To view the results of tests within each test file, click the expander to the right of the filename. The test results appear in a table under the filename. The row corresponding to each test includes the test status, test procedure name, test diagnostics, and duration. 
+You can interact with the table of test results. To view the results of tests within each test file, click the expander to the right of the filename. The test results appear in a table under the filename. The row corresponding to each test includes the test status, test procedure name, test diagnostics, and the time it took to run. 
 
 <img width="1900" height="907" alt="Table of MATLAB test results including passed tests and an incomplete test from a single test file. The tests within the test file appear after clicking the expander to the right of the filename. The row corresponding to each test includes the test status, test procedure name, diagnostics, and duration." src="https://github.com/user-attachments/assets/73958d4f-6793-4a20-b3e8-38803793157f" />
 
-You can use the status filters above the table on the **MATLAB Test Results** page to customize your view. For example, to focus on any incomplete tests, select the Incomplete status filter.
+You can use the status buttons above the table on the **MATLAB Test Results** page to filter the test results and customize your view. For example, to view only incomplete tests, click the **Incomplete** status button.
 
 ## Register MATLAB as Jenkins Tool
 When you run MATLAB code and Simulink models as part of your automated pipeline of tasks, Jenkins invokes MATLAB as an external program. When you configure your project, you can explicitly specify the MATLAB version that Jenkins invokes by providing the path to the preferred MATLAB root folder. For example, you can use an `environment` block in your `Jenkinsfile` to specify a MATLAB root folder for your pipeline project.
@@ -684,5 +684,6 @@ pipeline {
 ## See Also
 * [Run MATLAB Tests on Jenkins Server](examples/Run-MATLAB-Tests.md)<br/>
 * [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
+
 
 
