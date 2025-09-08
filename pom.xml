@@ -257,6 +257,12 @@
 							<goal>integration-test</goal>
 						</goals>
 						<configuration>
+							<properties>
+								<configurationParameters>
+									junit.jupiter.extensions.autodetection.enabled=true
+								</configurationParameters>
+							</properties>
+
 							<includes>
 								<include>**/*IT.java</include>
 							</includes>

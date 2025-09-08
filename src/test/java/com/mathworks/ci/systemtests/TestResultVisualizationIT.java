@@ -18,6 +18,7 @@ import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
 import org.jenkinsci.plugins.workflow.job.WorkflowRun;
 import org.junit.*;
+import org.junit.jupiter.api.Tag;
 import org.jvnet.hudson.test.ExtractResourceSCM;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.xml.sax.SAXException;
@@ -297,7 +298,91 @@ public class TestResultVisualizationIT {
         assertTrue(testResultSummaryFromCommandStep.contains("Not Run: 0"));
     }
 
+    @Tag("NoMLTestLicense")
+    @Test
+    public void verifyTestResultViewIsNotGeneratedWithoutMLTestlicenseInFreestyle() throws Exception {
+        FreeStyleProject project = jenkins.createFreeStyleProject();
+        project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
 
+        UseMatlabVersionBuildWrapper buildWrapper = new UseMatlabVersionBuildWrapper();
+        buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
+        project.getBuildWrappersList().add(buildWrapper);
+
+        // Run tests through Run Command step
+        RunMatlabCommandBuilder scriptBuilder = new RunMatlabCommandBuilder();
+        scriptBuilder.setMatlabCommand("runtests('IncludeSubfolders', true)");
+        project.getBuildersList().add(scriptBuilder);
+
+        // Run tests through Run Build step
+        RunMatlabBuildBuilder buildtoolBuilder = new RunMatlabBuildBuilder();
+        buildtoolBuilder.setTasks("test");
+        project.getBuildersList().add(buildtoolBuilder);
+
+        FreeStyleBuild build = project.scheduleBuild2(0).get();
+
+        // Verify MATLAB Test Result summary
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        assertEquals(testResultSummaries.length, 0);
+    }
+
+    @Tag("NoMLTestLicense")
+    @Test
+    public void verifyTestResultViewIsNotGeneratedWithoutMLTestlicenseInMatrix() throws Exception {
+        String matlabRoot = System.getenv("MATLAB_ROOT");
+        String matlabRoot22b = System.getenv("MATLAB_ROOT_22b");
+        Assume.assumeTrue("Not running tests as MATLAB_ROOT_22b environment variable is not defined", matlabRoot22b != null && !matlabRoot22b.isEmpty());
+
+        Utilities.setMatlabInstallation("MATLAB_PATH_1", matlabRoot, jenkins);
+        Utilities.setMatlabInstallation("MATLAB_PATH_22b", matlabRoot22b, jenkins);
+
+        MatrixProject matrixProject = jenkins.createProject(MatrixProject.class);
+        MatlabInstallationAxis MATLABAxis = new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1", "MATLAB_PATH_22b"));
+        matrixProject.setAxes(new AxisList(MATLABAxis));
+        matrixProject.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+
+        // Run tests through Run Build step
+        RunMatlabBuildBuilder buildtoolBuilder = new RunMatlabBuildBuilder();
+        buildtoolBuilder.setTasks("test");
+        matrixProject.getBuildersList().add(buildtoolBuilder);
+
+        MatrixBuild build = matrixProject.scheduleBuild2(0).get();
+
+        Combination c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1"))), "MATLAB_PATH_1");
+        MatrixRun run = build.getRun(c);
+        String[] firstTestResultSummaries = getTestResultSummaryFromBuildStatusPage(run);
+        assertEquals(firstTestResultSummaries.length, 0);
+
+        c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_22b"))), "MATLAB_PATH_22b");
+        run = build.getRun(c);
+        String[] secondTestResultSummary = getTestResultSummaryFromBuildStatusPage(run);
+        assertEquals(secondTestResultSummary.length,0); // As for R2022b the view is not generated
+        jenkins.assertLogContains(matlabRoot22b,run);
+
+        jenkins.assertBuildStatus(Result.FAILURE, run); // As the test task fails
+    }
+
+    @Tag("NoMLTestLicense")
+    @Test
+    public void verifyTestResultViewIsNotGeneratedWithoutMLTestlicenseInPipeline() throws Exception {
+        String script = "pipeline {\n" +
+                "  agent any\n" +
+                Utilities.getEnvironmentDSL() + "\n" +
+                "    stages{\n" +
+                "        stage('Run MATLAB Command') {\n" +
+                "            steps\n" +
+                "            {\n" +
+                addTestData() + "\n" +
+                "              runMATLABBuild()"+
+                "            }\n" +
+                "        }\n" +
+                "    }\n" +
+                "}";
+        WorkflowRun build = getPipelineBuild(script);
+
+        // Verify MATLAB Test Result summary
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        assertEquals(testResultSummaries.length,0);
+    }
     private String[] getTestResultSummaryFromBuildStatusPage(Run<?, ?> build) throws IOException, SAXException {
         HtmlPage buildPage = jenkinsWebClient.getPage(build);
         List<HtmlElement> summaryElement = buildPage.getByXPath("//*[starts-with(@id, 'matlabTestResults')]");
