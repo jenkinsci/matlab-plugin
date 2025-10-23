@@ -6,7 +6,7 @@ arguments
     pluginProviderData (1,1) struct = struct();
 end
 
-if isMATLABReleaseOlderThan("R2025b")
+if isMATLABReleaseOlderThan("R2026a")
     reportPlugin = ciplugins.jenkins.BuildReportPlugin();
 else
     reportPlugin = ciplugins.jenkins.ParallelizableBuildReportPlugin();
