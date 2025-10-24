@@ -10,8 +10,10 @@ To configure the plugin, see [Plugin Configuration Guide](/CONFIGDOC.md).
 ## Examples
 To learn how to use the plugin in testing workflows, see [Examples](/examples/).
 
-## Contact Us
-If you have any questions or suggestions, please contact MathWorks&reg; at [continuous-integration@mathworks.com](mailto:continuous-integration@mathworks.com).
+## Feedback and Support
+If you have an enhancement request or other feedback about this plugin, create an issue on the [Issues](https://github.com/jenkinsci/matlab-plugin/issues) page.
+
+For support, contact [MathWorks Technical Support](https://www.mathworks.com/support/contact_us.html).
 
 ## License
 MIT © 2019 The MathWorks, Inc.

@@ -1,6 +1,7 @@
 # Jenkins development server folders
 target
 work
+*log
 
 # Binaries and downloaded resources
 src/main/resources/matlab-script-generator.zip
@@ -8,5 +9,6 @@ src/main/resources/**/run-matlab-command*
 src/main/resources/license.txt
 
 .idea/
+matlab.iml
 
 **/.DS_Store
