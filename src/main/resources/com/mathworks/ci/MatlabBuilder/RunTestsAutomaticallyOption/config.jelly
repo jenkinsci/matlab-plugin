@@ -23,6 +23,10 @@
 	 <f:entry field="taCoberturaChkBx">
     	<f:checkbox title="Cobertura code coverage" name="taCoberturaChkBx" checked="${instance.taCoberturaChkBx}"/>
      </f:entry>
+
+	 <f:entry field="taHTMLChkBx">
+    	<f:checkbox title="HTML code coverage" name="taHTMLChkBx" checked="${instance.taHTMLChkBx}"/>
+     </f:entry>
      	
   	  <f:entry field="taModelCoverageChkBx">
     	<f:checkbox title="Cobertura model coverage" name="taModelCoverageChkBx" checked="${instance.taModelCoverageChkBx}"/>

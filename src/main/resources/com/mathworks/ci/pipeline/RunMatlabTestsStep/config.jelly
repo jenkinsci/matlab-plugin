@@ -17,6 +17,10 @@
 	  <f:entry field="codeCoverageCobertura" title="codeCoverageCobertura: ">
 	        <f:textbox/>
 	  </f:entry>
+
+	  <f:entry field="codeCoverageHTML" title="codeCoverageHTML: ">
+	        <f:textbox/>
+	  </f:entry>
 	  
 	  <f:entry field="testResultsSimulinkTest" title="testResultsSimulinkTest: ">
 	        <f:textbox/>

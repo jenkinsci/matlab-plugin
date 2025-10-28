@@ -8,6 +8,7 @@ p.addParameter('TAPResults', false, @islogical);
 p.addParameter('JUnitResults', false, @islogical);
 p.addParameter('SimulinkTestResults', false, @islogical);
 p.addParameter('CoberturaCodeCoverage', false, @islogical);
+p.addParameter('HTMLCodeCoverage', false, @islogical);
 p.addParameter('CoberturaModelCoverage', false, @islogical);
 
 p.parse(varargin{:});
@@ -17,6 +18,7 @@ produceTAP               = p.Results.TAPResults;
 produceJUnit             = p.Results.JUnitResults;
 exportSTMResults         = p.Results.SimulinkTestResults;
 produceCobertura         = p.Results.CoberturaCodeCoverage;
+produceHTML              = p.Results.HTMLCodeCoverage;
 produceModelCoverage     = p.Results.CoberturaModelCoverage;
 
 BASE_VERSION_MATLABUNIT_SUPPORT = '8.1';
@@ -82,6 +84,23 @@ if produceCobertura
         workSpace = fullfile(pwd);
         runner.addPlugin(CodeCoveragePlugin.forFolder(workSpace,'IncludingSubfolders',true,...
         'Producing', CoberturaFormat(coverageFile)));
+    end
+end
+
+% Produce HTML report (HTML report generation is not supported
+% below R17a) 
+if produceHTML 
+    BASE_VERSION_HTML_SUPPORT = '9.3';
+    
+    if verLessThan('matlab',BASE_VERSION_HTML_SUPPORT)
+         warning('MATLAB:testArtifact:htmlReportNotSupported', 'Producing HTML code coverage results is not supported in this release.');
+    else 
+        import('matlab.unittest.plugins.CodeCoveragePlugin');
+        mkdirIfNeeded(resultsDir)
+        coverageFile = fullfile(resultsDir, 'htmlHTML');
+        workSpace = fullfile(pwd);
+        runner.addPlugin(CodeCoveragePlugin.forFolder(workSpace,'IncludingSubfolders',true,...
+        'Producing', HTMLFormat(coverageFile)));
     end
 end
 
@@ -158,6 +177,9 @@ end
 
 function plugin = CoberturaFormat(varargin)
 plugin = matlab.unittest.plugins.codecoverage.CoberturaFormat(varargin{:});
+
+function plugin = HTMLFormat(varargin)
+plugin = matlab.unittest.plugins.codecoverage.HTMLFormat(varargin{:});
 
 function plugin = TestManagerResultsPlugin(varargin)
 plugin = sltest.plugins.TestManagerResultsPlugin(varargin{:});

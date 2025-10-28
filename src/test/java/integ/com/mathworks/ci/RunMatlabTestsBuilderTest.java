@@ -25,6 +25,7 @@ import org.htmlunit.html.HtmlCheckBoxInput;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlSelect;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.CoberturaArtifact;
+import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.HTMLArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.JunitArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.ModelCovArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.PdfArtifact;
@@ -255,6 +256,7 @@ public class RunMatlabTestsBuilderTest {
         HtmlCheckBoxInput junitArtifact = page.getElementByName("junitArtifact");
         HtmlCheckBoxInput stmResultsArtifact = page.getElementByName("stmResultsArtifact");
         HtmlCheckBoxInput coberturaArtifact = page.getElementByName("coberturaArtifact");
+        HtmlCheckBoxInput htmlArtifact = page.getElementByName("htmlArtifact");
         HtmlCheckBoxInput modelCoverageArtifact = page.getElementByName("modelCoverageArtifact");
 
         tapArtifact.click();
@@ -262,6 +264,7 @@ public class RunMatlabTestsBuilderTest {
         junitArtifact.click();
         stmResultsArtifact.click();
         coberturaArtifact.click();
+        htmlArtifact.click();
         modelCoverageArtifact.click();
         Thread.sleep(2000);
 
@@ -270,6 +273,7 @@ public class RunMatlabTestsBuilderTest {
         WebAssert.assertTextPresent(page, "matlabTestArtifacts/testreport.pdf");
         WebAssert.assertTextPresent(page, "matlabTestArtifacts/simulinktestresults.mldatx");
         WebAssert.assertTextPresent(page, "matlabTestArtifacts/cobertura.xml");
+        WebAssert.assertTextPresent(page, "matlabTestArtifacts/htmlHTML");
         WebAssert.assertTextPresent(page, "matlabTestArtifacts/coberturamodelcoverage.xml");
     }
 
@@ -347,6 +351,8 @@ public class RunMatlabTestsBuilderTest {
         RunMatlabTestsBuilder.JunitArtifact junit = new JunitArtifact("myjunit/report.xml");
 
         RunMatlabTestsBuilder.CoberturaArtifact cobertura = new CoberturaArtifact("mycobertura/report.xml");
+        
+        RunMatlabTestsBuilder.HTMLArtifact html = new HTMLArtifact("myhtml/reportHTML");
 
         RunMatlabTestsBuilder.ModelCovArtifact modelCov = new ModelCovArtifact("mymodel/report.xml");
 
@@ -356,6 +362,7 @@ public class RunMatlabTestsBuilderTest {
         testBuilder.setPdfReportArtifact(pdf);
         testBuilder.setJunitArtifact(junit);
         testBuilder.setCoberturaArtifact(cobertura);
+        testBuilder.setHTMLArtifact(html);
         testBuilder.setModelCoverageArtifact(modelCov);
         testBuilder.setStmResultsArtifact(stmResults);
 
@@ -367,6 +374,7 @@ public class RunMatlabTestsBuilderTest {
         jenkins.assertLogContains("\'JUnitTestResults\',\'myjunit/report.xml\'", build);
         jenkins.assertLogContains("\'SimulinkTestResults\',\'mystm/results.mldatx\'", build);
         jenkins.assertLogContains("\'CoberturaCodeCoverage\',\'mycobertura/report.xml\'", build);
+        jenkins.assertLogContains("\'HTMLCodeCoverage\',\'myhtml/reportHTML\'", build);
         jenkins.assertLogContains("\'CoberturaModelCoverage\',\'mymodel/report.xml\'", build);
 
     }

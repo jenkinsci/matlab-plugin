@@ -32,6 +32,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     private String testResultsTAP;
     private String testResultsJUnit;
     private String codeCoverageCobertura;
+    private String codeCoverageHTML;
     private String testResultsSimulinkTest;
     private String modelCoverageCobertura;
     private String selectByTag;
@@ -83,6 +84,15 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     @DataBoundSetter
     public void setCodeCoverageCobertura(String codeCoverageCobertura) {
         this.codeCoverageCobertura = codeCoverageCobertura;
+    }
+
+    public String getCodeCoverageHTML() {
+        return codeCoverageHTML;
+    }
+
+    @DataBoundSetter
+    public void setCodeCoverageHTML(String codeCoverageHTML) {
+        this.codeCoverageHTML = codeCoverageHTML;
     }
 
     public String getTestResultsSimulinkTest() {

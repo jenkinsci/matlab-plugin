@@ -54,6 +54,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals(null, params.getTestResultsTAP());
         assertEquals(null, params.getTestResultsJUnit());
         assertEquals(null, params.getCodeCoverageCobertura());
+        assertEquals(null, params.getCodeCoverageHTML());
         assertEquals(null, params.getTestResultsSimulinkTest());
         assertEquals(null, params.getModelCoverageCobertura());
         assertEquals(null, params.getSelectByTag());
@@ -76,6 +77,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         step.setTestResultsTAP("res.tap");
         step.setTestResultsJUnit("res.xml");
         step.setCodeCoverageCobertura("cov.xml");
+        step.setCodeCoverageHTML("covHTML");
         step.setTestResultsSimulinkTest("res.sltest");
         step.setModelCoverageCobertura("cov.model");
         step.setSelectByTag("MyTag");
@@ -104,6 +106,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals("res.tap", params.getTestResultsTAP());
         assertEquals("res.xml", params.getTestResultsJUnit());
         assertEquals("cov.xml", params.getCodeCoverageCobertura());
+        assertEquals("covHTML", params.getCodeCoverageHTML());
         assertEquals("res.sltest", params.getTestResultsSimulinkTest());
         assertEquals("cov.model", params.getModelCoverageCobertura());
         assertEquals("MyTag", params.getSelectByTag());

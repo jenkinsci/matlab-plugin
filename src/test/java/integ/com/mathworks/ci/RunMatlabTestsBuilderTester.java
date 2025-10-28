@@ -32,6 +32,7 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
     private Artifact tapArtifact = new NullArtifact();;
     private Artifact junitArtifact = new NullArtifact();;
     private Artifact coberturaArtifact = new NullArtifact();;
+    private Artifact htmlArtifact = new NullArtifact();;
     private Artifact stmResultsArtifact = new NullArtifact();;
     private Artifact modelCoverageArtifact = new NullArtifact();
     private Artifact pdfReportArtifact = new NullArtifact();;
@@ -72,6 +73,11 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
     }
 
     @DataBoundSetter
+    public void setHTMLChkBx(HTMLArtifact htmlArtifact) {
+        this.htmlArtifact = htmlArtifact;
+    }
+
+    @DataBoundSetter
     public void setStmResultsChkBx(StmResultsArtifact stmResultsArtifact) {
         this.stmResultsArtifact = stmResultsArtifact;
     }
@@ -96,6 +102,10 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
 
     public Artifact getCoberturaChkBx() {
         return coberturaArtifact;
+    }
+
+    public Artifact getHTMLChkBx() {
+        return htmlArtifact;
     }
 
     public Artifact getStmResultsChkBx() {

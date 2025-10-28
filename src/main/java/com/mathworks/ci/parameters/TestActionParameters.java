@@ -19,6 +19,7 @@ public class TestActionParameters extends MatlabActionParameters {
     private String testResultsTAP;
     private String testResultsJUnit;
     private String codeCoverageCobertura;
+    private String codeCoverageHTML;
     private String testResultsSimulinkTest;
     private String modelCoverageCobertura;
     private String selectByTag;
@@ -31,7 +32,7 @@ public class TestActionParameters extends MatlabActionParameters {
 
     public TestActionParameters(StepContext context, String startupOpts,
             String testResultsPDF, String testResultsTAP, String testResultsJUnit,
-            String codeCoverageCobertura, String testResultsSimulinkTest, String modelCoverageCobertura,
+            String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura,
             String selectByTag, String loggingLevel, String outputDetail,
             boolean useParallel, boolean strict, List<String> sourceFolder,
             List<String> selectByFolder)
@@ -41,6 +42,7 @@ public class TestActionParameters extends MatlabActionParameters {
         this.testResultsTAP = testResultsTAP;
         this.testResultsJUnit = testResultsJUnit;
         this.codeCoverageCobertura = codeCoverageCobertura;
+        this.codeCoverageHTML = codeCoverageHTML;
         this.testResultsSimulinkTest = testResultsSimulinkTest;
         this.modelCoverageCobertura = modelCoverageCobertura;
         this.selectByTag = selectByTag;
@@ -55,7 +57,7 @@ public class TestActionParameters extends MatlabActionParameters {
     public TestActionParameters(Run<?, ?> build, FilePath workspace, EnvVars env, Launcher launcher,
             TaskListener listener, String startupOpts,
             String testResultsPDF, String testResultsTAP, String testResultsJUnit,
-            String codeCoverageCobertura, String testResultsSimulinkTest, String modelCoverageCobertura,
+            String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura,
             String selectByTag, String loggingLevel, String outputDetail,
             boolean useParallel, boolean strict, List<String> sourceFolder,
             List<String> selectByFolder) {
@@ -64,6 +66,7 @@ public class TestActionParameters extends MatlabActionParameters {
         this.testResultsTAP = testResultsTAP;
         this.testResultsJUnit = testResultsJUnit;
         this.codeCoverageCobertura = codeCoverageCobertura;
+        this.codeCoverageHTML = codeCoverageHTML;
         this.testResultsSimulinkTest = testResultsSimulinkTest;
         this.modelCoverageCobertura = modelCoverageCobertura;
         this.selectByTag = selectByTag;
@@ -89,6 +92,10 @@ public class TestActionParameters extends MatlabActionParameters {
 
     public String getCodeCoverageCobertura() {
         return codeCoverageCobertura;
+    }
+
+    public String getCodeCoverageHTML() {
+        return codeCoverageHTML;
     }
 
     public String getTestResultsSimulinkTest() {

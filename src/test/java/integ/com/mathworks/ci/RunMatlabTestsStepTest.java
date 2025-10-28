@@ -123,6 +123,7 @@ public class RunMatlabTestsStepTest {
         j.assertLogNotContains("TAPTestResults", build);
         j.assertLogNotContains("JUnitTestResults", build);
         j.assertLogNotContains("CoberturaCodeCoverage", build);
+        j.assertLogNotContains("HTMLCodeCoverage", build);
         j.assertLogNotContains("SimulinkTestResults", build);
         j.assertLogNotContains("CoberturaModelCoverage", build);
     }
@@ -142,6 +143,7 @@ public class RunMatlabTestsStepTest {
         j.assertLogNotContains("TAPResultsPath", build);
         j.assertLogNotContains("JUnitResultsPath", build);
         j.assertLogNotContains("CoberturaCodeCoveragePath", build);
+        j.assertLogNotContains("HTMLCodeCoveragePath", build);
         j.assertLogNotContains("SimulinkTestResultsPath", build);
         j.assertLogNotContains("CoberturaModelCoveragePath", build);
     }

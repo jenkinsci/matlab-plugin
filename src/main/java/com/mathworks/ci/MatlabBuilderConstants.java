@@ -9,6 +9,7 @@ public class MatlabBuilderConstants {
     public static final double BASE_MATLAB_VERSION_NO_APP_ICON_SUPPORT = 8.6;
     public static final double BASE_MATLAB_VERSION_BATCH_SUPPORT = 9.5;
     public static final double BASE_MATLAB_VERSION_COBERTURA_SUPPORT = 9.3;
+    public static final double BASE_MATLAB_VERSION_HTML_SUPPORT = 9.3;
     public static final double BASE_MATLAB_VERSION_MODELCOVERAGE_SUPPORT = 9.5;
     public static final double BASE_MATLAB_VERSION_EXPORTSTMRESULTS_SUPPORT = 9.6;
 
@@ -24,6 +25,7 @@ public class MatlabBuilderConstants {
     public static final String JUNIT_RESULTS = "'JUnitResults'";
     public static final String STM_RESULTS = "'SimulinkTestResults'";
     public static final String COBERTURA_CODE_COVERAGE = "'CoberturaCodeCoverage'";
+    public static final String HTML_CODE_COVERAGE = "'HTMLCodeCoverage'";
     public static final String COBERTURA_MODEL_COVERAGE = "'CoberturaModelCoverage'";
 
     // Matlab Script generator package

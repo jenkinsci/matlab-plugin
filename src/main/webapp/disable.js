@@ -20,6 +20,9 @@ disableAllElements(taSTMResultsChkBx);
 var taCoberturaChkBx = getElementsByXpath("//input[@name='taCoberturaChkBx']");
 disableAllElements(taCoberturaChkBx);
 
+var taHTMLChkBx = getElementsByXpath("//input[@name='taHTMLChkBx']");
+disableAllElements(taHTMLChkBx);
+
 var taModelCoverageChkBx = getElementsByXpath("//input[@name='taModelCoverageChkBx']");
 disableAllElements(taModelCoverageChkBx);
 

@@ -48,6 +48,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private transient boolean tapChkBx;
     private transient boolean junitChkBx;
     private transient boolean coberturaChkBx;
+    private transient boolean htmlChkBx;
     private transient boolean stmResultsChkBx;
     private transient boolean modelCoverageChkBx;
     private transient boolean pdfReportChkBx;
@@ -55,6 +56,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private Artifact tapArtifact = new NullArtifact();
     private Artifact junitArtifact = new NullArtifact();
     private Artifact coberturaArtifact = new NullArtifact();
+    private Artifact htmlArtifact = new NullArtifact();
     private Artifact stmResultsArtifact = new NullArtifact();
     private Artifact modelCoverageArtifact = new NullArtifact();
     private Artifact pdfReportArtifact = new NullArtifact();
@@ -94,6 +96,11 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     @DataBoundSetter
     public void setCoberturaArtifact(CoberturaArtifact coberturaArtifact) {
         this.coberturaArtifact = coberturaArtifact;
+    }
+
+    @DataBoundSetter
+    public void setHTMLArtifact(HTMLArtifact htmlArtifact) {
+        this.htmlArtifact = htmlArtifact;
     }
 
     @DataBoundSetter
@@ -173,6 +180,14 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
 
     public String getCoberturaReportFilePath() {
         return this.getCoberturaArtifact().getFilePath();
+    }
+
+    public Artifact getHTMLArtifact() {
+        return this.htmlArtifact;
+    }
+
+    public String getHTMLReportFilePath() {
+        return this.getHTMLArtifact().getFilePath();
     }
 
     public Artifact getStmResultsArtifact() {
@@ -282,6 +297,9 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
 
         this.coberturaArtifact = Optional.ofNullable(this.coberturaArtifact).orElseGet(() -> this
                 .getArtifactObject(coberturaChkBx, new CoberturaArtifact("matlabTestArtifacts/cobertura.xml")));
+
+        this.htmlArtifact = Optional.ofNullable(this.htmlArtifact).orElseGet(() -> this
+                .getArtifactObject(htmlChkBx, new HTMLArtifact("matlabTestArtifacts/htmlHTML")));
 
         this.stmResultsArtifact = Optional.ofNullable(this.stmResultsArtifact)
                 .orElseGet(() -> this.getArtifactObject(stmResultsChkBx,
@@ -395,6 +413,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 this.getTapReportFilePath(),
                 this.getJunitReportFilePath(),
                 this.getCoberturaReportFilePath(),
+                this.getHTMLReportFilePath(),
                 this.getStmResultsFilePath(),
                 this.getModelCoverageFilePath(),
                 this.getSelectByTagAsString(),
@@ -486,6 +505,21 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         @Override
         public void addFilePathArgTo(Map<String, String> inputArgs) {
             inputArgs.put(COBERTURA_CODE_COVERAGE, getFilePath());
+        }
+    }
+
+    public static class HTMLArtifact extends AbstractArtifactImpl {
+
+        private static final String HTML_CODE_COVERAGE = "HTMLCodeCoverage";
+
+        @DataBoundConstructor
+        public HTMLArtifact(String htmlReportFilePath) {
+            super(htmlReportFilePath);
+        }
+
+        @Override
+        public void addFilePathArgTo(Map<String, String> inputArgs) {
+            inputArgs.put(HTML_CODE_COVERAGE, getFilePath());
         }
     }
 
