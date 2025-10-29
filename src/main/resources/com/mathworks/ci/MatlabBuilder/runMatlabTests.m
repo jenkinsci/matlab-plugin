@@ -10,16 +10,18 @@ p.addParameter('SimulinkTestResults', false, @islogical);
 p.addParameter('CoberturaCodeCoverage', false, @islogical);
 p.addParameter('HTMLCodeCoverage', false, @islogical);
 p.addParameter('CoberturaModelCoverage', false, @islogical);
+p.addParameter('HTMLModelCoverage', false, @islogical);
 
 p.parse(varargin{:});
 
-producePDFReport         = p.Results.PDFReport;
-produceTAP               = p.Results.TAPResults;
-produceJUnit             = p.Results.JUnitResults;
-exportSTMResults         = p.Results.SimulinkTestResults;
-produceCobertura         = p.Results.CoberturaCodeCoverage;
-produceHTML              = p.Results.HTMLCodeCoverage;
-produceModelCoverage     = p.Results.CoberturaModelCoverage;
+producePDFReport             = p.Results.PDFReport;
+produceTAP                   = p.Results.TAPResults;
+produceJUnit                 = p.Results.JUnitResults;
+exportSTMResults             = p.Results.SimulinkTestResults;
+produceCobertura             = p.Results.CoberturaCodeCoverage;
+produceHTML                  = p.Results.HTMLCodeCoverage;
+produceModelCoverage         = p.Results.CoberturaModelCoverage;
+produceModelCoverageHTML     = p.Results.HTMLModelCoverage;
 
 BASE_VERSION_MATLABUNIT_SUPPORT = '8.1';
 
@@ -115,6 +117,20 @@ if produceModelCoverage
         mkdirIfNeeded(resultsDir);
         coverageFile = fullfile(resultsDir, 'coberturamodelcoverage.xml');
         runner.addPlugin(ModelCoveragePlugin('Producing',CoberturaFormat(coverageFile)));
+    end
+end
+
+% Produce HTML model coverage report (Not supported below R2018b) 
+if produceModelCoverageHTML
+    if ~exist('sltest.plugins.ModelCoveragePlugin', 'class') || ~htmlModelCoverageSupported
+        warning('MATLAB:testArtifact:cannotGenerateModelCoverageReport', ...
+                'Unable to generate HTML model coverage report. To generate the report, use a Simulink Coverage license with MATLAB R2018b or a newer release.');
+    else 
+        import('sltest.plugins.ModelCoveragePlugin');
+        
+        mkdirIfNeeded(resultsDir);
+        coverageFile = fullfile(resultsDir, 'htmlmodelcoverageHTML');
+        runner.addPlugin(ModelCoveragePlugin('Producing',HTMLFormat(coverageFile)));
     end
 end
 

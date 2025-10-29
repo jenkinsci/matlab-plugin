@@ -126,6 +126,7 @@ public class RunMatlabTestsStepTest {
         j.assertLogNotContains("HTMLCodeCoverage", build);
         j.assertLogNotContains("SimulinkTestResults", build);
         j.assertLogNotContains("CoberturaModelCoverage", build);
+        j.assertLogNotContains("HTMLModelCoverage", build);
     }
 
     /*
@@ -146,6 +147,7 @@ public class RunMatlabTestsStepTest {
         j.assertLogNotContains("HTMLCodeCoveragePath", build);
         j.assertLogNotContains("SimulinkTestResultsPath", build);
         j.assertLogNotContains("CoberturaModelCoveragePath", build);
+        j.assertLogNotContains("HTMLModelCoveragePath", build);
     }
 
     @Test

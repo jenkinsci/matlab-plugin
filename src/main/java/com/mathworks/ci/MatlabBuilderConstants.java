@@ -11,6 +11,7 @@ public class MatlabBuilderConstants {
     public static final double BASE_MATLAB_VERSION_COBERTURA_SUPPORT = 9.3;
     public static final double BASE_MATLAB_VERSION_HTML_SUPPORT = 9.3;
     public static final double BASE_MATLAB_VERSION_MODELCOVERAGE_SUPPORT = 9.5;
+    public static final double BASE_MATLAB_VERSION_MODELCOVERAGE_SUPPORT_HTML = 9.5;
     public static final double BASE_MATLAB_VERSION_EXPORTSTMRESULTS_SUPPORT = 9.6;
 
     public static final String MATLAB_RUNNER_TARGET_FILE = "Builder.matlab.runner.target.file.name";
@@ -27,6 +28,7 @@ public class MatlabBuilderConstants {
     public static final String COBERTURA_CODE_COVERAGE = "'CoberturaCodeCoverage'";
     public static final String HTML_CODE_COVERAGE = "'HTMLCodeCoverage'";
     public static final String COBERTURA_MODEL_COVERAGE = "'CoberturaModelCoverage'";
+    public static final String HTML_MODEL_COVERAGE = "'HTMLModelCoverage'";
 
     // Matlab Script generator package
     public static final String MATLAB_SCRIPT_GENERATOR = "matlab-script-generator.zip";

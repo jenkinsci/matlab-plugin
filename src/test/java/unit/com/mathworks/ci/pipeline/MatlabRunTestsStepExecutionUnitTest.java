@@ -57,6 +57,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals(null, params.getCodeCoverageHTML());
         assertEquals(null, params.getTestResultsSimulinkTest());
         assertEquals(null, params.getModelCoverageCobertura());
+        assertEquals(null, params.getModelCoverageHTML());
         assertEquals(null, params.getSelectByTag());
         assertEquals(null, params.getLoggingLevel());
         assertEquals(null, params.getOutputDetail());
@@ -80,6 +81,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         step.setCodeCoverageHTML("covHTML");
         step.setTestResultsSimulinkTest("res.sltest");
         step.setModelCoverageCobertura("cov.model");
+        step.setModelCoverageCobertura("covmodelHTML");
         step.setSelectByTag("MyTag");
         step.setLoggingLevel("Concise");
         step.setOutputDetail("Concise");
@@ -109,6 +111,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals("covHTML", params.getCodeCoverageHTML());
         assertEquals("res.sltest", params.getTestResultsSimulinkTest());
         assertEquals("cov.model", params.getModelCoverageCobertura());
+        assertEquals("covmodelHTML", params.getModelCoverageHTML());
         assertEquals("MyTag", params.getSelectByTag());
         assertEquals("Concise", params.getLoggingLevel());
         assertEquals("Concise", params.getOutputDetail());

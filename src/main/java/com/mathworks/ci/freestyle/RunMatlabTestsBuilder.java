@@ -51,6 +51,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private transient boolean htmlChkBx;
     private transient boolean stmResultsChkBx;
     private transient boolean modelCoverageChkBx;
+    private transient boolean modelCoverageChkBxHTML;
     private transient boolean pdfReportChkBx;
 
     private Artifact tapArtifact = new NullArtifact();
@@ -59,6 +60,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private Artifact htmlArtifact = new NullArtifact();
     private Artifact stmResultsArtifact = new NullArtifact();
     private Artifact modelCoverageArtifact = new NullArtifact();
+    private Artifact modelCoverageArtifactHTML = new NullArtifact();
     private Artifact pdfReportArtifact = new NullArtifact();
 
     private SourceFolder sourceFolder;
@@ -111,6 +113,11 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     @DataBoundSetter
     public void setModelCoverageArtifact(ModelCovArtifact modelCoverageArtifact) {
         this.modelCoverageArtifact = modelCoverageArtifact;
+    }
+
+    @DataBoundSetter
+    public void setModelCoverageArtifactHTML(ModelCovArtifactHTML modelCoverageArtifactHTML) {
+        this.modelCoverageArtifactHTML = modelCoverageArtifactHTML;
     }
 
     @DataBoundSetter
@@ -204,6 +211,14 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
 
     public String getModelCoverageFilePath() {
         return this.getModelCoverageArtifact().getFilePath();
+    }
+
+    public Artifact getModelCoverageArtifactHTML() {
+        return this.modelCoverageArtifactHTML;
+    }
+
+    public String getModelCoverageFilePathHTML() {
+        return this.getModelCoverageArtifactHTML().getFilePath();
     }
 
     public Artifact getPdfReportArtifact() {
@@ -309,6 +324,10 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 .orElseGet(() -> this.getArtifactObject(modelCoverageChkBx,
                         new ModelCovArtifact("matlabTestArtifacts/coberturamodelcoverage.xml")));
 
+        this.modelCoverageArtifactHTML = Optional.ofNullable(this.modelCoverageArtifactHTML)
+                .orElseGet(() -> this.getArtifactObject(modelCoverageChkBxHTML,
+                        new ModelCovArtifactHTML("matlabTestArtifacts/htmlmodelcoverageHTML")));
+
         if (factory == null) {
             factory = new MatlabActionFactory();
         }
@@ -338,11 +357,17 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                     "com.mathworks.ci.RunMatlabTestsBuilder$CoberturaArtifact",
                     RunMatlabTestsBuilder.CoberturaArtifact.class);
             Items.XSTREAM2.addCompatibilityAlias(
+                    "com.mathworks.ci.RunMatlabTestsBuilder$HTMLArtifact",
+                    RunMatlabTestsBuilder.HTMLArtifact.class);
+            Items.XSTREAM2.addCompatibilityAlias(
                     "com.mathworks.ci.RunMatlabTestsBuilder$StmResultsArtifact",
                     RunMatlabTestsBuilder.StmResultsArtifact.class);
             Items.XSTREAM2.addCompatibilityAlias(
                     "com.mathworks.ci.RunMatlabTestsBuilder$ModelCovArtifact",
                     RunMatlabTestsBuilder.ModelCovArtifact.class);
+            Items.XSTREAM2.addCompatibilityAlias(
+                    "com.mathworks.ci.RunMatlabTestsBuilder$ModelCovArtifactHTML",
+                    RunMatlabTestsBuilder.ModelCovArtifactHTML.class);
         }
 
         // Overridden Method used to show the text under build dropdown
@@ -416,6 +441,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 this.getHTMLReportFilePath(),
                 this.getStmResultsFilePath(),
                 this.getModelCoverageFilePath(),
+                this.getModelCoverageFilePathHTML(),
                 this.getSelectByTagAsString(),
                 this.getLoggingLevel(),
                 this.getOutputDetail(),
@@ -550,6 +576,21 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         @Override
         public void addFilePathArgTo(Map<String, String> inputArgs) {
             inputArgs.put(COBERTURA_MODEL_COVERAGE, getFilePath());
+        }
+    }
+
+    public static class ModelCovArtifactHTML extends AbstractArtifactImpl {
+
+        private static final String HTML_MODEL_COVERAGE = "HTMLModelCoverage";
+
+        @DataBoundConstructor
+        public ModelCovArtifactHTML(String modelCoverageFilePathHTML) {
+            super(modelCoverageFilePathHTML);
+        }
+
+        @Override
+        public void addFilePathArgTo(Map<String, String> inputArgs) {
+            inputArgs.put(HTML_MODEL_COVERAGE, getFilePath());
         }
     }
 

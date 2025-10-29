@@ -131,6 +131,7 @@ public class RunMatlabTestsActionTest {
         doReturn("covHTML").when(params).getCodeCoverageHTML();
         doReturn("results.sltest").when(params).getTestResultsSimulinkTest();
         doReturn("cov.model").when(params).getModelCoverageCobertura();
+        doReturn("covmodelHTML").when(params).getModelCoverageHTML();
         doReturn("MyTag").when(params).getSelectByTag();
         doReturn("true").when(params).getUseParallel();
         doReturn("true").when(params).getStrict();
@@ -156,6 +157,7 @@ public class RunMatlabTestsActionTest {
                         + "'HTMLCodeCoverage','covHTML',"
                         + "'SimulinkTestResults','results.sltest',"
                         + "'CoberturaModelCoverage','cov.model',"
+                        + "'HTMLModelCoverage','covmodelHTML',"
                         + "'SelectByTag','MyTag',"
                         + "'UseParallel',true,"
                         + "'Strict',true,"

@@ -29,6 +29,10 @@
 	  <f:entry field="modelCoverageCobertura" title="modelCoverageCobertura: ">
 	        <f:textbox/>
 	  </f:entry>
+
+	  <f:entry field="modelCoverageHTML" title="modelCoverageHTML: ">
+	        <f:textbox/>
+	  </f:entry>
 	  
 	  <f:entry field="selectByFolder" title="selectByFolder: ">
 		<f:textbox/>

@@ -35,6 +35,7 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
     private Artifact htmlArtifact = new NullArtifact();;
     private Artifact stmResultsArtifact = new NullArtifact();;
     private Artifact modelCoverageArtifact = new NullArtifact();
+    private Artifact modelCoverageArtifactHTML = new NullArtifact();
     private Artifact pdfReportArtifact = new NullArtifact();;
     private EnvVars env;
     private int buildResult;
@@ -86,6 +87,11 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
     public void setModelCoverageChkBx(ModelCovArtifact modelCoverageArtifact) {
         this.modelCoverageArtifact = modelCoverageArtifact;
     }
+    
+    @DataBoundSetter
+    public void setModelCoverageChkBxHTML(ModelCovArtifactHTML modelCoverageArtifactHTML) {
+        this.modelCoverageArtifactHTML = modelCoverageArtifactHTML;
+    }
 
     @DataBoundSetter
     public void setPdfReportChkBx(PdfArtifact pdfReportArtifact) {
@@ -114,6 +120,10 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
 
     public Artifact getModelCoverageChkBx() {
         return modelCoverageArtifact;
+    }
+
+    public Artifact getModelCoverageChkBxHTML() {
+        return modelCoverageArtifactHTML;
     }
 
     public Artifact getPdfReportChkBx() {

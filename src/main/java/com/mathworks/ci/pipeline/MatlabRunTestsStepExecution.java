@@ -47,6 +47,7 @@ public class MatlabRunTestsStepExecution extends SynchronousNonBlockingStepExecu
                 step.getCodeCoverageHTML(),
                 step.getTestResultsSimulinkTest(),
                 step.getModelCoverageCobertura(),
+                step.getModelCoverageHTML(),
                 step.getSelectByTag(),
                 step.getLoggingLevel(),
                 step.getOutputDetail(),

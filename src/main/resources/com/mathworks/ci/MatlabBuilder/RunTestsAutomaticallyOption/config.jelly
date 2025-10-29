@@ -31,5 +31,9 @@
   	  <f:entry field="taModelCoverageChkBx">
     	<f:checkbox title="Cobertura model coverage" name="taModelCoverageChkBx" checked="${instance.taModelCoverageChkBx}"/>
   	  </f:entry>  
+
+  	  <f:entry field="taModelCoverageChkBxHTML">
+    	<f:checkbox title="HTML model coverage" name="taModelCoverageChkBxHTML" checked="${instance.taModelCoverageChkBxHTML}"/>
+  	  </f:entry>  
 </f:section>
 </j:jelly>

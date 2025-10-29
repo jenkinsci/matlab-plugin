@@ -26,6 +26,9 @@ disableAllElements(taHTMLChkBx);
 var taModelCoverageChkBx = getElementsByXpath("//input[@name='taModelCoverageChkBx']");
 disableAllElements(taModelCoverageChkBx);
 
+var taModelCoverageChkBxHTML = getElementsByXpath("//input[@name='taModelCoverageChkBxHTML']");
+disableAllElements(taModelCoverageChkBxHTML);
+
 //Function to disable all occurrences of given web element.
 function disableAllElements(nodeName) {
 	var a = [];

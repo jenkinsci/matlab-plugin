@@ -88,6 +88,12 @@
   	  <f:textbox default="matlabTestArtifacts/coberturamodelcoverage.xml"/>
   	  </f:entry>
    </f:optionalBlock>
+
+   <f:optionalBlock name="modelCoverageArtifactHTML" field="modelCoverageArtifactHTML" title="HTML model coverage" checked="${instance.modelCoverageArtifact.selected}">
+  	  <f:entry field="modelCoverageFilePathHTML" title="File path: ">
+  	  <f:textbox default="matlabTestArtifacts/htmlmodelcoverageHTML"/>
+  	  </f:entry>
+   </f:optionalBlock>
 </f:block>
 </f:section>
 
