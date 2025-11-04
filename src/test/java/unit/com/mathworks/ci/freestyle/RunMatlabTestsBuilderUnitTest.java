@@ -70,7 +70,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals(null, actual.getTestResultsTAP());
                 assertEquals(null, actual.getTestResultsJUnit());
                 assertEquals(null, actual.getCodeCoverageCobertura());
-                assertEquals(null, actual.getCodeCoverageHTML());
+                assertEquals(null, actual.getCodeCoverageHtml());
                 assertEquals(null, actual.getTestResultsSimulinkTest());
                 assertEquals(null, actual.getModelCoverageCobertura());
                 assertEquals(null, actual.getModelCoverageHTML());
@@ -105,8 +105,8 @@ public class RunMatlabTestsBuilderUnitTest {
                                 new RunMatlabTestsBuilder.JunitArtifact("results.xml"));
                 builder.setCoberturaArtifact(
                                 new RunMatlabTestsBuilder.CoberturaArtifact("cov.xml"));
-                builder.setHTMLArtifact(
-                                new RunMatlabTestsBuilder.HTMLArtifact("covHTML"));
+                builder.setHtmlArtifact(
+                                new RunMatlabTestsBuilder.HtmlArtifact("covHTML"));
                 builder.setStmResultsArtifact(
                                 new RunMatlabTestsBuilder.StmResultsArtifact("res.sltest"));
                 builder.setModelCoverageArtifact(
@@ -136,7 +136,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals("tap.tap", actual.getTestResultsTAP());
                 assertEquals("results.xml", actual.getTestResultsJUnit());
                 assertEquals("cov.xml", actual.getCodeCoverageCobertura());
-                assertEquals("covHTML", actual.getCodeCoverageHTML());
+                assertEquals("covHTML", actual.getCodeCoverageHtml());
                 assertEquals("res.sltest", actual.getTestResultsSimulinkTest());
                 assertEquals("cov.model", actual.getModelCoverageCobertura());
                 assertEquals("covmodelHTML", actual.getModelCoverageHTML());

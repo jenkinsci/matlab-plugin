@@ -57,7 +57,7 @@ public class RunMatlabTestBuilderPersistenceTest {
             RunMatlabTestsBuilder.JunitArtifact junit = new RunMatlabTestsBuilder.JunitArtifact(jUnitFilePath);
             RunMatlabTestsBuilder.CoberturaArtifact cobertura = new RunMatlabTestsBuilder.CoberturaArtifact(
                     coberturaFilePath);
-            RunMatlabTestsBuilder.HTMLArtifact html = new RunMatlabTestsBuilder.HTMLArtifact(
+            RunMatlabTestsBuilder.HtmlArtifact html = new RunMatlabTestsBuilder.HtmlArtifact(
                     htmlFilePath);
             RunMatlabTestsBuilder.ModelCovArtifact modelCov = new RunMatlabTestsBuilder.ModelCovArtifact(
                     modelCovFilePath);
@@ -70,7 +70,7 @@ public class RunMatlabTestBuilderPersistenceTest {
             testBuilder.setPdfReportArtifact(pdf);
             testBuilder.setJunitArtifact(junit);
             testBuilder.setCoberturaArtifact(cobertura);
-            testBuilder.setHTMLArtifact(html);
+            testBuilder.setHtmlArtifact(html);
             testBuilder.setModelCoverageArtifact(modelCov);
             testBuilder.setModelCoverageArtifactHTML(modelCovHTML);
             testBuilder.setStmResultsArtifact(stmResults);
@@ -92,7 +92,7 @@ public class RunMatlabTestBuilderPersistenceTest {
             assertTrue(savedInstance.getPdfReportArtifact() instanceof RunMatlabTestsBuilder.PdfArtifact);
             assertTrue(savedInstance.getJunitArtifact() instanceof RunMatlabTestsBuilder.JunitArtifact);
             assertTrue(savedInstance.getCoberturaArtifact() instanceof RunMatlabTestsBuilder.CoberturaArtifact);
-            assertTrue(savedInstance.getHTMLArtifact() instanceof RunMatlabTestsBuilder.HTMLArtifact);
+            assertTrue(savedInstance.getHtmlArtifact() instanceof RunMatlabTestsBuilder.HtmlArtifact);
             assertTrue(savedInstance.getModelCoverageArtifact() instanceof RunMatlabTestsBuilder.ModelCovArtifact);
             assertTrue(savedInstance.getModelCoverageArtifactHTML() instanceof RunMatlabTestsBuilder.ModelCovArtifactHTML);
             assertTrue(savedInstance.getStmResultsArtifact() instanceof RunMatlabTestsBuilder.StmResultsArtifact);
@@ -101,7 +101,7 @@ public class RunMatlabTestBuilderPersistenceTest {
             assertEquals(savedInstance.getPdfReportFilePath(), pdfFilePath);
             assertEquals(savedInstance.getJunitReportFilePath(), jUnitFilePath);
             assertEquals(savedInstance.getCoberturaReportFilePath(), coberturaFilePath);
-            assertEquals(savedInstance.getHTMLReportFilePath(), htmlFilePath);
+            assertEquals(savedInstance.getHtmlReportFilePath(), htmlFilePath);
             assertEquals(savedInstance.getModelCoverageFilePath(), modelCovFilePath);
             assertEquals(savedInstance.getModelCoverageFilePathHTML(), modelCovFilePathHTML);
             assertEquals(savedInstance.getStmResultsFilePath(), stmFilePath);

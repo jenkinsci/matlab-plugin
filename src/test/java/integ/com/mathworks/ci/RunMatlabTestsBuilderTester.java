@@ -74,7 +74,7 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
     }
 
     @DataBoundSetter
-    public void setHTMLChkBx(HTMLArtifact htmlArtifact) {
+    public void setHtmlChkBx(HtmlArtifact htmlArtifact) {
         this.htmlArtifact = htmlArtifact;
     }
 
@@ -110,7 +110,7 @@ public class RunMatlabTestsBuilderTester extends RunMatlabTestsBuilder {
         return coberturaArtifact;
     }
 
-    public Artifact getHTMLChkBx() {
+    public Artifact getHtmlChkBx() {
         return htmlArtifact;
     }
 

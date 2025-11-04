@@ -25,7 +25,7 @@ import org.htmlunit.html.HtmlCheckBoxInput;
 import org.htmlunit.html.HtmlPage;
 import org.htmlunit.html.HtmlSelect;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.CoberturaArtifact;
-import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.HTMLArtifact;
+import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.HtmlArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.JunitArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.ModelCovArtifact;
 import com.mathworks.ci.freestyle.RunMatlabTestsBuilder.ModelCovArtifactHTML;
@@ -356,7 +356,7 @@ public class RunMatlabTestsBuilderTest {
 
         RunMatlabTestsBuilder.CoberturaArtifact cobertura = new CoberturaArtifact("mycobertura/report.xml");
         
-        RunMatlabTestsBuilder.HTMLArtifact html = new HTMLArtifact("myhtml/reportHTML");
+        RunMatlabTestsBuilder.HtmlArtifact html = new HtmlArtifact("myhtml/reportHTML");
 
         RunMatlabTestsBuilder.ModelCovArtifact modelCov = new ModelCovArtifact("mymodel/report.xml");
         
@@ -368,7 +368,7 @@ public class RunMatlabTestsBuilderTest {
         testBuilder.setPdfReportArtifact(pdf);
         testBuilder.setJunitArtifact(junit);
         testBuilder.setCoberturaArtifact(cobertura);
-        testBuilder.setHTMLArtifact(html);
+        testBuilder.setHtmlArtifact(html);
         testBuilder.setModelCoverageArtifact(modelCov);
         testBuilder.setModelCoverageArtifactHTML(modelCovHTML);
         testBuilder.setStmResultsArtifact(stmResults);

@@ -144,7 +144,7 @@ public class RunMatlabTestsStepTest {
         j.assertLogNotContains("TAPResultsPath", build);
         j.assertLogNotContains("JUnitResultsPath", build);
         j.assertLogNotContains("CoberturaCodeCoveragePath", build);
-        j.assertLogNotContains("HTMLCodeCoveragePath", build);
+        j.assertLogNotContains("HtmlCodeCoveragePath", build);
         j.assertLogNotContains("SimulinkTestResultsPath", build);
         j.assertLogNotContains("CoberturaModelCoveragePath", build);
         j.assertLogNotContains("HTMLModelCoveragePath", build);
