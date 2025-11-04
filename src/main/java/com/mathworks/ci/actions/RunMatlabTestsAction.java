@@ -85,6 +85,7 @@ public class RunMatlabTestsAction extends MatlabAction {
         // All string-based fields
         final String[] names = {
                 "'PDFTestReport'",
+                "'HTMLTestReport'",
                 "'TAPTestResults'",
                 "'JUnitTestResults'",
                 "'CoberturaCodeCoverage'",
@@ -102,10 +103,11 @@ public class RunMatlabTestsAction extends MatlabAction {
         };
         final String[] values = {
                 this.params.getTestResultsPDF(),
+                this.params.getTestResultsHTML(),
                 this.params.getTestResultsTAP(),
                 this.params.getTestResultsJUnit(),
                 this.params.getCodeCoverageCobertura(),
-                this.params.getCodeCoverageHTML(),
+                this.params.getCodeCoverageHtml(),
                 this.params.getTestResultsSimulinkTest(),
                 this.params.getModelCoverageCobertura(),
                 this.params.getModelCoverageHTML(),
@@ -117,7 +119,8 @@ public class RunMatlabTestsAction extends MatlabAction {
                 sourceFolders,
                 selectFolders
         };
-
+        this.params.getTaskListener().getLogger().println(this.params.getTestResultsHTML());
+        this.params.getTaskListener().getLogger().println(this.params.getModelCoverageHTML());
         for (int i = 0; i < names.length; i++) {
             if (values[i] != null && !values[i].equals("false")) {
                 inputArgsList.add(names[i]);

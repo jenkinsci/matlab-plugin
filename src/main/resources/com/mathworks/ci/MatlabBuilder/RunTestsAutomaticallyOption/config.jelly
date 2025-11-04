@@ -5,6 +5,10 @@
   	 <f:entry field="taPDFReportChkBx">	
     	<f:checkbox title="PDF test report " name="taPDFReportChkBx" checked="${instance.taPDFReportChkBx}"/>	
      </f:entry>
+  	 
+	 <f:entry field="taHTMLReportChkBx">	
+    	<f:checkbox title="HTML test report " name="taHTMLReportChkBx" checked="${instance.taHTMLReportChkBx}"/>	
+     </f:entry>
 
 	 <f:entry field="tatapChkBx">
     	<f:checkbox title="TAP test results" name="tatapChkBx" checked="${instance.tatapChkBx}"/>
@@ -24,8 +28,8 @@
     	<f:checkbox title="Cobertura code coverage" name="taCoberturaChkBx" checked="${instance.taCoberturaChkBx}"/>
      </f:entry>
 
-	 <f:entry field="taHTMLChkBx">
-    	<f:checkbox title="HTML code coverage" name="taHTMLChkBx" checked="${instance.taHTMLChkBx}"/>
+	 <f:entry field="taHtmlChkBx">
+    	<f:checkbox title="Html code coverage" name="taHtmlChkBx" checked="${instance.taHtmlChkBx}"/>
      </f:entry>
      	
   	  <f:entry field="taModelCoverageChkBx">

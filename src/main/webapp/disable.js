@@ -8,6 +8,9 @@ disableAllElements(testMode);
 var taPDFReportChkBx = getElementsByXpath("//input[@name='taPDFReportChkBx']");
 disableAllElements(taPDFReportChkBx);
 
+var taHTMLReportChkBx = getElementsByXpath("//input[@name='taHTMLReportChkBx']");
+disableAllElements(taHTMLReportChkBx);
+
 var tatapChkBx = getElementsByXpath("//input[@name='tatapChkBx']");
 disableAllElements(tatapChkBx);
 

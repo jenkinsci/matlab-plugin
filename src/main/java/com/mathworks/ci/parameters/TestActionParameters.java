@@ -16,10 +16,11 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 
 public class TestActionParameters extends MatlabActionParameters {
     private String testResultsPDF;
+    private String testResultsHTML;
     private String testResultsTAP;
     private String testResultsJUnit;
     private String codeCoverageCobertura;
-    private String codeCoverageHTML;
+    private String codeCoverageHtml;
     private String testResultsSimulinkTest;
     private String modelCoverageCobertura;
     private String modelCoverageHTML;
@@ -32,18 +33,19 @@ public class TestActionParameters extends MatlabActionParameters {
     private List<String> selectByFolder = new ArrayList<>();
 
     public TestActionParameters(StepContext context, String startupOpts,
-            String testResultsPDF, String testResultsTAP, String testResultsJUnit,
-            String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
+            String testResultsPDF, String testResultsHTML, String testResultsTAP, String testResultsJUnit,
+            String codeCoverageCobertura, String codeCoverageHtml, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
             String selectByTag, String loggingLevel, String outputDetail,
             boolean useParallel, boolean strict, List<String> sourceFolder,
             List<String> selectByFolder)
             throws IOException, InterruptedException {
         super(context, startupOpts);
         this.testResultsPDF = testResultsPDF;
+        this.testResultsHTML = testResultsHTML;
         this.testResultsTAP = testResultsTAP;
         this.testResultsJUnit = testResultsJUnit;
         this.codeCoverageCobertura = codeCoverageCobertura;
-        this.codeCoverageHTML = codeCoverageHTML;
+        this.codeCoverageHtml = codeCoverageHtml;
         this.testResultsSimulinkTest = testResultsSimulinkTest;
         this.modelCoverageCobertura = modelCoverageCobertura;
         this.modelCoverageHTML = modelCoverageHTML;
@@ -58,17 +60,18 @@ public class TestActionParameters extends MatlabActionParameters {
 
     public TestActionParameters(Run<?, ?> build, FilePath workspace, EnvVars env, Launcher launcher,
             TaskListener listener, String startupOpts,
-            String testResultsPDF, String testResultsTAP, String testResultsJUnit,
-            String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
+            String testResultsPDF, String testResultsHTML, String testResultsTAP, String testResultsJUnit,
+            String codeCoverageCobertura, String codeCoverageHtml, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
             String selectByTag, String loggingLevel, String outputDetail,
             boolean useParallel, boolean strict, List<String> sourceFolder,
             List<String> selectByFolder) {
         super(build, workspace, env, launcher, listener, startupOpts);
         this.testResultsPDF = testResultsPDF;
+        this.testResultsHTML = testResultsHTML;
         this.testResultsTAP = testResultsTAP;
         this.testResultsJUnit = testResultsJUnit;
         this.codeCoverageCobertura = codeCoverageCobertura;
-        this.codeCoverageHTML = codeCoverageHTML;
+        this.codeCoverageHtml = codeCoverageHtml;
         this.testResultsSimulinkTest = testResultsSimulinkTest;
         this.modelCoverageCobertura = modelCoverageCobertura;
         this.modelCoverageHTML = modelCoverageHTML;
@@ -85,6 +88,10 @@ public class TestActionParameters extends MatlabActionParameters {
         return testResultsPDF;
     }
 
+    public String getTestResultsHTML() {
+        return testResultsHTML;
+    }
+
     public String getTestResultsTAP() {
         return testResultsTAP;
     }
@@ -97,8 +104,8 @@ public class TestActionParameters extends MatlabActionParameters {
         return codeCoverageCobertura;
     }
 
-    public String getCodeCoverageHTML() {
-        return codeCoverageHTML;
+    public String getCodeCoverageHtml() {
+        return codeCoverageHtml;
     }
 
     public String getTestResultsSimulinkTest() {

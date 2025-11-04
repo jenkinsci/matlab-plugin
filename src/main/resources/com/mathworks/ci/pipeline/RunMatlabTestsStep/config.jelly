@@ -4,7 +4,11 @@
     
 	  <f:entry field="testResultsPDF" title="testResultsPDF: ">
 	        <f:textbox/>
-	  </f:entry> 
+	  </f:entry>
+
+	  <f:entry field="testResultsHTML" title="testResultsHTML: ">
+	        <f:textbox/>
+	  </f:entry>
 	  
 	  <f:entry field="testResultsTAP" title="testResultsTAP: ">
 	        <f:textbox/>
@@ -18,7 +22,7 @@
 	        <f:textbox/>
 	  </f:entry>
 
-	  <f:entry field="codeCoverageHTML" title="codeCoverageHTML: ">
+	  <f:entry field="codeCoverageHtml" title="codeCoverageHtml: ">
 	        <f:textbox/>
 	  </f:entry>
 	  

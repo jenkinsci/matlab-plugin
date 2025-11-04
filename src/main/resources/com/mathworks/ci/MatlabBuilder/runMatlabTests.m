@@ -4,6 +4,7 @@ function failed = runMatlabTests(varargin)
 
 p = inputParser;
 p.addParameter('PDFReport', false, @islogical);
+p.addParameter('HTMLReport', false, @islogical);
 p.addParameter('TAPResults', false, @islogical);
 p.addParameter('JUnitResults', false, @islogical);
 p.addParameter('SimulinkTestResults', false, @islogical);
@@ -15,6 +16,7 @@ p.addParameter('HTMLModelCoverage', false, @islogical);
 p.parse(varargin{:});
 
 producePDFReport             = p.Results.PDFReport;
+produceHTMLReport            = p.Results.HTMLReport;
 produceTAP                   = p.Results.TAPResults;
 produceJUnit                 = p.Results.JUnitResults;
 exportSTMResults             = p.Results.SimulinkTestResults;
@@ -165,6 +167,24 @@ if producePDFReport
     end
 end
 
+% Produce HTML test report (Not supported on MacOS platforms and below R2017a)
+if produceHTMLReport
+    if ismac
+        warning('MATLAB:testArtifact:unSupportedPlatform', ...
+            'Producing a HTML test report is not currently supported on MacOS platforms.');
+    elseif ~testReportPluginPresent
+        issueHTMLReportUnsupportedWarning;
+    else
+        mkdirIfNeeded(resultsDir);
+        import('matlab.unittest.plugins.TestReportPlugin');
+        runner.addPlugin(TestReportPlugin.producingHTML(getHTMLFilePath(resultsDir)));
+        
+        if ~stmResultsPluginAddedToRunner && stmResultsPluginPresent
+            runner.addPlugin(TestManagerResultsPlugin);
+        end
+    end
+end
+
 results = runner.run(suite);
 failed = any([results.Failed]);
 
@@ -203,6 +223,9 @@ plugin = sltest.plugins.TestManagerResultsPlugin(varargin{:});
 function filePath = getPDFFilePath(resultsDir)
 filePath = fullfile(resultsDir, 'testreport.pdf');
 
+function filePath = getHTMLFilePath(resultsDir)
+filePath = fullfile(resultsDir, 'testreportHTML');
+
 function filePath = getMLDATXFilePath(resultsDir)
 filePath = fullfile(resultsDir, 'simulinktestresults.mldatx');
 
@@ -227,6 +250,10 @@ tf = ~verLessThan('matlab',BASE_VERSION_EXPORTSTMRESULTS_SUPPORT);
 function issuePDFReportUnsupportedWarning
 warning('MATLAB:testArtifact:pdfReportNotSupported', ...
     'Producing a test report in PDF format is not supported in the current MATLAB release.');
+
+function issueHTMLReportUnsupportedWarning
+warning('MATLAB:testArtifact:htmlReportNotSupported', ...
+    'Producing a test report in HTML format is not supported in the current MATLAB release.');
 
 function issueExportSTMResultsUnsupportedWarning
 warning('MATLAB:testArtifact:cannotExportSimulinkTestManagerResults', ...

@@ -22,6 +22,7 @@ public class MatlabBuilderConstants {
     // Input parameter names (Passed to runMatlabTests.m as name-value pair
     // arguments)
     public static final String PDF_REPORT = "'PDFReport'";
+    public static final String HTML_REPORT = "'HTMLReport'";
     public static final String TAP_RESULTS = "'TAPResults'";
     public static final String JUNIT_RESULTS = "'JUnitResults'";
     public static final String STM_RESULTS = "'SimulinkTestResults'";

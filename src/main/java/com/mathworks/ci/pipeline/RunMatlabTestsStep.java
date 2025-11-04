@@ -29,10 +29,11 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private String testResultsPDF;
+    private String testResultsHTML;
     private String testResultsTAP;
     private String testResultsJUnit;
     private String codeCoverageCobertura;
-    private String codeCoverageHTML;
+    private String codeCoverageHtml;
     private String testResultsSimulinkTest;
     private String modelCoverageCobertura;
     private String modelCoverageHTML;
@@ -69,6 +70,15 @@ public class RunMatlabTestsStep extends Step implements Serializable {
         this.testResultsPDF = testResultsPDF;
     }
 
+    public String getTestResultsHTML() {
+        return testResultsHTML;
+    }
+
+    @DataBoundSetter
+    public void setTestResultsHTML(String testResultsHTML) {
+        this.testResultsHTML = testResultsHTML;
+    }
+
     public String getTestResultsJUnit() {
         return testResultsJUnit;
     }
@@ -87,13 +97,13 @@ public class RunMatlabTestsStep extends Step implements Serializable {
         this.codeCoverageCobertura = codeCoverageCobertura;
     }
 
-    public String getCodeCoverageHTML() {
-        return codeCoverageHTML;
+    public String getCodeCoverageHtml() {
+        return codeCoverageHtml;
     }
 
     @DataBoundSetter
-    public void setCodeCoverageHTML(String codeCoverageHTML) {
-        this.codeCoverageHTML = codeCoverageHTML;
+    public void setCodeCoverageHtml(String codeCoverageHtml) {
+        this.codeCoverageHtml = codeCoverageHtml;
     }
 
     public String getTestResultsSimulinkTest() {
