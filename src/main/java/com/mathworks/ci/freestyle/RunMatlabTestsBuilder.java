@@ -58,7 +58,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private Artifact tapArtifact = new NullArtifact();
     private Artifact junitArtifact = new NullArtifact();
     private Artifact coberturaArtifact = new NullArtifact();
-    private Artifact htmlArtifact = new NullArtifact();
+    private Artifact htmlCodeCoverageArtifact = new NullArtifact();
     private Artifact stmResultsArtifact = new NullArtifact();
     private Artifact modelCoverageArtifact = new NullArtifact();
     private Artifact modelCoverageArtifactHTML = new NullArtifact();
@@ -103,8 +103,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     }
 
     @DataBoundSetter
-    public void setHtmlArtifact(HtmlArtifact htmlArtifact) {
-        this.htmlArtifact = htmlArtifact;
+    public void setHtmlCodeCoverageArtifact(HtmlCodeCoverageArtifact htmlCodeCoverageArtifact) {
+        this.htmlCodeCoverageArtifact = htmlCodeCoverageArtifact;
     }
 
     @DataBoundSetter
@@ -196,12 +196,12 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         return this.getCoberturaArtifact().getFilePath();
     }
 
-    public Artifact getHtmlArtifact() {
-        return this.htmlArtifact;
+    public Artifact getHtmlCodeCoverageArtifact() {
+        return this.htmlCodeCoverageArtifact;
     }
 
-    public String getHtmlReportFilePath() {
-        return this.getHtmlArtifact().getFilePath();
+    public String getHtmlCodeCoverageFilePath() {
+        return this.getHtmlCodeCoverageArtifact().getFilePath();
     }
 
     public Artifact getStmResultsArtifact() {
@@ -331,8 +331,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         this.coberturaArtifact = Optional.ofNullable(this.coberturaArtifact).orElseGet(() -> this
                 .getArtifactObject(coberturaChkBx, new CoberturaArtifact("matlabTestArtifacts/cobertura.xml")));
 
-        this.htmlArtifact = Optional.ofNullable(this.htmlArtifact).orElseGet(() -> this
-                .getArtifactObject(htmlChkBx, new HtmlArtifact("matlabTestArtifacts/htmlHTML")));
+        this.htmlCodeCoverageArtifact = Optional.ofNullable(this.htmlCodeCoverageArtifact).orElseGet(() -> this
+                .getArtifactObject(htmlChkBx, new HtmlCodeCoverageArtifact("matlabTestArtifacts/htmlcodecoverageHTML")));
 
         this.stmResultsArtifact = Optional.ofNullable(this.stmResultsArtifact)
                 .orElseGet(() -> this.getArtifactObject(stmResultsChkBx,
@@ -378,8 +378,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                     "com.mathworks.ci.RunMatlabTestsBuilder$CoberturaArtifact",
                     RunMatlabTestsBuilder.CoberturaArtifact.class);
             Items.XSTREAM2.addCompatibilityAlias(
-                    "com.mathworks.ci.RunMatlabTestsBuilder$HtmlArtifact",
-                    RunMatlabTestsBuilder.HtmlArtifact.class);
+                    "com.mathworks.ci.RunMatlabTestsBuilder$HtmlCodeCoverageArtifact",
+                    RunMatlabTestsBuilder.HtmlCodeCoverageArtifact.class);
             Items.XSTREAM2.addCompatibilityAlias(
                     "com.mathworks.ci.RunMatlabTestsBuilder$StmResultsArtifact",
                     RunMatlabTestsBuilder.StmResultsArtifact.class);
@@ -460,7 +460,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 this.getTapReportFilePath(),
                 this.getJunitReportFilePath(),
                 this.getCoberturaReportFilePath(),
-                this.getHtmlReportFilePath(),
+                this.getHtmlCodeCoverageFilePath(),
                 this.getStmResultsFilePath(),
                 this.getModelCoverageFilePath(),
                 this.getModelCoverageFilePathHTML(),
@@ -571,13 +571,13 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         }
     }
 
-    public static class HtmlArtifact extends AbstractArtifactImpl {
+    public static class HtmlCodeCoverageArtifact extends AbstractArtifactImpl {
 
         private static final String HTML_CODE_COVERAGE = "HTMLCodeCoverage";
 
         @DataBoundConstructor
-        public HtmlArtifact(String htmlReportFilePath) {
-            super(htmlReportFilePath);
+        public HtmlCodeCoverageArtifact(String htmlCodeCoverageFilePath) {
+            super(htmlCodeCoverageFilePath);
         }
 
         @Override
