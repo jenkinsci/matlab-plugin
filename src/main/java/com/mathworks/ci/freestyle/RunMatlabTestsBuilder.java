@@ -516,8 +516,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         private static final String HTML_TEST_REPORT = "HTMLTestReport";
 
         @DataBoundConstructor
-        public HtmlReportArtifact(String htmlReportFilePath) {
-            super(htmlReportFilePath);
+        public HtmlReportArtifact(String htmlTestReportFilePath) {
+            super(htmlTestReportFilePath);
         }
 
         @Override
