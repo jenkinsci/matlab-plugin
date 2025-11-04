@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.jenkins-ci.plugins</groupId>
 		<artifactId>plugin</artifactId>
-		<version>4.75</version>
+		<version>5.7</version>
 		<relativePath />
 	</parent>
 
@@ -23,7 +23,6 @@
 			<email>continuous-integration@mathworks.com</email>
 		</developer>
 	</developers>
-
 	<licenses>
 		<license>
 			<name>MIT License</name>
@@ -56,7 +55,7 @@
 		<changelist>999999-SNAPSHOT</changelist>
 		<gitHubRepo>jenkinsci/matlab-plugin</gitHubRepo>
 		<!-- https://www.jenkins.io/doc/developer/plugin-development/choosing-jenkins-baseline/ -->
-		<jenkins.baseline>2.387</jenkins.baseline>
+		<jenkins.baseline>2.479</jenkins.baseline>
 		<jenkins.version>${jenkins.baseline}.3</jenkins.version>
 		<hpi.compatibleSinceVersion>2.0.0</hpi.compatibleSinceVersion>
 	</properties>
@@ -66,7 +65,7 @@
 			<dependency>
 				<groupId>io.jenkins.tools.bom</groupId>
 				<artifactId>bom-${jenkins.baseline}.x</artifactId>
-				<version>2543.vfb_1a_5fb_9496d</version>
+				<version>5043.v855ff4819a_0f</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -74,6 +73,7 @@
 	</dependencyManagement>
 
 	<dependencies>
+
 		<!-- JSON Parser -->
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
@@ -117,15 +117,46 @@
 		<dependency>
 			<groupId>org.mockito</groupId>
 			<artifactId>mockito-core</artifactId>
-			<version>3.1.0</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-util</artifactId>
-			<version>11.0.24</version>
+			<version>12.0.16</version>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Dependencies for system tests -->
+		<!-- https://mvnrepository.com/artifact/com.jcabi/jcabi-xml -->
+		<dependency>
+			<groupId>com.jcabi</groupId>
+			<artifactId>jcabi-xml</artifactId>
+			<version>0.23.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jenkinsci.plugins/pipeline-model-definition -->
+		<dependency>
+			<groupId>org.jenkinsci.plugins</groupId>
+			<artifactId>pipeline-model-definition</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- Need unzip to add the files in pipeline workspace -->
+		<!-- https://mvnrepository.com/artifact/org.jenkins-ci.plugins/pipeline-utility-steps -->
+		<dependency>
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>pipeline-utility-steps</artifactId>
+			<version>2.7.1</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- TODO: see if this is necessary Using for verifyCodeCoverage -->
+		<!-- https://mvnrepository.com/artifact/org.jenkins-ci.plugins/cobertura -->
+		<dependency>
+			<groupId>org.jenkins-ci.plugins</groupId>
+			<artifactId>cobertura</artifactId>
+			<version>1.16</version>
+			<scope>test</scope>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
@@ -216,6 +247,50 @@
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>2.19.1</version>
+				<executions>
+					<execution>
+						<id>integration-tests</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+						<configuration>
+							<includes>
+								<include>**/*IT.java</include>
+							</includes>
+							<excludes>
+								<exclude>**/*Test.java</exclude>
+							</excludes>
+						</configuration>
+					</execution>
+					<!-- Add 'verify' goal. This way GA job also fails if there are any integration test failures-->
+					<execution>
+						<id>failsafe-verify</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.19.1</version>
+				<configuration>
+					<includes>
+						<include>**/*Test.java</include>
+						<include>**/*Tester.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/*IT.java</exclude>>
+					</excludes>
+				</configuration>
+			</plugin>
+
 		</plugins>
 		<pluginManagement>
 			<plugins>
