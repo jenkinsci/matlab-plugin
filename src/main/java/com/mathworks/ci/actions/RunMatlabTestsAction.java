@@ -117,8 +117,7 @@ public class RunMatlabTestsAction extends MatlabAction {
                 sourceFolders,
                 selectFolders
         };
-        this.params.getTaskListener().getLogger().println(this.params.getTestResultsHTML());
-        this.params.getTaskListener().getLogger().println(this.params.getModelCoverageHTML());
+        
         for (int i = 0; i < names.length; i++) {
             if (values[i] != null && !values[i].equals("false")) {
                 inputArgsList.add(names[i]);
