@@ -81,7 +81,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         step.setCodeCoverageHtml("covHTML");
         step.setTestResultsSimulinkTest("res.sltest");
         step.setModelCoverageCobertura("cov.model");
-        step.setModelCoverageCobertura("covmodelHTML");
+        step.setModelCoverageHTML("covmodelHTML");
         step.setSelectByTag("MyTag");
         step.setLoggingLevel("Concise");
         step.setOutputDetail("Concise");
