@@ -51,6 +51,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         TestActionParameters params = captor.getValue();
         assertEquals("", params.getStartupOptions());
         assertEquals(null, params.getTestResultsPDF());
+        assertEquals(null, params.getTestResultsHTML());
         assertEquals(null, params.getTestResultsTAP());
         assertEquals(null, params.getTestResultsJUnit());
         assertEquals(null, params.getCodeCoverageCobertura());
@@ -75,6 +76,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         RunMatlabTestsStep step = new RunMatlabTestsStep();
         step.setStartupOptions("-nojvm -logfile file");
         step.setTestResultsPDF("res.pdf");
+        step.setTestResultsHTML("resHTML");
         step.setTestResultsTAP("res.tap");
         step.setTestResultsJUnit("res.xml");
         step.setCodeCoverageCobertura("cov.xml");
@@ -105,6 +107,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         TestActionParameters params = captor.getValue();
         assertEquals("-nojvm -logfile file", params.getStartupOptions());
         assertEquals("res.pdf", params.getTestResultsPDF());
+        assertEquals("resHTML", params.getTestResultsHTML());
         assertEquals("res.tap", params.getTestResultsTAP());
         assertEquals("res.xml", params.getTestResultsJUnit());
         assertEquals("cov.xml", params.getCodeCoverageCobertura());

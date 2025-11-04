@@ -125,6 +125,7 @@ public class RunMatlabTestsActionTest {
             throws IOException, InterruptedException, MatlabExecutionException {
         // Set all params
         doReturn("results.pdf").when(params).getTestResultsPDF();
+        doReturn("resultsHTML").when(params).getTestResultsHTML();
         doReturn("results.tap").when(params).getTestResultsTAP();
         doReturn("results.xml").when(params).getTestResultsJUnit();
         doReturn("cov.xml").when(params).getCodeCoverageCobertura();
@@ -151,6 +152,7 @@ public class RunMatlabTestsActionTest {
         assertThat(captor.getValue(), containsString(
                 "genscript('Test',"
                         + "'PDFTestReport','results.pdf',"
+                        + "'HTMLTestReport','resultsHTML',"
                         + "'TAPTestResults','results.tap',"
                         + "'JUnitTestResults','results.xml',"
                         + "'CoberturaCodeCoverage','cov.xml',"

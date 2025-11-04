@@ -22,6 +22,7 @@ import com.mathworks.ci.freestyle.options.*;
 public class RunMatlabTestBuilderPersistenceTest {
     private final String tapFilePath = "mytap/report.tap";
     private final String pdfFilePath = "mypdf/report.pdf";
+    private final String htmlTestReportFilePath = "myreporthtml/reportHTML";
     private final String jUnitFilePath = "myjunit/report.xml";
     private final String coberturaFilePath = "mycobertura/report.xml";
     private final String htmlFilePath = "myhtml/reportHTML";
@@ -54,6 +55,7 @@ public class RunMatlabTestBuilderPersistenceTest {
 
             RunMatlabTestsBuilder.TapArtifact tap = new RunMatlabTestsBuilder.TapArtifact(tapFilePath);
             RunMatlabTestsBuilder.PdfArtifact pdf = new RunMatlabTestsBuilder.PdfArtifact(pdfFilePath);
+            RunMatlabTestsBuilder.HtmlReportArtifact htmlTestReport = new RunMatlabTestsBuilder.HtmlReportArtifact(htmlTestReportFilePath);
             RunMatlabTestsBuilder.JunitArtifact junit = new RunMatlabTestsBuilder.JunitArtifact(jUnitFilePath);
             RunMatlabTestsBuilder.CoberturaArtifact cobertura = new RunMatlabTestsBuilder.CoberturaArtifact(
                     coberturaFilePath);
@@ -68,6 +70,7 @@ public class RunMatlabTestBuilderPersistenceTest {
 
             testBuilder.setTapArtifact(tap);
             testBuilder.setPdfReportArtifact(pdf);
+            testBuilder.setHtmlReportArtifact(htmlTestReport);
             testBuilder.setJunitArtifact(junit);
             testBuilder.setCoberturaArtifact(cobertura);
             testBuilder.setHtmlArtifact(html);
@@ -90,6 +93,7 @@ public class RunMatlabTestBuilderPersistenceTest {
             // Verify artifacts are not NullArtifact instances and verify saved path values
             assertTrue(savedInstance.getTapArtifact() instanceof RunMatlabTestsBuilder.TapArtifact);
             assertTrue(savedInstance.getPdfReportArtifact() instanceof RunMatlabTestsBuilder.PdfArtifact);
+            assertTrue(savedInstance.getHtmlReportArtifact() instanceof RunMatlabTestsBuilder.HtmlReportArtifact);
             assertTrue(savedInstance.getJunitArtifact() instanceof RunMatlabTestsBuilder.JunitArtifact);
             assertTrue(savedInstance.getCoberturaArtifact() instanceof RunMatlabTestsBuilder.CoberturaArtifact);
             assertTrue(savedInstance.getHtmlArtifact() instanceof RunMatlabTestsBuilder.HtmlArtifact);
@@ -99,6 +103,7 @@ public class RunMatlabTestBuilderPersistenceTest {
 
             assertEquals(savedInstance.getTapReportFilePath(), tapFilePath);
             assertEquals(savedInstance.getPdfReportFilePath(), pdfFilePath);
+            assertEquals(savedInstance.getHtmlTestReportFilePath(), htmlTestReportFilePath);
             assertEquals(savedInstance.getJunitReportFilePath(), jUnitFilePath);
             assertEquals(savedInstance.getCoberturaReportFilePath(), coberturaFilePath);
             assertEquals(savedInstance.getHtmlReportFilePath(), htmlFilePath);
