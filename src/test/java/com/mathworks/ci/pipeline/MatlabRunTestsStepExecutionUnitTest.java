@@ -54,10 +54,10 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals(null, params.getTestResultsTAP());
         assertEquals(null, params.getTestResultsJUnit());
         assertEquals(null, params.getCodeCoverageCobertura());
-        // assertEquals(null, params.getCodeCoverageHtml());
+        assertEquals(null, params.getCodeCoverageHtml());
         assertEquals(null, params.getTestResultsSimulinkTest());
         assertEquals(null, params.getModelCoverageCobertura());
-        // assertEquals(null, params.getModelCoverageHTML());
+        assertEquals(null, params.getModelCoverageHTML());
         assertEquals(null, params.getSelectByTag());
         assertEquals(null, params.getLoggingLevel());
         assertEquals(null, params.getOutputDetail());
@@ -78,10 +78,10 @@ public class MatlabRunTestsStepExecutionUnitTest {
         step.setTestResultsTAP("res.tap");
         step.setTestResultsJUnit("res.xml");
         step.setCodeCoverageCobertura("cov.xml");
-        // step.setCodeCoverageHtml("covHTML");
+        step.setCodeCoverageHtml("covHTML");
         step.setTestResultsSimulinkTest("res.sltest");
         step.setModelCoverageCobertura("cov.model");
-        // step.setModelCoverageCobertura("covmodelHTML");
+        step.setModelCoverageCobertura("covmodelHTML");
         step.setSelectByTag("MyTag");
         step.setLoggingLevel("Concise");
         step.setOutputDetail("Concise");
@@ -108,10 +108,10 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals("res.tap", params.getTestResultsTAP());
         assertEquals("res.xml", params.getTestResultsJUnit());
         assertEquals("cov.xml", params.getCodeCoverageCobertura());
-        // assertEquals("covHTML", params.getCodeCoverageHtml());
+        assertEquals("covHTML", params.getCodeCoverageHtml());
         assertEquals("res.sltest", params.getTestResultsSimulinkTest());
         assertEquals("cov.model", params.getModelCoverageCobertura());
-        // assertEquals("covmodelHTML", params.getModelCoverageHTML());
+        assertEquals("covmodelHTML", params.getModelCoverageHTML());
         assertEquals("MyTag", params.getSelectByTag());
         assertEquals("Concise", params.getLoggingLevel());
         assertEquals("Concise", params.getOutputDetail());
