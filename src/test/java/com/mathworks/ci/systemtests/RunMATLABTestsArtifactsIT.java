@@ -184,6 +184,7 @@ public class RunMATLABTestsArtifactsIT {
         jenkins.assertBuildStatus(Result.SUCCESS, build);
         jenkins.assertLogContains("TestArtifacts/stmresult.mldatx", build);
         jenkins.assertLogContains("TestArtifacts/mdlCovReport.xml", build);
+        System.out.println(jenkins.getLog(build));
 
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/pdfReport.pdf").exists());
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/tapResult.tap").exists());
