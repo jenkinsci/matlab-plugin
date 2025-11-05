@@ -127,6 +127,20 @@ public class RunMATLABTestsArtifactsIT {
         Assert.assertEquals(TestMessage.getValue("cobertura.file.path"),coberturaCodeCoverageFileInput.getValueAttribute());
     }
 
+    @Test
+    public void verifyHtmlCodeCoverageFilePathInput() throws Exception {
+        this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
+        project.getBuildWrappersList().add(this.buildWrapper);
+        project.getBuildersList().add(this.testBuilder);
+
+        HtmlPage page = jenkins.createWebClient().goTo("job/test0/configure");
+        HtmlCheckBoxInput htmlChkBx = page.getElementByName("htmlCodeCoverageArtifact");
+        htmlChkBx.setChecked(true);
+
+        HtmlTextInput htmlCodeCoverageFileInput=(HtmlTextInput) page.getElementByName("_.htmlCodeCoverageFilePath");
+        Assert.assertEquals(TestMessage.getValue("htmlcodecoverage.file.path"),htmlCodeCoverageFileInput.getValueAttribute());
+    }
+
 
     @Test
     public void verifyModelCoverageFilePathInput() throws Exception {
@@ -176,6 +190,7 @@ public class RunMATLABTestsArtifactsIT {
         testingBuilder.setJunitArtifact(new RunMatlabTestsBuilder.JunitArtifact("TestArtifacts/junittestreport.xml"));
         testingBuilder.setStmResultsArtifact(new RunMatlabTestsBuilder.StmResultsArtifact("TestArtifacts/stmresult.mldatx"));
         testingBuilder.setCoberturaArtifact(new RunMatlabTestsBuilder.CoberturaArtifact("TestArtifacts/coberturaresult.xml"));
+        testingBuilder.setHtmlCodeCoverageArtifact(new RunMatlabTestsBuilder.HtmlCodeCoverageArtifact("TestArtifacts/htmlCodeCoverageHTML"));
         testingBuilder.setModelCoverageArtifact(new RunMatlabTestsBuilder.ModelCovArtifact("TestArtifacts/mdlCovReport.xml"));
 
         project.getBuildersList().add(testingBuilder);
@@ -189,6 +204,7 @@ public class RunMATLABTestsArtifactsIT {
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/tapResult.tap").exists());
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/junittestreport.xml").exists());
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/coberturaresult.xml").exists());
+        assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/htmlCodeCoverageHTML").exists());
     }
 
     @Test
@@ -206,6 +222,7 @@ public class RunMATLABTestsArtifactsIT {
                 "                             testResultsJUnit: 'test-results/results.xml',\n" +
                 "                             testResultsSimulinkTest: 'test-results/results.mldatx',\n" +
                 "                             codeCoverageCobertura: 'code-coverage/coverage.xml',\n" +
+                "                             codeCoverageHtml: 'code-coverage/coverageHTML',\n" +
                 "                             modelCoverageCobertura: 'model-coverage/coverage.xml')\n" +
                 "            }\n" +
                 "        }\n" +
@@ -224,6 +241,7 @@ public class RunMATLABTestsArtifactsIT {
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "test-results/results.tap").exists());
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "test-results/results.xml").exists());
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "code-coverage/coverage.xml").exists());
+        assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "code-coverage/coverageHTML").exists());
     }
 
     @Test
