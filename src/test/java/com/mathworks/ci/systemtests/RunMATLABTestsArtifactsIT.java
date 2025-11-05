@@ -51,7 +51,7 @@ public class RunMATLABTestsArtifactsIT {
     public void testSetup() throws IOException {
         this.project = jenkins.createFreeStyleProject();
         this.testBuilder = new RunMatlabTestsBuilder();
-        this.buildWrapper = new UseMatlabVersionBuildWrapper();
+        this.buildWrapper = new UseMatlabVersionBuildWrapper();anag
         testBuilder.setLoggingLevel("default");
         testBuilder.setOutputDetail("default");
     }
@@ -169,6 +169,20 @@ public class RunMATLABTestsArtifactsIT {
         HtmlTextInput coberturaModelCoverageFileInput=(HtmlTextInput) page.getElementByName("_.modelCoverageFilePath");
         Assert.assertEquals(TestMessage.getValue("modelcoverage.file.path"),coberturaModelCoverageFileInput.getValueAttribute());
     }
+    
+    @Test
+    public void verifyHtmlModelCoverageFilePathInput() throws Exception {
+        this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
+        project.getBuildWrappersList().add(this.buildWrapper);
+        project.getBuildersList().add(this.testBuilder);
+
+        HtmlPage page = jenkins.createWebClient().goTo("job/test0/configure");
+        HtmlCheckBoxInput modelCoverageChkBx = page.getElementByName("htmlModelCoverageArtifact");
+        modelCoverageChkBx.setChecked(true);
+
+        HtmlTextInput htmlModelCoverageFileInput=(HtmlTextInput) page.getElementByName("_.htmlModelCoverageFilePath");
+        Assert.assertEquals(TestMessage.getValue("htmlmodelcoverage.file.path"),htmlModelCoverageFileInput.getValueAttribute());
+    }
 
 
     @Test
@@ -207,6 +221,7 @@ public class RunMATLABTestsArtifactsIT {
         testingBuilder.setCoberturaArtifact(new RunMatlabTestsBuilder.CoberturaArtifact("TestArtifacts/coberturaresult.xml"));
         testingBuilder.setHtmlCodeCoverageArtifact(new RunMatlabTestsBuilder.HtmlCodeCoverageArtifact("TestArtifacts/htmlCodeCoverageHTML"));
         testingBuilder.setModelCoverageArtifact(new RunMatlabTestsBuilder.ModelCovArtifact("TestArtifacts/mdlCovReport.xml"));
+        testingBuilder.setHtmlModelCoverageArtifact(new RunMatlabTestsBuilder.HtmlModelCoverageArtifact("TestArtifacts/htmlmdlCovReportHTML"));
 
         project.getBuildersList().add(testingBuilder);
         FreeStyleBuild build = project.scheduleBuild2(0).get();
@@ -214,6 +229,7 @@ public class RunMATLABTestsArtifactsIT {
         jenkins.assertBuildStatus(Result.SUCCESS, build);
         jenkins.assertLogContains("TestArtifacts/stmresult.mldatx", build);
         jenkins.assertLogContains("TestArtifacts/mdlCovReport.xml", build);
+        jenkins.assertLogContains("TestArtifacts/htmlmdlCovReportHTML", build);
 
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/pdfReport.pdf").exists());
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "TestArtifacts/htmlReportHTML").exists());
@@ -241,6 +257,7 @@ public class RunMATLABTestsArtifactsIT {
                 "                             codeCoverageCobertura: 'code-coverage/coverage.xml',\n" +
                 "                             codeCoverageHtml: 'code-coverage/coverageHTML',\n" +
                 "                             modelCoverageCobertura: 'model-coverage/coverage.xml')\n" +
+                "                             modelCoverageHtml: 'model-coverage/modelcoverageHTML')\n" +
                 "            }\n" +
                 "        }\n" +
                 "    }\n" +
@@ -253,6 +270,7 @@ public class RunMATLABTestsArtifactsIT {
         jenkins.assertBuildStatus(Result.SUCCESS,build);
         jenkins.assertLogContains("test-results/results.mldatx", build);
         jenkins.assertLogContains("model-coverage/coverage.xml", build);
+        jenkins.assertLogContains("model-coverage/modelcoverageHTML", build);
 
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "test-results/results.pdf").exists());
         assertTrue(new FilePath(jenkins.getInstance().getWorkspaceFor(project), "test-results/resultsHTML").exists());
