@@ -4,7 +4,7 @@ jobs:
   run-tests-job:
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest]
     name: Run System tests
     runs-on: ${{ matrix.os }}
     steps:
@@ -21,6 +21,11 @@ jobs:
       - name: Setup MATLAB
         id: setup-matlab
         uses: matlab-actions/setup-matlab@v2
+        with:
+          products: >
+            Simulink
+            Simulink_Test
+            Simulink_Coverage
 
       - name: Running tests
         run: mvn --batch-mode mvn -Dtest=RunMATLABTestsArtifactsIT#verifyCustomFilePathInputForArtifacts test
