@@ -28,7 +28,7 @@ jobs:
             Simulink_Coverage
 
       - name: Running tests
-        run: mvn --batch-mode mvn -Dtest=RunMATLABTestsArtifactsIT#verifyCustomFilePathInputForArtifacts test
+        run: mvn --batch-mode -Dtest=RunMATLABTestsArtifactsIT#verifyCustomFilePathInputForArtifacts test
         env:
           MATLAB_ROOT: ${{ steps.setup-matlab.outputs.matlabroot }}
           MLM_LICENSE_TOKEN:  ${{ secrets.MLM_LICENSE_TOKEN}}
