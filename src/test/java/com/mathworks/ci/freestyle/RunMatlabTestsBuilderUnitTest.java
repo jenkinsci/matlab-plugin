@@ -74,7 +74,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals(null, actual.getCodeCoverageHtml());
                 assertEquals(null, actual.getTestResultsSimulinkTest());
                 assertEquals(null, actual.getModelCoverageCobertura());
-                assertEquals(null, actual.getModelCoverageHTML());
+                assertEquals(null, actual.getModelCoverageHtml());
                 assertEquals(null, actual.getSelectByTag());
                 assertEquals(null, actual.getLoggingLevel());
                 assertEquals(null, actual.getOutputDetail());
@@ -114,8 +114,8 @@ public class RunMatlabTestsBuilderUnitTest {
                                 new RunMatlabTestsBuilder.StmResultsArtifact("res.sltest"));
                 builder.setModelCoverageArtifact(
                                 new RunMatlabTestsBuilder.ModelCovArtifact("cov.model"));
-                builder.setModelCoverageArtifactHTML(
-                                new RunMatlabTestsBuilder.ModelCovArtifactHTML("covmodelHTML"));
+                builder.setHtmlModelCoverageArtifact(
+                                new RunMatlabTestsBuilder.HtmlModelCoverageArtifact("covmodelHTML"));
                 builder.setSelectByTag(
                                 new RunMatlabTestsBuilder.SelectByTag("MyTag"));
                 builder.setSourceFolder(
@@ -143,7 +143,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals("covHTML", actual.getCodeCoverageHtml());
                 assertEquals("res.sltest", actual.getTestResultsSimulinkTest());
                 assertEquals("cov.model", actual.getModelCoverageCobertura());
-                assertEquals("covmodelHTML", actual.getModelCoverageHTML());
+                assertEquals("covmodelHTML", actual.getModelCoverageHtml());
                 assertEquals("MyTag", actual.getSelectByTag());
                 assertEquals("Concise", actual.getLoggingLevel());
                 assertEquals("Concise", actual.getOutputDetail());

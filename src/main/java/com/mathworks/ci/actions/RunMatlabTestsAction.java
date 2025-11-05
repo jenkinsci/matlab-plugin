@@ -108,7 +108,7 @@ public class RunMatlabTestsAction extends MatlabAction {
                 this.params.getCodeCoverageHtml(),
                 this.params.getTestResultsSimulinkTest(),
                 this.params.getModelCoverageCobertura(),
-                this.params.getModelCoverageHTML(),
+                this.params.getModelCoverageHtml(),
                 this.params.getSelectByTag(),
                 this.params.getUseParallel(),
                 this.params.getStrict(),

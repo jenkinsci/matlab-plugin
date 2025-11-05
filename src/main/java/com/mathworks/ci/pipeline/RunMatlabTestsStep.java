@@ -36,7 +36,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     private String codeCoverageHtml;
     private String testResultsSimulinkTest;
     private String modelCoverageCobertura;
-    private String modelCoverageHTML;
+    private String modelCoverageHtml;
     private String selectByTag;
     private String loggingLevel;
     private String outputDetail;
@@ -124,13 +124,13 @@ public class RunMatlabTestsStep extends Step implements Serializable {
         this.modelCoverageCobertura = modelCoverageCobertura;
     }
 
-    public String getModelCoverageHTML() {
-        return modelCoverageHTML;
+    public String getModelCoverageHtml() {
+        return modelCoverageHtml;
     }
 
     @DataBoundSetter
-    public void setModelCoverageHTML(String modelCoverageHTML) {
-        this.modelCoverageHTML = modelCoverageHTML;
+    public void setModelCoverageHtml(String modelCoverageHtml) {
+        this.modelCoverageHtml = modelCoverageHtml;
     }
 
     public List<String> getSourceFolder() {

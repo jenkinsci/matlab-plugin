@@ -61,7 +61,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private Artifact htmlCodeCoverageArtifact = new NullArtifact();
     private Artifact stmResultsArtifact = new NullArtifact();
     private Artifact modelCoverageArtifact = new NullArtifact();
-    private Artifact modelCoverageArtifactHTML = new NullArtifact();
+    private Artifact htmlModelCoverageArtifact = new NullArtifact();
     private Artifact pdfReportArtifact = new NullArtifact();
     private Artifact htmlReportArtifact = new NullArtifact();
 
@@ -118,8 +118,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     }
 
     @DataBoundSetter
-    public void setModelCoverageArtifactHTML(ModelCovArtifactHTML modelCoverageArtifactHTML) {
-        this.modelCoverageArtifactHTML = modelCoverageArtifactHTML;
+    public void setHtmlModelCoverageArtifact(HtmlModelCoverageArtifact htmlModelCoverageArtifact) {
+        this.htmlModelCoverageArtifact = htmlModelCoverageArtifact;
     }
 
     @DataBoundSetter
@@ -220,12 +220,12 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         return this.getModelCoverageArtifact().getFilePath();
     }
 
-    public Artifact getModelCoverageArtifactHTML() {
-        return this.modelCoverageArtifactHTML;
+    public Artifact getHtmlModelCoverageArtifact() {
+        return this.htmlModelCoverageArtifact;
     }
 
-    public String getModelCoverageFilePathHTML() {
-        return this.getModelCoverageArtifactHTML().getFilePath();
+    public String getHtmlModelCoverageFilePath() {
+        return this.getHtmlModelCoverageArtifact().getFilePath();
     }
 
     public Artifact getPdfReportArtifact() {
@@ -342,9 +342,9 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 .orElseGet(() -> this.getArtifactObject(modelCoverageChkBx,
                         new ModelCovArtifact("matlabTestArtifacts/coberturamodelcoverage.xml")));
 
-        this.modelCoverageArtifactHTML = Optional.ofNullable(this.modelCoverageArtifactHTML)
+        this.htmlModelCoverageArtifact = Optional.ofNullable(this.htmlModelCoverageArtifact)
                 .orElseGet(() -> this.getArtifactObject(modelCoverageChkBxHTML,
-                        new ModelCovArtifactHTML("matlabTestArtifacts/htmlmodelcoverageHTML")));
+                        new HtmlModelCoverageArtifact("matlabTestArtifacts/htmlmodelcoverageHTML")));
 
         if (factory == null) {
             factory = new MatlabActionFactory();
@@ -387,8 +387,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                     "com.mathworks.ci.RunMatlabTestsBuilder$ModelCovArtifact",
                     RunMatlabTestsBuilder.ModelCovArtifact.class);
             Items.XSTREAM2.addCompatibilityAlias(
-                    "com.mathworks.ci.RunMatlabTestsBuilder$ModelCovArtifactHTML",
-                    RunMatlabTestsBuilder.ModelCovArtifactHTML.class);
+                    "com.mathworks.ci.RunMatlabTestsBuilder$HtmlModelCoverageArtifact",
+                    RunMatlabTestsBuilder.HtmlModelCoverageArtifact.class);
         }
 
         // Overridden Method used to show the text under build dropdown
@@ -463,7 +463,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 this.getHtmlCodeCoverageFilePath(),
                 this.getStmResultsFilePath(),
                 this.getModelCoverageFilePath(),
-                this.getModelCoverageFilePathHTML(),
+                this.getHtmlModelCoverageFilePath(),
                 this.getSelectByTagAsString(),
                 this.getLoggingLevel(),
                 this.getOutputDetail(),
@@ -616,13 +616,13 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         }
     }
 
-    public static class ModelCovArtifactHTML extends AbstractArtifactImpl {
+    public static class HtmlModelCoverageArtifact extends AbstractArtifactImpl {
 
         private static final String HTML_MODEL_COVERAGE = "HTMLModelCoverage";
 
         @DataBoundConstructor
-        public ModelCovArtifactHTML(String modelCoverageFilePathHTML) {
-            super(modelCoverageFilePathHTML);
+        public HtmlModelCoverageArtifact(String htmlModelCoverageFilePath) {
+            super(htmlModelCoverageFilePath);
         }
 
         @Override

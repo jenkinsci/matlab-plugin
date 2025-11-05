@@ -124,8 +124,8 @@
   	  </f:entry>
    </f:optionalBlock>
 
-   <f:optionalBlock name="modelCoverageArtifactHTML" field="modelCoverageArtifactHTML" title="HTML model coverage" checked="${instance.modelCoverageArtifactHTML.selected}">
-  	  <f:entry field="modelCoverageFilePathHTML" title="File path: ">
+   <f:optionalBlock name="htmlModelCoverageArtifact" field="htmlModelCoverageArtifact" title="HTML model coverage" checked="${instance.htmlModelCoverageArtifact.selected}">
+  	  <f:entry field="htmlModelCoverageFilePath" title="File path: ">
   	  <f:textbox default="matlabTestArtifacts/htmlmodelcoverageHTML"/>
   	  </f:entry>
    </f:optionalBlock>
