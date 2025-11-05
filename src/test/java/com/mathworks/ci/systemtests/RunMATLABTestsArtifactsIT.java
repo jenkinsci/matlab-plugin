@@ -51,7 +51,7 @@ public class RunMATLABTestsArtifactsIT {
     public void testSetup() throws IOException {
         this.project = jenkins.createFreeStyleProject();
         this.testBuilder = new RunMatlabTestsBuilder();
-        this.buildWrapper = new UseMatlabVersionBuildWrapper();anag
+        this.buildWrapper = new UseMatlabVersionBuildWrapper();
         testBuilder.setLoggingLevel("default");
         testBuilder.setOutputDetail("default");
     }
