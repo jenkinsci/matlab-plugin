@@ -108,8 +108,8 @@ public class RunMatlabTestsBuilderUnitTest {
                                 new RunMatlabTestsBuilder.JunitArtifact("results.xml"));
                 builder.setCoberturaArtifact(
                                 new RunMatlabTestsBuilder.CoberturaArtifact("cov.xml"));
-                builder.setHtmlArtifact(
-                                new RunMatlabTestsBuilder.HtmlArtifact("covHTML"));
+                builder.setHtmlCodeCoverageArtifact(
+                                new RunMatlabTestsBuilder.HtmlCodeCoverageArtifact("covHTML"));
                 builder.setStmResultsArtifact(
                                 new RunMatlabTestsBuilder.StmResultsArtifact("res.sltest"));
                 builder.setModelCoverageArtifact(
