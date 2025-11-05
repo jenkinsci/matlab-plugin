@@ -123,7 +123,7 @@ public class RunMATLABTestsArtifactsIT {
         HtmlCheckBoxInput htmlReportChkbx = page.getElementByName("htmlReportArtifact");
         htmlReportChkbx.setChecked(true);
 
-        HtmlTextInput HTMLFilePathInput=(HtmlTextInput) page.getElementByName("_.htmlReportFilePath");
+        HtmlTextInput HTMLFilePathInput=(HtmlTextInput) page.getElementByName("_.htmlTestReportFilePath");
         Assert.assertEquals(TestMessage.getValue("htmltestreport.file.path"),HTMLFilePathInput.getValueAttribute());
     }
 
