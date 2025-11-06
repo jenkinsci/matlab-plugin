@@ -256,7 +256,7 @@ public class RunMATLABTestsArtifactsIT {
                 "                             testResultsSimulinkTest: 'test-results/results.mldatx',\n" +
                 "                             codeCoverageCobertura: 'code-coverage/coverage.xml',\n" +
                 "                             codeCoverageHtml: 'code-coverage/coverageHTML',\n" +
-                "                             modelCoverageCobertura: 'model-coverage/coverage.xml')\n" +
+                "                             modelCoverageCobertura: 'model-coverage/coverage.xml',\n" +
                 "                             modelCoverageHtml: 'model-coverage/modelcoverageHTML')\n" +
                 "            }\n" +
                 "        }\n" +
