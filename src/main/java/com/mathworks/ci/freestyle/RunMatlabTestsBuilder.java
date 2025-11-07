@@ -50,8 +50,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private transient boolean coberturaChkBx;
     private transient boolean htmlChkBx;
     private transient boolean stmResultsChkBx;
-    private transient boolean modelCoverageChkBx;
-    private transient boolean modelCoverageChkBxHTML;
+    private transient boolean coberturaModelCoverageChkBx;
+    private transient boolean htmlModelCoverageChkBx;
     private transient boolean pdfReportChkBx;
     private transient boolean htmlReportChkBx;
 
@@ -339,11 +339,11 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                         new StmResultsArtifact("matlabTestArtifacts/simulinktestresults.mldatx")));
 
         this.modelCoverageArtifact = Optional.ofNullable(this.modelCoverageArtifact)
-                .orElseGet(() -> this.getArtifactObject(modelCoverageChkBx,
+                .orElseGet(() -> this.getArtifactObject(coberturaModelCoverageChkBx,
                         new ModelCovArtifact("matlabTestArtifacts/coberturamodelcoverage.xml")));
 
         this.htmlModelCoverageArtifact = Optional.ofNullable(this.htmlModelCoverageArtifact)
-                .orElseGet(() -> this.getArtifactObject(modelCoverageChkBxHTML,
+                .orElseGet(() -> this.getArtifactObject(htmlModelCoverageChkBx,
                         new HtmlModelCoverageArtifact("matlabTestArtifacts/htmlmodelcoverageHTML")));
 
         if (factory == null) {
