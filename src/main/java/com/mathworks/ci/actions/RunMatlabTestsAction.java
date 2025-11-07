@@ -105,10 +105,10 @@ public class RunMatlabTestsAction extends MatlabAction {
                 this.params.getTestResultsTAP(),
                 this.params.getTestResultsJUnit(),
                 this.params.getCodeCoverageCobertura(),
-                this.params.getCodeCoverageHtml(),
+                this.params.getCodeCoverageHTML(),
                 this.params.getTestResultsSimulinkTest(),
                 this.params.getModelCoverageCobertura(),
-                this.params.getModelCoverageHtml(),
+                this.params.getModelCoverageHTML(),
                 this.params.getSelectByTag(),
                 this.params.getUseParallel(),
                 this.params.getStrict(),
@@ -117,7 +117,7 @@ public class RunMatlabTestsAction extends MatlabAction {
                 sourceFolders,
                 selectFolders
         };
-        
+
         for (int i = 0; i < names.length; i++) {
             if (values[i] != null && !values[i].equals("false")) {
                 inputArgsList.add(names[i]);

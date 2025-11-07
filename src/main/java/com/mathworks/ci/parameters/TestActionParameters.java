@@ -20,10 +20,10 @@ public class TestActionParameters extends MatlabActionParameters {
     private String testResultsTAP;
     private String testResultsJUnit;
     private String codeCoverageCobertura;
-    private String codeCoverageHtml;
+    private String codeCoverageHTML;
     private String testResultsSimulinkTest;
     private String modelCoverageCobertura;
-    private String modelCoverageHtml;
+    private String modelCoverageHTML;
     private String selectByTag;
     private String loggingLevel;
     private String outputDetail;
@@ -34,7 +34,7 @@ public class TestActionParameters extends MatlabActionParameters {
 
     public TestActionParameters(StepContext context, String startupOpts,
             String testResultsPDF, String testResultsHTML, String testResultsTAP, String testResultsJUnit,
-            String codeCoverageCobertura, String codeCoverageHtml, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHtml,
+            String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
             String selectByTag, String loggingLevel, String outputDetail,
             boolean useParallel, boolean strict, List<String> sourceFolder,
             List<String> selectByFolder)
@@ -45,10 +45,10 @@ public class TestActionParameters extends MatlabActionParameters {
         this.testResultsTAP = testResultsTAP;
         this.testResultsJUnit = testResultsJUnit;
         this.codeCoverageCobertura = codeCoverageCobertura;
-        this.codeCoverageHtml = codeCoverageHtml;
+        this.codeCoverageHTML = codeCoverageHTML;
         this.testResultsSimulinkTest = testResultsSimulinkTest;
         this.modelCoverageCobertura = modelCoverageCobertura;
-        this.modelCoverageHtml = modelCoverageHtml;
+        this.modelCoverageHTML = modelCoverageHTML;
         this.selectByTag = selectByTag;
         this.loggingLevel = loggingLevel;
         this.outputDetail = outputDetail;
@@ -61,7 +61,7 @@ public class TestActionParameters extends MatlabActionParameters {
     public TestActionParameters(Run<?, ?> build, FilePath workspace, EnvVars env, Launcher launcher,
             TaskListener listener, String startupOpts,
             String testResultsPDF, String testResultsHTML, String testResultsTAP, String testResultsJUnit,
-            String codeCoverageCobertura, String codeCoverageHtml, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHtml,
+            String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
             String selectByTag, String loggingLevel, String outputDetail,
             boolean useParallel, boolean strict, List<String> sourceFolder,
             List<String> selectByFolder) {
@@ -71,10 +71,10 @@ public class TestActionParameters extends MatlabActionParameters {
         this.testResultsTAP = testResultsTAP;
         this.testResultsJUnit = testResultsJUnit;
         this.codeCoverageCobertura = codeCoverageCobertura;
-        this.codeCoverageHtml = codeCoverageHtml;
+        this.codeCoverageHTML = codeCoverageHTML;
         this.testResultsSimulinkTest = testResultsSimulinkTest;
         this.modelCoverageCobertura = modelCoverageCobertura;
-        this.modelCoverageHtml = modelCoverageHtml;
+        this.modelCoverageHTML = modelCoverageHTML;
         this.selectByTag = selectByTag;
         this.loggingLevel = loggingLevel;
         this.outputDetail = outputDetail;
@@ -104,8 +104,8 @@ public class TestActionParameters extends MatlabActionParameters {
         return codeCoverageCobertura;
     }
 
-    public String getCodeCoverageHtml() {
-        return codeCoverageHtml;
+    public String getCodeCoverageHTML() {
+        return codeCoverageHTML;
     }
 
     public String getTestResultsSimulinkTest() {
@@ -116,8 +116,8 @@ public class TestActionParameters extends MatlabActionParameters {
         return modelCoverageCobertura;
     }
 
-    public String getModelCoverageHtml() {
-        return modelCoverageHtml;
+    public String getModelCoverageHTML() {
+        return modelCoverageHTML;
     }
 
     public String getSelectByTag() {

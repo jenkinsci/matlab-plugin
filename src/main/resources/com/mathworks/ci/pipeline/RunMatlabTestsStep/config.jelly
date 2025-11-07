@@ -22,7 +22,7 @@
 	        <f:textbox/>
 	  </f:entry>
 
-	  <f:entry field="codeCoverageHtml" title="codeCoverageHtml: ">
+	  <f:entry field="codeCoverageHTML" title="codeCoverageHTML: ">
 	        <f:textbox/>
 	  </f:entry>
 	  

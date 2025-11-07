@@ -96,7 +96,7 @@ public class RunMatlabTestsActionTest {
         // Set some params
         doReturn("results.xml").when(params).getTestResultsJUnit();
         doReturn("cov.xml").when(params).getCodeCoverageCobertura();
-        doReturn("covHTML").when(params).getCodeCoverageHtml();
+        doReturn("covHTML").when(params).getCodeCoverageHTML();
         doReturn("true").when(params).getStrict();
         doReturn("Default").when(params).getLoggingLevel();
         doReturn("Concise").when(params).getOutputDetail();
@@ -129,10 +129,10 @@ public class RunMatlabTestsActionTest {
         doReturn("results.tap").when(params).getTestResultsTAP();
         doReturn("results.xml").when(params).getTestResultsJUnit();
         doReturn("cov.xml").when(params).getCodeCoverageCobertura();
-        doReturn("covHTML").when(params).getCodeCoverageHtml();
+        doReturn("covHTML").when(params).getCodeCoverageHTML();
         doReturn("results.sltest").when(params).getTestResultsSimulinkTest();
         doReturn("cov.model").when(params).getModelCoverageCobertura();
-        doReturn("covmodelHTML").when(params).getModelCoverageHtml();
+        doReturn("covmodelHTML").when(params).getModelCoverageHTML();
         doReturn("MyTag").when(params).getSelectByTag();
         doReturn("true").when(params).getUseParallel();
         doReturn("true").when(params).getStrict();

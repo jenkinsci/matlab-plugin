@@ -33,10 +33,10 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     private String testResultsTAP;
     private String testResultsJUnit;
     private String codeCoverageCobertura;
-    private String codeCoverageHtml;
+    private String codeCoverageHTML;
     private String testResultsSimulinkTest;
     private String modelCoverageCobertura;
-    private String modelCoverageHtml;
+    private String modelCoverageHTML;
     private String selectByTag;
     private String loggingLevel;
     private String outputDetail;
@@ -97,13 +97,13 @@ public class RunMatlabTestsStep extends Step implements Serializable {
         this.codeCoverageCobertura = codeCoverageCobertura;
     }
 
-    public String getCodeCoverageHtml() {
-        return codeCoverageHtml;
+    public String getCodeCoverageHTML() {
+        return codeCoverageHTML;
     }
 
     @DataBoundSetter
-    public void setCodeCoverageHtml(String codeCoverageHtml) {
-        this.codeCoverageHtml = codeCoverageHtml;
+    public void setCodeCoverageHTML(String codeCoverageHTML) {
+        this.codeCoverageHTML = codeCoverageHTML;
     }
 
     public String getTestResultsSimulinkTest() {
@@ -124,13 +124,13 @@ public class RunMatlabTestsStep extends Step implements Serializable {
         this.modelCoverageCobertura = modelCoverageCobertura;
     }
 
-    public String getModelCoverageHtml() {
-        return modelCoverageHtml;
+    public String getModelCoverageHTML() {
+        return modelCoverageHTML;
     }
 
     @DataBoundSetter
-    public void setModelCoverageHtml(String modelCoverageHtml) {
-        this.modelCoverageHtml = modelCoverageHtml;
+    public void setModelCoverageHTML(String modelCoverageHTML) {
+        this.modelCoverageHTML = modelCoverageHTML;
     }
 
     public List<String> getSourceFolder() {

@@ -71,10 +71,10 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals(null, actual.getTestResultsTAP());
                 assertEquals(null, actual.getTestResultsJUnit());
                 assertEquals(null, actual.getCodeCoverageCobertura());
-                assertEquals(null, actual.getCodeCoverageHtml());
+                assertEquals(null, actual.getCodeCoverageHTML());
                 assertEquals(null, actual.getTestResultsSimulinkTest());
                 assertEquals(null, actual.getModelCoverageCobertura());
-                assertEquals(null, actual.getModelCoverageHtml());
+                assertEquals(null, actual.getModelCoverageHTML());
                 assertEquals(null, actual.getSelectByTag());
                 assertEquals(null, actual.getLoggingLevel());
                 assertEquals(null, actual.getOutputDetail());
@@ -140,10 +140,10 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals("tap.tap", actual.getTestResultsTAP());
                 assertEquals("results.xml", actual.getTestResultsJUnit());
                 assertEquals("cov.xml", actual.getCodeCoverageCobertura());
-                assertEquals("covHTML", actual.getCodeCoverageHtml());
+                assertEquals("covHTML", actual.getCodeCoverageHTML());
                 assertEquals("res.sltest", actual.getTestResultsSimulinkTest());
                 assertEquals("cov.model", actual.getModelCoverageCobertura());
-                assertEquals("covmodelHTML", actual.getModelCoverageHtml());
+                assertEquals("covmodelHTML", actual.getModelCoverageHTML());
                 assertEquals("MyTag", actual.getSelectByTag());
                 assertEquals("Concise", actual.getLoggingLevel());
                 assertEquals("Concise", actual.getOutputDetail());
