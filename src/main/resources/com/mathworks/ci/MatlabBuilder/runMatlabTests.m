@@ -149,11 +149,11 @@ if exportSTMResults
     end
 end
 
-% Produce PDF test report (Not supported on MacOS platforms and below R2017a)
+% Produce PDF test report (Not supported on macOS platforms and below R2017a)
 if producePDFReport
     if ismac
         warning('MATLAB:testArtifact:unSupportedPlatform', ...
-            'Producing a PDF test report is not currently supported on MacOS platforms.');
+            'Producing a PDF test report is not currently supported on macOS platforms.');
     elseif ~testReportPluginPresent
         issuePDFReportUnsupportedWarning;
     else
@@ -167,11 +167,11 @@ if producePDFReport
     end
 end
 
-% Produce HTML test report (Not supported on MacOS platforms and below R2017a)
+% Produce HTML test report (Not supported on macOS platforms and below R2017a)
 if produceHTMLReport
     if ismac
         warning('MATLAB:testArtifact:unSupportedPlatform', ...
-            'Producing a HTML test report is not currently supported on MacOS platforms.');
+            'Producing a HTML test report is not currently supported on macOS platforms.');
     elseif ~testReportPluginPresent
         issueHTMLReportUnsupportedWarning;
     else
