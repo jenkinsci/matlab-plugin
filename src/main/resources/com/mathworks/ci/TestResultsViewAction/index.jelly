@@ -202,12 +202,12 @@
                 // Remove highlight only from last active button
                 if (lastActiveButton) {
                     lastActiveButton.classList.remove('jenkins-button--active');
-                    lastActiveButton.classList.remove('jenkins-!-background-color-primary');
+                    // lastActiveButton.classList.remove('jenkins-!-background-color-primary');
                 }
 
                 // Add highlight to clicked button
                 activeButton.classList.add('jenkins-button--active');
-                activeButton.classList.add('jenkins-!-background-color-primary');
+                // activeButton.classList.add('jenkins-!-background-color-primary');
                 lastActiveButton = activeButton;
 
                 // Filter the tests
