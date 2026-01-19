@@ -202,6 +202,7 @@
                 // Remove highlight only from last active button
                 if (lastActiveButton) {
                     lastActiveButton.classList.remove('jenkins-button--active');
+                    // Can be uncommented later if button animation is as expected
                     // lastActiveButton.classList.remove('jenkins-!-background-color-primary');
                 }
 
