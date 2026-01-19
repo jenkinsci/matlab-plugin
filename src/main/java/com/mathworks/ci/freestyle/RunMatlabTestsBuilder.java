@@ -332,7 +332,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 .getArtifactObject(coberturaChkBx, new CoberturaArtifact("matlabTestArtifacts/cobertura.xml")));
 
         this.htmlCodeCoverageArtifact = Optional.ofNullable(this.htmlCodeCoverageArtifact).orElseGet(() -> this
-                .getArtifactObject(htmlChkBx, new HtmlCodeCoverageArtifact("matlabTestArtifacts/htmlcodecoverageHTML")));
+                .getArtifactObject(htmlChkBx, new HtmlCodeCoverageArtifact("matlabTestArtifacts/htmlcodecoverage")));
 
         this.stmResultsArtifact = Optional.ofNullable(this.stmResultsArtifact)
                 .orElseGet(() -> this.getArtifactObject(stmResultsChkBx,
