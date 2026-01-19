@@ -101,7 +101,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 builder.setPdfReportArtifact(
                                 new RunMatlabTestsBuilder.PdfArtifact("pdf.pdf"));
                 builder.setHtmlReportArtifact(
-                                new RunMatlabTestsBuilder.HtmlReportArtifact("testreportHTML"));
+                                new RunMatlabTestsBuilder.HtmlReportArtifact("htmltestreport"));
                 builder.setTapArtifact(
                                 new RunMatlabTestsBuilder.TapArtifact("tap.tap"));
                 builder.setJunitArtifact(
@@ -136,7 +136,7 @@ public class RunMatlabTestsBuilderUnitTest {
 
                 assertEquals("-nojvm -logfile mylog", actual.getStartupOptions());
                 assertEquals("pdf.pdf", actual.getTestResultsPDF());
-                assertEquals("testreportHTML", actual.getTestResultsHTML());
+                assertEquals("htmltestreport", actual.getTestResultsHTML());
                 assertEquals("tap.tap", actual.getTestResultsTAP());
                 assertEquals("results.xml", actual.getTestResultsJUnit());
                 assertEquals("cov.xml", actual.getCodeCoverageCobertura());

@@ -320,7 +320,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 () -> this.getArtifactObject(pdfReportChkBx, new PdfArtifact("matlabTestArtifacts/testreport.pdf")));
 
         this.htmlReportArtifact = Optional.ofNullable(this.htmlReportArtifact).orElseGet(
-                () -> this.getArtifactObject(htmlReportChkBx, new HtmlReportArtifact("matlabTestArtifacts/testreportHTML")));
+                () -> this.getArtifactObject(htmlReportChkBx, new HtmlReportArtifact("matlabTestArtifacts/htmltestreport")));
 
         this.tapArtifact = Optional.ofNullable(this.tapArtifact).orElseGet(
                 () -> this.getArtifactObject(tapChkBx, new TapArtifact("matlabTestArtifacts/taptestresults.tap")));
@@ -344,7 +344,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
 
         this.htmlModelCoverageArtifact = Optional.ofNullable(this.htmlModelCoverageArtifact)
                 .orElseGet(() -> this.getArtifactObject(htmlModelCoverageChkBx,
-                        new HtmlModelCoverageArtifact("matlabTestArtifacts/htmlmodelcoverageHTML")));
+                        new HtmlModelCoverageArtifact("matlabTestArtifacts/htmlmodelcoverage")));
 
         if (factory == null) {
             factory = new MatlabActionFactory();
