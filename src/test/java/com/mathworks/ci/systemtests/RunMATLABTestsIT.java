@@ -12,6 +12,7 @@ import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 import hudson.slaves.DumbSlave;
 import hudson.tasks.Builder;
+import hudson.FilePath;
 import org.htmlunit.WebAssert;
 import org.htmlunit.html.HtmlCheckBoxInput;
 import org.htmlunit.html.HtmlInput;
@@ -273,6 +274,75 @@ public class RunMATLABTestsIT {
 
         jenkins.assertBuildStatus(Result.SUCCESS, run);
     }
+
+    @Test
+    public void verifyTestArtifactsGeneratedInMatrixProject() throws Exception {
+        String matlabRoot = System.getenv("MATLAB_ROOT");
+        String matlabRoot22b = System.getenv("MATLAB_ROOT_22b");
+        Assume.assumeTrue("Not running tests as MATLAB_ROOT_22b environment variable is not defined", 
+                matlabRoot22b != null && !matlabRoot22b.isEmpty());
+        
+        Utilities.setMatlabInstallation("MATLAB_PATH_1", matlabRoot, jenkins);
+        Utilities.setMatlabInstallation("MATLAB_PATH_22b", matlabRoot22b, jenkins);
+        
+        MatrixProject matrixProject = jenkins.createProject(MatrixProject.class);
+        MatlabInstallationAxis MATLABAxis = new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1", "MATLAB_PATH_22b"));
+        matrixProject.setAxes(new AxisList(MATLABAxis));
+        matrixProject.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
+        
+        RunMatlabTestsBuilder testingBuilder = new RunMatlabTestsBuilder();
+        
+        // Adding source folder
+        List<SourceFolderPaths> list = new ArrayList<SourceFolderPaths>();
+        list.add(new SourceFolderPaths("src"));
+        testingBuilder.setSourceFolder(new SourceFolder(list));
+        
+        // Configure all artifacts
+        testingBuilder.setHtmlReportArtifact(
+                new RunMatlabTestsBuilder.HtmlReportArtifact("TestArtifacts/htmlReport"));
+        testingBuilder.setHtmlCodeCoverageArtifact(
+                new RunMatlabTestsBuilder.HtmlCodeCoverageArtifact("TestArtifacts/htmlCodeCoverage"));
+        testingBuilder.setHtmlModelCoverageArtifact(
+                new RunMatlabTestsBuilder.HtmlModelCoverageArtifact("TestArtifacts/htmlMdlCovReport"));
+        
+        matrixProject.getBuildersList().add(testingBuilder);
+        
+        MatrixBuild build = matrixProject.scheduleBuild2(0).get();
+        
+        Combination c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1"))), "MATLAB_PATH_1");
+        MatrixRun run = build.getRun(c);
+        
+        // Verify logs contain artifact paths
+        jenkins.assertLogContains("TestArtifacts/htmlReport", run);
+        jenkins.assertLogContains("TestArtifacts/htmlCodeCoverage", run);
+        jenkins.assertLogContains("TestArtifacts/htmlMdlCovReport", run);
+        
+        // Verify artifacts exist
+        FilePath workspace = run.getWorkspace();
+        Assert.assertTrue(new FilePath(workspace, "TestArtifacts/htmlReport").exists());
+        Assert.assertTrue(new FilePath(workspace, "TestArtifacts/htmlCodeCoverage").exists());
+        Assert.assertTrue(new FilePath(workspace, "TestArtifacts/htmlMdlCovReport").exists());
+        
+        jenkins.assertBuildStatus(Result.SUCCESS, run);
+        
+        c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_22b"))), "MATLAB_PATH_22b");
+        run = build.getRun(c);
+        
+        // Verify logs contain artifact paths
+        jenkins.assertLogContains("TestArtifacts/htmlReport", run);
+        jenkins.assertLogContains("TestArtifacts/htmlCodeCoverage", run);
+        jenkins.assertLogContains("TestArtifacts/htmlMdlCovReport", run);
+        
+        // Verify artifacts exist
+        workspace = run.getWorkspace();
+        Assert.assertTrue(new FilePath(workspace, "TestArtifacts/htmlReport").exists());
+        Assert.assertTrue(new FilePath(workspace, "TestArtifacts/htmlCodeCoverage").exists());
+        Assert.assertTrue(new FilePath(workspace, "TestArtifacts/htmlMdlCovReport").exists());
+        
+        jenkins.assertLogContains(matlabRoot22b, run);
+        jenkins.assertBuildStatus(Result.SUCCESS, run);
+    }
+
 
     /*
      * Test to verify if tests are filtered scripted pipeline
