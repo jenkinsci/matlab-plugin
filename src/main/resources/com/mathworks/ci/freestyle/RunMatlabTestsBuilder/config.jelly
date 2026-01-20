@@ -85,7 +85,7 @@
                 </f:entry>
             </f:optionalBlock>
 
-            <f:optionalBlock name="htmlCodeCoverageArtifact" field="htmlCodeCoverageArtifact" title="HTML code coverage" checked="${instance.htmlCodeCoverageArtifact.selected}">
+            <f:optionalBlock name="htmlCodeCoverageArtifact" field="htmlArtifact" title="HTML code coverage" checked="${instance.htmlCodeCoverageArtifact.selected}">
                 <f:entry field="htmlCodeCoverageFilePath" title="File path: ">
                     <f:textbox default="matlabTestArtifacts/htmlcodecoverage"/>
                 </f:entry>
