@@ -41,7 +41,7 @@ Once you install the plugin, the **Use MATLAB version** option appears in the **
 
 In this example, the list includes two preinstalled MATLAB versions registered as tools, as well as the option for specifying a custom installation. If you select `Custom`, a **MATLAB root** box appears in the UI. You must enter the full path to your preferred MATLAB root folder in this box.
 
-![use_matlab_version_tool](https://github.com/user-attachments/assets/f5354bd2-dd27-4de2-8b5a-cf5ed33083ae)
+![Environment section showing Use MATLAB version selected with R2024b chosen from the drop‑down list](https://github.com/user-attachments/assets/f5354bd2-dd27-4de2-8b5a-cf5ed33083ae)
 
 > :information_source: **Note:** If you are using a tool that was installed using MATLAB Package Manager, you must associate the tool with a valid license. For more information, see [License Installed Products](#license-installed-products).
 
@@ -75,7 +75,7 @@ The **Run MATLAB Build** step lets you run a build using the [MATLAB build tool]
 
 Specify the tasks you want to execute in the **Tasks** box. If you specify more than one task, use a space to separate them. If you do not specify any tasks, the plugin runs the default tasks in `buildfile.m` as well as all the tasks on which they depend. For example, enter `mytask` in the **Tasks** box to run a task named `mytask` as well as all the tasks on which it depends.
 
-![run_matlab_build](https://github.com/user-attachments/assets/5cb99625-a207-409e-9bc5-8aa0477a9c28)
+![Build Steps section showing a Run MATLAB Build step with the Tasks box populated with mytask](https://github.com/user-attachments/assets/5cb99625-a207-409e-9bc5-8aa0477a9c28)
 
 You can specify build options for your MATLAB build by first selecting **Build options**  and then populating the box that appears in the step configuration interface. For example, specify `-continueOnFailure` to continue running the MATLAB build upon a build environment setup or task failure. If you specify more than one build option, use a space to separate them (for example, `-continueOnFailure -skip test`).  The plugin supports the same [options](https://www.mathworks.com/help/matlab/ref/buildtool.html#mw_50c0f35e-93df-4579-963d-f59f2fba1dba) that you can pass to the `buildtool` command.
 
@@ -684,6 +684,7 @@ pipeline {
 ## See Also
 * [Run MATLAB Tests on Jenkins Server](examples/Run-MATLAB-Tests.md)<br/>
 * [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
+
 
 
 
