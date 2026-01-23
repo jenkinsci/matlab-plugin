@@ -32,19 +32,19 @@ Create a new project and configure it by following these steps:
 
 3. In the **Environment** section, select **Use MATLAB version** and specify the MATLAB version you want to use in the build. If your preferred MATLAB version is not listed under **Use MATLAB version**, enter the full path to its root folder in the **MATLAB root** box. 
 
-![environment](https://github.com/user-attachments/assets/00598e0c-468d-465b-b334-5c7ed750ee3f)
+![Environment section showing Use MATLAB version selected with Custom chosen from the drop‑down list, and the MATLAB root box populated with the absolute path to the R2024b MATLAB root folder](https://github.com/user-attachments/assets/00598e0c-468d-465b-b334-5c7ed750ee3f)
 
 4. In the **Build Steps** section, select **Add build step > Run MATLAB Tests**. Then, specify the artifacts to generate in the project workspace. In this example, the plugin generates test results in JUnit-style XML format and code coverage results in Cobertura XML format. Furthermore, to generate the coverage results, the plugin uses only the code in the `source` folder located in the root of the repository. For more information about the build steps provided by the plugin, see [Plugin Configuration Guide](../CONFIGDOC.md).
 
-![run_matlab_tests](https://github.com/user-attachments/assets/b6b7b811-d998-4fb9-bbf8-5de624bb5bd6)
+![Generate Test Artifacts and Generate Coverage Artifacts sections of the Run MATLAB Tests step with the JUnit‑style test results and Cobertura code coverage options selected](https://github.com/user-attachments/assets/b6b7b811-d998-4fb9-bbf8-5de624bb5bd6)
 
 5. In the **Post-build Actions** section, add the **Publish JUnit test result report** post-build action to publish the test results in JUnit-style XML format. Specify the path to the test report in the **Test report XMLs** box.
 
-![post_build_junit](https://github.com/user-attachments/assets/82b4c99a-59c3-41e4-946d-555fb9315f35)
+![Post‑build Actions section showing the Publish JUnit test result report action, with the Test report XMLs box populated with the JUnit‑style test results path specified in the Run MATLAB Tests step](https://github.com/user-attachments/assets/82b4c99a-59c3-41e4-946d-555fb9315f35)
 
 6. In the **Post-build Actions** section, add the **Record code coverage results** post-build action to publish the code coverage results in Cobertura XML format. Select `Cobertura Coverage Reports` from the **Coverage Parser** list and specify the path to the coverage report in the **Report File Pattern** box.
 
-![post_build_cobertura](https://github.com/user-attachments/assets/5af14bb9-f12e-4942-a3ad-957eec4a057b)
+![Record code coverage results post‑build action with Cobertura Coverage Reports selected from the Coverage Parser list and the Report File Pattern box populated with the Cobertura code coverage results path specified in the Run MATLAB Tests step](https://github.com/user-attachments/assets/5af14bb9-f12e-4942-a3ad-957eec4a057b)
 
 7. Click **Save** to save the project configuration settings. You can access and modify your settings at a later stage by selecting **Configure** in the project interface, which displays the project name at the upper-left corner of the page.
 
