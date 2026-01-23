@@ -527,7 +527,7 @@ To register a preinstalled version of MATLAB as a Jenkins tool:
 
 For example, register MATLAB R2024b as a Jenkins tool named `R2024b` on your Windows local agent.
 
-![MATLAB installations section showing how to register MATLAB R2024 installed at a specific location as a tool](https://github.com/user-attachments/assets/c0f68621-7a55-4a68-b6cf-aa6046a2c994)
+![MATLAB installations section showing how to register MATLAB R2024b installed at a specific location as a tool](https://github.com/user-attachments/assets/c0f68621-7a55-4a68-b6cf-aa6046a2c994)
 
 If your Jenkins instance includes remote agents, you can register MATLAB as a tool on the remote agents using the tool name that you specified on the local agent. For example, if you registered MATLAB R2024b as a tool on your local agent, you can register the same MATLAB version installed on a remote agent as a tool on that agent. To register a MATLAB version as a Jenkins tool on a remote agent: 
 
@@ -684,6 +684,7 @@ pipeline {
 ## See Also
 * [Run MATLAB Tests on Jenkins Server](examples/Run-MATLAB-Tests.md)<br/>
 * [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
+
 
 
 
