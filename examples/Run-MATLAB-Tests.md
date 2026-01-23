@@ -53,11 +53,11 @@ To build your freestyle project, select **Build Now** in the project interface. 
 
 Navigate to the project workspace by selecting **Workspace** in the project interface. The generated artifacts are in the `matlabTestArtifacts` folder of the workspace.
 
-![workspace](https://github.com/user-attachments/assets/1c1ff1f8-99b7-475f-8278-180ab0185833)
+![Project interface after selecting Workspace in the left navigation pane, showing links to the generated artifacts](https://github.com/user-attachments/assets/1c1ff1f8-99b7-475f-8278-180ab0185833)
 
 Select **Status** in the project interface. You can access the published artifacts by clicking the **Latest Test Result** and **Coverage Report** links. For example, click the **Latest Test Result** link to view the published JUnit-style test results. On the test results page, click the **(root)** link in the **All Tests** table. The table expands and lists information for each of the test classes within the Times Table App project.  
 
-![test_results](https://github.com/user-attachments/assets/51cc73aa-cf8b-455a-b210-7ecfbb772a72)
+![Test results page indicating that all tests passed, with the All Tests table showing information about the three test classes in the MATLAB project](https://github.com/user-attachments/assets/51cc73aa-cf8b-455a-b210-7ecfbb772a72)
 
 ## See Also
 * [Plugin Configuration Guide](../CONFIGDOC.md)<br/>
