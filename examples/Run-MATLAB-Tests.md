@@ -24,11 +24,11 @@ To follow the steps in this example:
 Create a new project and configure it by following these steps:
 1. In your Jenkins interface, select **New Item** on the left. A new page opens where you can choose the type of your project. Enter a project name, and then click **Freestyle project**. To confirm your choices, click **OK**.
 
-![create_project](https://github.com/user-attachments/assets/cedd846b-4460-43d7-9278-253c7ee7260e)
+![Project creation interface showing Freestyle project selected as the project type and myProject entered as the project name](https://github.com/user-attachments/assets/cedd846b-4460-43d7-9278-253c7ee7260e)
 
 2. On the project configuration page, in the **Source Code Management** section, specify the repository that hosts your tests.
 
-![source_control](https://github.com/user-attachments/assets/3b888ed9-b521-4c3c-a932-ad5f9de563c3)
+![Source Code Management section of the project configuration page with the Repository URL box populated with a GitHub repository URL and the Branch Specifier box specifying the main branch](https://github.com/user-attachments/assets/3b888ed9-b521-4c3c-a932-ad5f9de563c3)
 
 3. In the **Environment** section, select **Use MATLAB version** and specify the MATLAB version you want to use in the build. If your preferred MATLAB version is not listed under **Use MATLAB version**, enter the full path to its root folder in the **MATLAB root** box. 
 
