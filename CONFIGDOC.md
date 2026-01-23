@@ -160,12 +160,12 @@ To configure the plugin for a multi-configuration project, specify the MATLAB ve
 
 There are two ways to specify multiple MATLAB versions in a multi-configuration project: using the **MATLAB** axis or using a user-defined axis.
 
-![add_axis](https://github.com/user-attachments/assets/34052acb-1cda-45f6-b1b5-81a16dec1b71)
+![Configuration Matrix section of a multi‑configuration project interface showing MATLAB and User‑defined Axis as options for adding an axis](https://github.com/user-attachments/assets/34052acb-1cda-45f6-b1b5-81a16dec1b71)
 
 ### Add MATLAB Axis
 If your Jenkins instance includes MATLAB versions registered as tools, then **MATLAB** appears as an option when you click **Add axis** in the **Configuration Matrix** section. By adding the **MATLAB** axis, you can select MATLAB versions and add them as axis values to your matrix configuration. The list includes all MATLAB versions that have been registered as Jenkins tools. In this example, there are two MATLAB versions registered as tools. In each build iteration, the plugin prepends one of the selected versions to the `PATH` environment variable and invokes it to run the build. 
 
-![matlab_axis](https://github.com/user-attachments/assets/7746f251-0dab-4e67-bc91-2d1a325ddb61)
+![Configuration Matrix section showing the MATLAB axis with registered MATLAB versions R2024a and R2024b listed as axis values, both selected for the matrix build](https://github.com/user-attachments/assets/7746f251-0dab-4e67-bc91-2d1a325ddb61)
 
 For more information about registering a MATLAB version as a tool, see [Register MATLAB as Jenkins Tool](#register-matlab-as-jenkins-tool).
 
@@ -176,11 +176,11 @@ For more information about registering a MATLAB version as a tool, see [Register
 ### Add User-Defined Axis
 If you do not specify the **MATLAB** axis, add a user-defined axis in the **Configuration Matrix** section to specify the MATLAB versions in the build. Enter the name of the axis in the **Name** box and its values in the **Values** box. Separate the values with a space. For instance, specify two MATLAB versions to run the same set of tests.
 
-![user_defined_axis](https://github.com/user-attachments/assets/30ab25e5-83f9-483a-937c-1d9eaa4246fb)
+![Configuration Matrix section after adding a user‑defined axis, showing the Name and Values boxes. The Name box is populated with VERSION, and the Values box contains R2024a and R2024b separated by a space.](https://github.com/user-attachments/assets/30ab25e5-83f9-483a-937c-1d9eaa4246fb)
 
 When you add a user-defined axis to specify MATLAB versions, you must also specify where they are installed. To specify installation locations, select **Use MATLAB version** in the **Environment** section and then construct a root folder path using the axis name. In this example, `$VERSION` in the **MATLAB root** box is replaced by one axis value per build iteration. 
 
-![environment_matrix](https://github.com/user-attachments/assets/26822cf5-2064-4620-86bb-24c0eb123428)
+![Environment section showing Use MATLAB version selected with Custom chosen from the drop‑down list, and the MATLAB root box populated with a root folder path constructed using the user‑defined axis VERSION](https://github.com/user-attachments/assets/26822cf5-2064-4620-86bb-24c0eb123428)
 
 A multi-configuration project creates a separate workspace for each user-defined axis value. If you specify the full paths to where different MATLAB versions are installed as axis values, the plugin fails to create separate workspaces and fails the build.
 
@@ -188,7 +188,7 @@ A multi-configuration project creates a separate workspace for each user-defined
 
 You can add several axes in the **Configuration Matrix** section. For example, add the **MATLAB** axis to specify MATLAB versions and the user-defined `TEST_TAG` axis to specify the test tags for a group of tests.
 
-![axis_matlab_testtag](https://github.com/user-attachments/assets/ed01e147-485f-48ab-b5e6-184465d3b492)
+![Configuration Matrix section showing both the MATLAB and User‑defined Axis subsections. The MATLAB subsection includes registered MATLAB versions R2024a and R2024b as axis values, both selected for the matrix build. In the User‑defined Axis subsection, the Name box is populated with TEST_TAG, and the Values box contains FeatureA, FeatureB, and FeatureC separated by spaces.](https://github.com/user-attachments/assets/ed01e147-485f-48ab-b5e6-184465d3b492)
 
 Once you have specified the axes, add the required build steps in the **Build Steps** section:
 
@@ -684,6 +684,7 @@ pipeline {
 ## See Also
 * [Run MATLAB Tests on Jenkins Server](examples/Run-MATLAB-Tests.md)<br/>
 * [Continuous Integration with MATLAB and Simulink](https://www.mathworks.com/solutions/continuous-integration.html)
+
 
 
 
