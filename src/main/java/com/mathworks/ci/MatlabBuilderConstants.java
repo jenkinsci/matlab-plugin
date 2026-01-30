@@ -9,9 +9,7 @@ public class MatlabBuilderConstants {
     public static final double BASE_MATLAB_VERSION_NO_APP_ICON_SUPPORT = 8.6;
     public static final double BASE_MATLAB_VERSION_BATCH_SUPPORT = 9.5;
     public static final double BASE_MATLAB_VERSION_COBERTURA_SUPPORT = 9.3;
-    public static final double BASE_MATLAB_VERSION_HTML_SUPPORT = 9.3;
     public static final double BASE_MATLAB_VERSION_MODELCOVERAGE_SUPPORT = 9.5;
-    public static final double BASE_MATLAB_VERSION_MODELCOVERAGE_SUPPORT_HTML = 9.5;
     public static final double BASE_MATLAB_VERSION_EXPORTSTMRESULTS_SUPPORT = 9.6;
 
     public static final String MATLAB_RUNNER_TARGET_FILE = "Builder.matlab.runner.target.file.name";
