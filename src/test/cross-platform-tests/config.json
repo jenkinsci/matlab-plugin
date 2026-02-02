@@ -1,0 +1,98 @@
+[
+    {
+        "CASE_NAME": "Scenario A: JUnit XML Generation",
+        "ARTIFACT_NAME": "junittestresults.xml",
+        "EXPECTED_CONTENT": "testAddition",
+        "EXPECTED_LOG": "Prepending MATLAB to the PATH",
+        "CONFIG": {
+            "junitArtifact": [
+                "JunitArtifact",
+                "matlabTestArtifacts/junittestresults.xml"
+            ],
+            "pdfReportArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "tapArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "coberturaArtifact": [
+                "NullArtifact",
+                null
+            ]
+        }
+    },
+    {
+        "CASE_NAME": "Scenario B: PDF Report Generation",
+        "ARTIFACT_NAME": "testreport.pdf",
+        "EXPECTED_CONTENT": "%PDF",
+        "EXPECTED_LOG": "Generating test report",
+        "CONFIG": {
+            "junitArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "pdfReportArtifact": [
+                "PdfArtifact",
+                "matlabTestArtifacts/testreport.pdf"
+            ],
+            "tapArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "coberturaArtifact": [
+                "NullArtifact",
+                null
+            ]
+        }
+    },
+    {
+        "CASE_NAME": "Scenario C: TAP Results Generation",
+        "ARTIFACT_NAME": "taptestresults.tap",
+        "EXPECTED_CONTENT": "TAP version 13",
+        "EXPECTED_LOG": "TAPPlugin",
+        "CONFIG": {
+            "junitArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "pdfReportArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "tapArtifact": [
+                "TapArtifact",
+                "matlabTestArtifacts/taptestresults.tap"
+            ],
+            "coberturaArtifact": [
+                "NullArtifact",
+                null
+            ]
+        }
+    },
+    {
+        "CASE_NAME": "Scenario D: Cobertura Coverage Generation",
+        "ARTIFACT_NAME": "cobertura.xml",
+        "EXPECTED_CONTENT": "coverage",
+        "EXPECTED_LOG": "CodeCoveragePlugin",
+        "CONFIG": {
+            "junitArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "pdfReportArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "tapArtifact": [
+                "NullArtifact",
+                null
+            ],
+            "coberturaArtifact": [
+                "CoberturaArtifact",
+                "matlabTestArtifacts/cobertura.xml"
+            ]
+        }
+    }
+]
