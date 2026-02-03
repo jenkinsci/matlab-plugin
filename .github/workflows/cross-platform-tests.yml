@@ -1,0 +1,90 @@
+name: Cross-Platform Tests
+on: workflow_dispatch 
+
+jobs:
+  cross-platform-tests:
+    name: Run Cross Platform Tests
+    runs-on: self-hosted
+    defaults:
+      run:
+        shell: powershell
+    env:
+      JENKINS_URL: "http://localhost:8080"
+      JENKINS_USER: "guest"
+      JENKINS_TOKEN: ${{ secrets.JENKINS_TOKEN }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.sha }}
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      - name: Build Plugin
+        run: mvn package -DskipTests
+
+      - name: Move Plugin to Machine
+        run: |
+          Write-Host "Downloading Jenkins CLI..."
+          Invoke-WebRequest -Uri "$env:JENKINS_URL/jnlpJars/jenkins-cli.jar" -OutFile "jenkins-cli.jar"
+          
+          $absPath = Convert-Path "target\matlab.hpi"
+          $fileUri = "file:///$($absPath.Replace('\', '/'))"
+          
+          Write-Host "Installing plugin from: $fileUri"
+          
+          $installCmd = "java -jar jenkins-cli.jar -s $env:JENKINS_URL -auth $env:JENKINS_USER`:$env:JENKINS_TOKEN install-plugin $fileUri"
+          cmd /c $installCmd
+
+          Write-Host "Plugin staged."
+          exit 0
+
+      - name: Restart Jenkins Server
+        run: |
+          Write-Host "Restarting Jenkins Server..."
+          try {
+            java -jar jenkins-cli.jar -s $env:JENKINS_URL -auth "$($env:JENKINS_USER):$($env:JENKINS_TOKEN)" restart
+          } catch {
+             Write-Host "Restart command sent."
+          }
+          
+          Write-Host "Waiting for Jenkins to restart..."
+          Start-Sleep -Seconds 10
+          $count = 0
+          do {
+            Start-Sleep -Seconds 5
+            $count++
+            try {
+              $response = Invoke-WebRequest -Uri "$env:JENKINS_URL/login" -UseBasicParsing -ErrorAction Stop
+              if ($response.StatusCode -eq 200) { break }
+            } catch {}
+            
+            if ($count -gt 60) {
+              Write-Error "Timeout waiting for Jenkins to restart."
+              exit 1
+            }
+          } while ($true)
+          Write-Host "Jenkins Up."
+
+      - name: Set up Python 3
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: |
+          pip install python-jenkins requests
+
+      - name: Run cross platform tests
+        run: |
+          Write-Host "Running verification..."
+          python src\test\cross-platform-tests\jenkins_verifier.py `
+            --url $env:JENKINS_URL `
+            --user $env:JENKINS_USER `
+            --token $env:JENKINS_TOKEN `
+            --job "test_project"
