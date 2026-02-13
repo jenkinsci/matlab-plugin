@@ -11,8 +11,8 @@ import argparse
 import sys
 import requests
 import os
-import xml.etree.ElementTree as ET
 
+# --- CONSTANTS ---
 ARTIFACTS_TO_VERIFY = [
     {"name": "JUnit XML", "filename": "junittestresults.xml", "expected_content": "testAddition"},
     {"name": "PDF Report", "filename": "testreport.pdf", "expected_content": "%PDF"},
@@ -20,52 +20,7 @@ ARTIFACTS_TO_VERIFY = [
     {"name": "Cobertura XML", "filename": "cobertura.xml", "expected_content": "coverage"}
 ]
 
-JENKINS_XML_MAP = {
-    "junitArtifact": ("JunitArtifact", "matlabTestArtifacts/junittestresults.xml"),
-    "pdfReportArtifact": ("PdfArtifact", "matlabTestArtifacts/testreport.pdf"),
-    "tapArtifact": ("TapArtifact", "matlabTestArtifacts/taptestresults.tap"),
-    "coberturaArtifact": ("CoberturaArtifact", "matlabTestArtifacts/cobertura.xml")
-}
-
-def configure_freestyle_job(server, job_name):
-    print(f"   [CONFIG] Configuring job '{job_name}' to generate all artifacts...")
-    config_xml = server.get_job_config(job_name)
-    ET.register_namespace("", "")
-    root = ET.fromstring(config_xml)
-    
-    base_class_package = "com.mathworks.ci.freestyle.RunMatlabTestsBuilder$"
-    changes = 0
-
-    for tag_name, (class_suffix, file_path) in JENKINS_XML_MAP.items():
-        for elem in root.iter(tag_name):
-            new_class = f"{base_class_package}{class_suffix}"
-            current_class = elem.get('class', '')
-            
-            current_xml_str = ET.tostring(elem, encoding='unicode')
-            path_needs_update = file_path not in current_xml_str
-            
-            if current_class != new_class or path_needs_update:
-                elem.set('class', new_class)
-                for child in list(elem): elem.remove(child) 
-                
-                elem.text = None
-                path_elem = ET.Element("filePath")
-                path_elem.text = file_path
-                elem.append(path_elem)
-                changes += 1
-
-    for archiver in root.iter("hudson.tasks.ArtifactArchiver"):
-        for artifacts_tag in archiver.iter("artifacts"):
-            if artifacts_tag.text != "matlabTestArtifacts/**/*":
-                artifacts_tag.text = "matlabTestArtifacts/**/*"
-                changes += 1
-
-    if changes > 0:
-        new_config_str = ET.tostring(root, encoding='utf-8', method='xml').decode('utf-8')
-        server.reconfig_job(job_name, new_config_str)
-        print("   [CONFIG] Job reconfigured successfully.")
-    else:
-        print("   [CONFIG] Job configuration was already correct.")
+# --- HELPER FUNCTIONS ---
 
 def trigger_build(server, job_name):
     print(f"   [ACTION] Triggering build...")
@@ -116,6 +71,88 @@ def verify_artifact(server, base_url, auth, job_name, build_number, case):
         print(f"      -> [ERROR] {e}")
         return False
 
+def cleanup_build(base_url, auth, job_name, build_number):
+    """Deletes the build record."""
+    if not build_number:
+        return
+        
+    print(f"   [CLEANUP] Deleting Build #{build_number}...")
+    try:
+        base = base_url.rstrip('/')
+        delete_url = f"{base}/job/{job_name}/{build_number}/doDelete"
+        res = requests.post(delete_url, auth=auth)
+        
+        if res.status_code in [200, 204, 302]:
+            print("      -> Build deleted successfully.")
+        else:
+            print(f"      -> [WARNING] Failed to delete build. Status: {res.status_code}")
+            
+    except Exception as e:
+        print(f"      -> [WARNING] Failed to delete build: {e}")
+
+def delete_matlab_tools(server, job_name, build_number):
+    """
+    Identifies which node ran the build and performs a REMOTE delete
+    of the MPM-installed MATLAB directory on that specific node.
+    """
+    try:
+        # 1. Get Build Info to find out WHICH node ran the build
+        info = server.get_build_info(job_name, build_number)
+        node_name = info.get('builtOn', '')  # Empty string means 'built on master'
+        
+        # Use specific machine name for logging
+        display_node = node_name if node_name else "master"
+        print(f"   [CLEANUP] Removing MATLAB installation from {display_node}...")
+
+        # 2. Groovy Script using FilePath (Works for both Master and Remote Slaves)
+        groovy_script = f"""
+        import jenkins.model.*
+        import hudson.FilePath
+        
+        def nodeName = "{node_name}"
+        def node = null
+        
+        if (nodeName == "") {{
+            node = Jenkins.instance
+        }} else {{
+            node = Jenkins.instance.getNode(nodeName)
+        }}
+
+        if (node == null) {{
+            println "ERROR: Node '" + nodeName + "' no longer exists."
+            return
+        }}
+
+        def rootPath = node.getRootPath()
+        if (rootPath == null) {{
+            println "ERROR: Node is offline."
+            return
+        }}
+
+        // Target the specific MPM installation folder
+        def toolDir = rootPath.child("tools/com.mathworks.ci.MatlabInstallation")
+        
+        if (toolDir.exists()) {{
+            try {{
+                toolDir.deleteRecursive()
+                println "SUCCESS: Deleted MATLAB tools on " + node.getDisplayName()
+            }} catch (Exception e) {{
+                println "ERROR: Failed to delete. " + e.getMessage()
+            }}
+        }} else {{
+            println "SKIP: Directory not found on " + node.getDisplayName() + " (already clean)."
+        }}
+        """
+        
+        output = server.run_script(groovy_script)
+        print(f"      -> {output.strip()}")
+
+    except Exception as e:
+        print(f"      -> [WARNING] Remote cleanup failed: {e}")
+
+
+# --- LOGIC SEPARATION ---
+
 def parse_arguments():
     parser = argparse.ArgumentParser()
     parser.add_argument("--url", required=True)
@@ -125,24 +162,27 @@ def parse_arguments():
     return parser.parse_args()
 
 def run_test_suite(args):
+    server = jenkins.Jenkins(args.url, username=args.user, password=args.token)
+    build_num = None
+
+    print("=== STARTING TEST SUITE ===")
+    
     try:
-        server = jenkins.Jenkins(args.url, username=args.user, password=args.token)
-        
-        print("=== STARTING TEST SUITE ===")
-        
-        configure_freestyle_job(server, args.job)
-        
+        # 1. Trigger Build
         queue_id = trigger_build(server, args.job)
         build_num = get_build_number(server, queue_id)
+        
         if not build_num: 
             print("   [FATAL] Could not get build number.")
             return False
         
+        # 2. Wait for Finish
         result = wait_for_completion(server, args.job, build_num)
         if result != 'SUCCESS':
             print(f"   [FATAL] Build failed with status: {result}")
             return False
 
+        # 3. Verify Artifacts
         failed = []
         for artifact in ARTIFACTS_TO_VERIFY:
             if not verify_artifact(server, args.url, (args.user, args.token), args.job, build_num, artifact):
@@ -162,6 +202,16 @@ def run_test_suite(args):
     except Exception as e:
         print(f"   [CRITICAL ERROR] {e}")
         return False
+    finally:
+        # 4. Cleanup Phase (ORDER CHANGED: Tool cleanup FIRST, Build record SECOND)
+        print("\n" + "-"*20)
+        
+        if build_num:
+            # First: Clean the tools (needs build info to find the node)
+            delete_matlab_tools(server, args.job, build_num)
+            
+            # Second: Delete the build record
+            cleanup_build(args.url, (args.user, args.token), args.job, build_num)
 
 # ==========================================
 # MAIN EXECUTION
