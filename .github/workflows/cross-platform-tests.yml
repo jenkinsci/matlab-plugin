@@ -1,5 +1,5 @@
 name: Cross-Platform Tests
-on: workflow_dispatch 
+on: [workflow_dispatch, push]
 
 jobs:
   cross-platform-tests:
