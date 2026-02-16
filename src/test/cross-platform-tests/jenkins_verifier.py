@@ -9,12 +9,13 @@ import jenkins
 import argparse
 import sys
 import utils
+import requests
 
 ARTIFACTS_TO_VERIFY = [
-    {"name": "JUnit XML", "filename": "junittestresults.xml", "expected_content": "testAddition"},
-    {"name": "TAP Results", "filename": "taptestresults.tap", "expected_content": "testAddition"},
-     {"name": "PDF Report", "filename": "testreport.pdf", "expected_content": "%PDF"},
-    {"name": "Cobertura XML", "filename": "cobertura.xml", "expected_content": "coverage"}
+    {"name": "JUnit XML", "filename": "matlabTestArtifacts/junittestresults.xml", "expected_content": "testAddition"},
+    {"name": "TAP Results", "filename": "matlabTestArtifacts/taptestresults.tap", "expected_content": "testAddition"},
+     {"name": "PDF Report", "filename": "matlabTestArtifacts/testreport.pdf", "expected_content": "%PDF"},
+    {"name": "Cobertura XML", "filename": "matlabTestArtifacts/cobertura.xml", "expected_content": "coverage"}
 ]
 
 def parse_arguments():
@@ -46,7 +47,7 @@ def verify_artifact_is_generated(server, base_url, auth, job_name, build_number,
         else:
             print(f"      -> [FAIL] Content mismatch. Expected: {case['expected_content']}")
             return False
-    except:
+    except Exception as e:
         print(f"      -> [ERROR] {e}")
         return False
 
