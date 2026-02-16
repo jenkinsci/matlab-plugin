@@ -28,32 +28,6 @@ def wait_for_completion(server, job_name, build_number):
         except: pass
         time.sleep(5)
 
-def verify_artifact(server, base_url, auth, job_name, build_number, case):
-    print(f"   [TEST] Verifying Artifact: {case['name']}")
-    try:
-        info = server.get_build_info(job_name, build_number)
-        artifacts = info.get('artifacts', [])
-        found = next((a for a in artifacts if case['filename'] in a['fileName']), None)
-        
-        if not found:
-            print(f"      -> [FAIL] Artifact '{case['filename']}' not found in Jenkins archive.")
-            return False
-            
-        url = f"{base_url.rstrip('/')}/job/{job_name}/{build_number}/artifact/{found['relativePath']}"
-        res = requests.get(url, auth=auth)
-        
-        snippet = res.content[:100].decode('utf-8', errors='ignore')
-        
-        if case['expected_content'] in snippet or case['expected_content'] in res.text:
-            print(f"      -> [PASS] Content verified: found '{case['expected_content']}'")
-            return True
-        else:
-            print(f"      -> [FAIL] Content mismatch. Expected to find: {case['expected_content']}")
-            return False
-    except Exception as e:
-        print(f"      -> [ERROR] {e}")
-        return False
-
 def print_console_output(server, job_name, build_number):
     print(f"   [ACTION] Printing Console Output...")
     try:

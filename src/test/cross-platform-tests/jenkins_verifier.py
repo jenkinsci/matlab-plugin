@@ -25,6 +25,22 @@ def parse_arguments():
     parser.add_argument("--job", required=True)
     return parser.parse_args()
 
+def verify_artifact_is_generated(server, base_url, auth, job_name, build_number, case):
+    print(f"   [TEST] Verifying: {case['name']}")
+    try:
+        info = server.get_build_info(job_name, build_number)
+        artifacts = info.get('artifacts', [])
+        found = next((a for a in artifacts if case['filename'] in a['fileName']), None)
+        
+        if not found: return False
+            
+        url = f"{base_url.rstrip('/')}/job/{job_name}/{build_number}/artifact/{found['relativePath']}"
+        res = requests.get(url, auth=auth)
+        
+        return case['expected_content'] in res.text or case['expected_content'].encode() in res.content
+    except:
+        return False
+
 def run_test_suite(args):
     server = jenkins.Jenkins(args.url, username=args.user, password=args.token)
     build_num = None
@@ -46,7 +62,7 @@ def run_test_suite(args):
 
         failed = []
         for artifact in ARTIFACTS_TO_VERIFY:
-            if not utils.verify_artifact(server, args.url, (args.user, args.token), args.job, build_num, artifact):
+            if not verify_artifact_is_generated(server, args.url, (args.user, args.token), args.job, build_num, artifact):
                 failed.append(artifact['name'])
 
         print("\n" + "="*40)
@@ -68,7 +84,7 @@ def run_test_suite(args):
         
         if build_num:
             utils.print_console_output(server, args.job, build_num)
-            
+
             utils.delete_matlab_tools(server, args.job, build_num)
             
             utils.cleanup_build(args.url, (args.user, args.token), args.job, build_num)
