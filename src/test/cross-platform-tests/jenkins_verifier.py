@@ -32,13 +32,22 @@ def verify_artifact_is_generated(server, base_url, auth, job_name, build_number,
         artifacts = info.get('artifacts', [])
         found = next((a for a in artifacts if case['filename'] in a['fileName']), None)
         
-        if not found: return False
+        if not found:
+            print(f"      -> [FAIL] Artifact '{case['filename']}' not found in Jenkins archive.") 
+            return False
             
         url = f"{base_url.rstrip('/')}/job/{job_name}/{build_number}/artifact/{found['relativePath']}"
         res = requests.get(url, auth=auth)
         
-        return case['expected_content'] in res.text or case['expected_content'].encode() in res.content
+        snippet = res.content[:100].decode('utf-8', errors='ignore')
+        if case['expected_content'] in snippet or case['expected_content'] in res.text:
+            print(f"      -> [PASS] Content verified.")
+            return True
+        else:
+            print(f"      -> [FAIL] Content mismatch. Expected: {case['expected_content']}")
+            return False
     except:
+        print(f"      -> [ERROR] {e}")
         return False
 
 def run_test_suite(args):
