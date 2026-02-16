@@ -12,10 +12,10 @@ import utils
 import requests
 
 ARTIFACTS_TO_VERIFY = [
-    {"name": "JUnit XML", "filename": "matlabTestArtifacts/junittestresults.xml", "expected_content": "testAddition"},
-    {"name": "TAP Results", "filename": "matlabTestArtifacts/taptestresults.tap", "expected_content": "testAddition"},
-     {"name": "PDF Report", "filename": "matlabTestArtifacts/testreport.pdf", "expected_content": "%PDF"},
-    {"name": "Cobertura XML", "filename": "matlabTestArtifacts/cobertura.xml", "expected_content": "coverage"}
+    {"name": "JUnit XML", "filename": "junittestresults.xml", "expected_content": "testAddition"},
+    {"name": "TAP Results", "filename": "taptestresults.tap", "expected_content": "testAddition"},
+     {"name": "PDF Report", "filename": "testreport.pdf", "expected_content": "%PDF"},
+    {"name": "Cobertura XML", "filename": "cobertura.xml", "expected_content": "coverage"}
 ]
 
 def parse_arguments():
@@ -27,25 +27,26 @@ def parse_arguments():
     return parser.parse_args()
 
 def verify_artifact_is_generated(server, base_url, auth, job_name, build_number, case):
-    print(f"   [TEST] Verifying: {case['name']}")
+    print(f"   [TEST] Verifying Artifact: {case['name']}")
     try:
         info = server.get_build_info(job_name, build_number)
         artifacts = info.get('artifacts', [])
         found = next((a for a in artifacts if case['filename'] in a['fileName']), None)
         
         if not found:
-            print(f"      -> [FAIL] Artifact '{case['filename']}' not found in Jenkins archive.") 
+            print(f"      -> [FAIL] Artifact '{case['filename']}' not found in Jenkins archive.")
             return False
             
         url = f"{base_url.rstrip('/')}/job/{job_name}/{build_number}/artifact/{found['relativePath']}"
         res = requests.get(url, auth=auth)
         
         snippet = res.content[:100].decode('utf-8', errors='ignore')
+        
         if case['expected_content'] in snippet or case['expected_content'] in res.text:
-            print(f"      -> [PASS] Content verified.")
+            print(f"      -> [PASS] Content verified: found '{case['expected_content']}'")
             return True
         else:
-            print(f"      -> [FAIL] Content mismatch. Expected: {case['expected_content']}")
+            print(f"      -> [FAIL] Content mismatch. Expected to find: {case['expected_content']}")
             return False
     except Exception as e:
         print(f"      -> [ERROR] {e}")
@@ -94,7 +95,7 @@ def run_test_suite(args):
         
         if build_num:
             utils.print_console_output(server, args.job, build_num)
-
+            
             utils.delete_matlab_tools(server, args.job, build_num)
             
             utils.cleanup_build(args.url, (args.user, args.token), args.job, build_num)
