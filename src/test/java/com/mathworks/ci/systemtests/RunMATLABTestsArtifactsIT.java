@@ -114,7 +114,7 @@ public class RunMATLABTestsArtifactsIT {
     }
     
     @Test
-    public void verifyHTMLReportFilePathInput() throws Exception{
+    public void verifyHTMLReportFolderPathInput() throws Exception{
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
         project.getBuildersList().add(this.testBuilder);
@@ -123,8 +123,8 @@ public class RunMATLABTestsArtifactsIT {
         HtmlCheckBoxInput htmlReportChkbx = page.getElementByName("htmlReportArtifact");
         htmlReportChkbx.setChecked(true);
 
-        HtmlTextInput HTMLFilePathInput=(HtmlTextInput) page.getElementByName("_.htmlTestReportFilePath");
-        Assert.assertEquals(TestMessage.getValue("htmltestreport.file.path"),HTMLFilePathInput.getValueAttribute());
+        HtmlTextInput HTMLFolderPathInput=(HtmlTextInput) page.getElementByName("_.htmlTestReportFolderPath");
+        Assert.assertEquals(TestMessage.getValue("htmltestreport.folder.path"),HTMLFolderPathInput.getValueAttribute());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class RunMATLABTestsArtifactsIT {
     }
 
     @Test
-    public void verifyHTMLCodeCoverageFilePathInput() throws Exception {
+    public void verifyHTMLCodeCoverageFolderPathInput() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
         project.getBuildersList().add(this.testBuilder);
@@ -151,8 +151,8 @@ public class RunMATLABTestsArtifactsIT {
         HtmlCheckBoxInput htmlChkBx = page.getElementByName("htmlCodeCoverageArtifact");
         htmlChkBx.setChecked(true);
 
-        HtmlTextInput htmlCodeCoverageFileInput=(HtmlTextInput) page.getElementByName("_.htmlCodeCoverageFilePath");
-        Assert.assertEquals(TestMessage.getValue("htmlcodecoverage.file.path"),htmlCodeCoverageFileInput.getValueAttribute());
+        HtmlTextInput htmlCodeCoverageFolderInput=(HtmlTextInput) page.getElementByName("_.htmlCodeCoverageFolderPath");
+        Assert.assertEquals(TestMessage.getValue("htmlcodecoverage.folder.path"),htmlCodeCoverageFolderInput.getValueAttribute());
     }
 
 
@@ -171,7 +171,7 @@ public class RunMATLABTestsArtifactsIT {
     }
     
     @Test
-    public void verifyHTMLModelCoverageFilePathInput() throws Exception {
+    public void verifyHTMLModelCoverageFolderPathInput() throws Exception {
         this.buildWrapper.setMatlabBuildWrapperContent(new MatlabBuildWrapperContent(Message.getValue("matlab.custom.location"), Utilities.getMatlabRoot()));
         project.getBuildWrappersList().add(this.buildWrapper);
         project.getBuildersList().add(this.testBuilder);
@@ -180,8 +180,8 @@ public class RunMATLABTestsArtifactsIT {
         HtmlCheckBoxInput modelCoverageChkBx = page.getElementByName("htmlModelCoverageArtifact");
         modelCoverageChkBx.setChecked(true);
 
-        HtmlTextInput htmlModelCoverageFileInput=(HtmlTextInput) page.getElementByName("_.htmlModelCoverageFilePath");
-        Assert.assertEquals(TestMessage.getValue("htmlmodelcoverage.file.path"),htmlModelCoverageFileInput.getValueAttribute());
+        HtmlTextInput htmlModelCoverageFolderInput=(HtmlTextInput) page.getElementByName("_.htmlModelCoverageFolderPath");
+        Assert.assertEquals(TestMessage.getValue("htmlmodelcoverage.folder.path"),htmlModelCoverageFolderInput.getValueAttribute());
     }
 
 

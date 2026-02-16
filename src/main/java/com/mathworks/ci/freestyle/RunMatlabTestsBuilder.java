@@ -200,8 +200,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         return this.htmlCodeCoverageArtifact;
     }
 
-    public String getHtmlCodeCoverageFilePath() {
-        return this.getHtmlCodeCoverageArtifact().getFilePath();
+    public String getHtmlCodeCoverageFolderPath() {
+        return this.getHtmlCodeCoverageArtifact().getFolderPath();
     }
 
     public Artifact getStmResultsArtifact() {
@@ -224,8 +224,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         return this.htmlModelCoverageArtifact;
     }
 
-    public String getHtmlModelCoverageFilePath() {
-        return this.getHtmlModelCoverageArtifact().getFilePath();
+    public String getHtmlModelCoverageFolderPath() {
+        return this.getHtmlModelCoverageArtifact().getFolderPath();
     }
 
     public Artifact getPdfReportArtifact() {
@@ -240,8 +240,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         return this.htmlReportArtifact;
     }
 
-    public String getHtmlTestReportFilePath() {
-        return this.getHtmlReportArtifact().getFilePath();
+    public String getHtmlTestReportFolderPath() {
+        return this.getHtmlReportArtifact().getFolderPath();
     }
 
     public SelectByTag getSelectByTag() {
@@ -456,14 +456,14 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 build, workspace, env, launcher, listener,
                 this.getStartupOptionsAsString(),
                 this.getPdfReportFilePath(),
-                this.getHtmlTestReportFilePath(),
+                this.getHtmlTestReportFolderPath(),
                 this.getTapReportFilePath(),
                 this.getJunitReportFilePath(),
                 this.getCoberturaReportFilePath(),
-                this.getHtmlCodeCoverageFilePath(),
+                this.getHtmlCodeCoverageFolderPath(),
                 this.getStmResultsFilePath(),
                 this.getModelCoverageFilePath(),
-                this.getHtmlModelCoverageFilePath(),
+                this.getHtmlModelCoverageFolderPath(),
                 this.getSelectByTagAsString(),
                 this.getLoggingLevel(),
                 this.getOutputDetail(),
@@ -516,13 +516,13 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         private static final String HTML_TEST_REPORT = "HTMLTestReport";
 
         @DataBoundConstructor
-        public HtmlReportArtifact(String htmlTestReportFilePath) {
-            super(htmlTestReportFilePath);
+        public HtmlReportArtifact(String htmlTestReportFolderPath) {
+            super(htmlTestReportFolderPath);
         }
 
         @Override
-        public void addFilePathArgTo(Map<String, String> inputArgs) {
-            inputArgs.put(HTML_TEST_REPORT, getFilePath());
+        public void addFolderPathArgTo(Map<String, String> inputArgs) {
+            inputArgs.put(HTML_TEST_REPORT, getFolderPath());
         }
     }
 
@@ -576,13 +576,13 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         private static final String HTML_CODE_COVERAGE = "HTMLCodeCoverage";
 
         @DataBoundConstructor
-        public HtmlCodeCoverageArtifact(String htmlCodeCoverageFilePath) {
-            super(htmlCodeCoverageFilePath);
+        public HtmlCodeCoverageArtifact(String htmlCodeCoverageFolderPath) {
+            super(htmlCodeCoverageFolderPath);
         }
 
         @Override
-        public void addFilePathArgTo(Map<String, String> inputArgs) {
-            inputArgs.put(HTML_CODE_COVERAGE, getFilePath());
+        public void addFolderPathArgTo(Map<String, String> inputArgs) {
+            inputArgs.put(HTML_CODE_COVERAGE, getFolderPath());
         }
     }
 
@@ -621,13 +621,13 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         private static final String HTML_MODEL_COVERAGE = "HTMLModelCoverage";
 
         @DataBoundConstructor
-        public HtmlModelCoverageArtifact(String htmlModelCoverageFilePath) {
-            super(htmlModelCoverageFilePath);
+        public HtmlModelCoverageArtifact(String htmlModelCoverageFolderPath) {
+            super(htmlModelCoverageFolderPath);
         }
 
         @Override
-        public void addFilePathArgTo(Map<String, String> inputArgs) {
-            inputArgs.put(HTML_MODEL_COVERAGE, getFilePath());
+        public void addFolderPathArgTo(Map<String, String> inputArgs) {
+            inputArgs.put(HTML_MODEL_COVERAGE, getFolderPath());
         }
     }
 
@@ -636,6 +636,11 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         @Override
         public void addFilePathArgTo(Map<String, String> inputArgs) {
 
+        }
+
+        @Override
+        public void addFolderPathArgTo(Map<String, String> inputArgs) {
+            
         }
 
         @Override
@@ -648,14 +653,21 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
             return null;
         }
 
+        @Override
+        public String getFolderPath() {
+            return null;
+        }
+
     }
 
     public static abstract class AbstractArtifactImpl implements Artifact {
 
         private String filePath;
+        private String folderPath;
 
         protected AbstractArtifactImpl(String path) {
             this.filePath = path;
+            this.folderPath = path;
         }
 
         public boolean getSelected() {
@@ -669,12 +681,34 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         public String getFilePath() {
             return this.filePath;
         }
+
+        public void setFolderPath(String path) {
+            this.folderPath = path;
+        }
+
+        public String getFolderPath() {
+            return this.folderPath;
+        }
+
+        @Override
+        public void addFilePathArgTo(Map<String, String> inputArgs) {
+            
+        }
+    
+        @Override
+        public void addFolderPathArgTo(Map<String, String> inputArgs) {
+            
+        }
     }
 
     public interface Artifact {
         public void addFilePathArgTo(Map<String, String> inputArgs);
 
+        public void addFolderPathArgTo(Map<String, String> inputArgs);
+
         public String getFilePath();
+
+        public String getFolderPath();
 
         public boolean getSelected();
     }
