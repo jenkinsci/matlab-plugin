@@ -1,6 +1,11 @@
 <div>
 <br>
 Generate a test report in HTML format. By default, the plugin generates a multifile report <b>htmltestreport</b> and stores it in the <b>matlabTestArtifacts</b> folder of the project workspace. 
-To override the default report name and location, specify a path relative to the project folder in the <b>Folder path</b> box. If the text box is empty, MATLAB does not generate a report.
-<br>
+To override the default report name and location, specify a path relative to the project folder in the <b>Folder path</b> box. If the text box is empty, the plugin does not generate a report.
+<br><br>
+Due to Jenkins Content Security Policy rules, the generated report might not open properly from within the Jenkins workspace. 
+Consider copying the report to a location outside the workspace and opening it from there. For more information, 
+see <a href="http://wiki.jenkins.io/display/JENKINS/Configuring+Content+Security+Policy">Configuring Jenkins Content Security Policy</a>.
+<br><br>
+<b>Note:</b> On macOS platforms, this feature is supported in MATLAB R2020b and later.
 </div>
