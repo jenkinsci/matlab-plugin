@@ -67,7 +67,7 @@ jobs:
             }
             
             if ($count -gt 60) {
-              Write-Host "Warning: Restart command failed.
+              Write-Host "Warning: Restart command failed."
               exit 1
             }
           } while ($true)
