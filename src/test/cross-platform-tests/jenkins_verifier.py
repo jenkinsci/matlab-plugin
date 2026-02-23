@@ -46,7 +46,10 @@ def verify_artifact_is_generated(server, base_url, auth, job_name, build_number,
             print(f"      -> [PASS] Content verified: found '{case['expected_content']}'")
             return True
         else:
-            print(f"      -> [FAIL] Content mismatch. Expected to find: {case['expected_content']}")
+            actual_preview = (res.text[:100] + '...') if res.text else "Empty or Binary"
+            print(f"      -> [FAIL] Content mismatch.")
+            print(f"         Expected to find: {case['expected_content']}")
+            print(f"         Actual found: {actual_preview}")
             return False
     except Exception as e:
         print(f"      -> [ERROR] {e}")

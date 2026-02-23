@@ -19,14 +19,23 @@ def get_build_number(server, queue_id):
         time.sleep(2)
     return None
 
-def wait_for_completion(server, job_name, build_number):
-    print(f"   [ACTION] Waiting for Build #{build_number}...")
-    while True:
+def wait_for_completion(server, job_name, build_number, timeout_mins=10):
+    print(f"   [ACTION] Waiting for Build #{build_number}")
+    start_time = time.time()
+    
+    timeout_seconds = timeout_mins * 60
+    
+    while (time.time() - start_time) < timeout_seconds:
         try:
             info = server.get_build_info(job_name, build_number)
-            if not info['building']: return info['result']
-        except: pass
-        time.sleep(5)
+            if not info['building']: 
+                return info['result']
+        except: 
+            pass
+        time.sleep(10)
+    
+    print(f"   [ERROR] Timeout: Build #{build_number} did not complete within {timeout_mins} minutes.")
+    return "TIMEOUT"
 
 def print_console_output(server, job_name, build_number):
     print(f"   [ACTION] Printing Console Output...")
@@ -48,7 +57,7 @@ def cleanup_build(base_url, auth, job_name, build_number):
         res = requests.post(delete_url, auth=auth)
         
         if res.status_code in [200, 204, 302]:
-            print("      -> Build deleted successfully.")
+            print("      -> Build and artifacts deleted successfully.")
         else:
             print(f"      -> [WARNING] Failed to delete build. Status: {res.status_code}")
             
@@ -92,7 +101,7 @@ def delete_matlab_tools(server, job_name, build_number):
                 toolDir.deleteRecursive()
                 println "SUCCESS: Deleted MATLAB installation on " + node.getDisplayName()
             }} catch (Exception e) {{
-                println "ERROR: Failed to delete. " + e.getMessage()
+               println "ERROR: Failed to delete MATLAB installation directory at " + toolDir.getRemote() + ". Error: " + e.getMessage()
             }}
         }} else {{
             println "SKIP: Directory not found (already clean)."
