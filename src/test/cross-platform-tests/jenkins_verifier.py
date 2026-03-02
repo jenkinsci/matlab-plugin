@@ -55,6 +55,20 @@ def verify_artifact_is_generated(server, base_url, auth, job_name, build_number,
         print(f"      -> [ERROR] {e}")
         return False
 
+def verify_build_artifacts(server, args, build_num):
+    failed = []
+    for artifact in ARTIFACTS_TO_VERIFY:
+        if not verify_artifact_is_generated(server, args.url, (args.user, args.token), args.job, build_num, artifact):
+            failed.append(artifact['name'])
+
+    print("\n" + "="*40)
+    if failed:
+        print(f"FAILURES: {failed}")
+        return False
+    else:
+        print("SUCCESS: All artifacts verified successfully.")
+        return True
+
 def run_test_suite(args):
     server = jenkins.Jenkins(args.url, username=args.user, password=args.token)
     build_num = None
@@ -74,18 +88,7 @@ def run_test_suite(args):
             print(f"   [FATAL] Build failed with status: {result}")
             return False
 
-        failed = []
-        for artifact in ARTIFACTS_TO_VERIFY:
-            if not verify_artifact_is_generated(server, args.url, (args.user, args.token), args.job, build_num, artifact):
-                failed.append(artifact['name'])
-
-        print("\n" + "="*40)
-        if failed:
-            print(f"FAILURES: {failed}")
-            return False
-        else:
-            print("SUCCESS: All artifacts verified successfully.")
-            return True
+        return verify_build_artifacts(server, args, build_num)
 
     except KeyboardInterrupt:
         print("\n   [ABORTED] Execution stopped by user.")
@@ -95,13 +98,11 @@ def run_test_suite(args):
         return False
     finally:
         print("\n" + "-"*20)
-        
         if build_num:
             utils.print_console_output(server, args.job, build_num)
-            
             utils.delete_matlab_tools(server, args.job, build_num)
-            
             utils.cleanup_build(args.url, (args.user, args.token), args.job, build_num)
+            return True
 
 # ==========================================
 # MAIN EXECUTION
