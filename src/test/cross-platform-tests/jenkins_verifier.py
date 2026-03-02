@@ -102,7 +102,6 @@ def run_test_suite(args):
             utils.print_console_output(server, args.job, build_num)
             utils.delete_matlab_tools(server, args.job, build_num)
             utils.cleanup_build(args.url, (args.user, args.token), args.job, build_num)
-            return True
 
 # ==========================================
 # MAIN EXECUTION
