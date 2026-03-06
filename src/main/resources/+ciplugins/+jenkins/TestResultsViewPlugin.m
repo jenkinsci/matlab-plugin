@@ -1,5 +1,5 @@
 classdef TestResultsViewPlugin < matlab.unittest.plugins.TestRunnerPlugin
-    % Copyright 2025 The MathWorks, Inc.
+    % Copyright 2025-26 The MathWorks, Inc.
     
     methods (Access=protected)
         function reportFinalizedSuite(plugin, pluginData)
@@ -20,14 +20,17 @@ classdef TestResultsViewPlugin < matlab.unittest.plugins.TestRunnerPlugin
                 testResults = {};
             end
             testResults{end+1} = testDetails;
-            JsonTestResults = jsonencode(testResults, "PrettyPrint", true);
 
-            [fID, msg] = fopen(testArtifactFile, "w");
-            if fID == -1
-                warning("ciplugins:jenkins:TestResultsViewPlugin:UnableToOpenFile","Could not open a file for Jenkins tests result table due to: %s", msg);
-            else
-                closeFile = onCleanup(@()fclose(fID));
-                fprintf(fID, '%s', JsonTestResults);
+            try
+                JsonTestResults = jsonencode(testResults, "PrettyPrint", true);
+
+                [fID, msg] = fopen(testArtifactFile, "w");
+                if fID == -1
+                    warning("ciplugins:jenkins:TestResultsViewPlugin:UnableToOpenFile","Could not open a file for Jenkins tests result table due to: %s", msg);
+                else
+                    closeFile = onCleanup(@()fclose(fID));
+                    fprintf(fID, '%s', JsonTestResults);
+                end
             end
 
             % Invoke the superclass method
