@@ -22,15 +22,17 @@ classdef TestResultsViewPlugin < matlab.unittest.plugins.TestRunnerPlugin
             testResults{end+1} = testDetails;
 
             try
-                JsonTestResults = jsonencode(testResults, "PrettyPrint", true);
+                jsonTestResults = jsonencode(testResults, "PrettyPrint", true);
 
                 [fID, msg] = fopen(testArtifactFile, "w");
                 if fID == -1
-                    warning("ciplugins:jenkins:TestResultsViewPlugin:UnableToOpenFile","Could not open a file for Jenkins tests result table due to: %s", msg);
+                    warning("ciplugins:jenkins:TestResultsViewPlugin:UnableToOpenFile","Unable to open a file required to create the table of test results. (Cause: %s)", msg);
                 else
                     closeFile = onCleanup(@()fclose(fID));
-                    fprintf(fID, '%s', JsonTestResults);
+                    fprintf(fID, '%s', jsonTestResults);
                 end
+            catch e
+                warning("ciplugins:jenkins:TestResultsViewPlugin:UnableToJsonEncode","Unable to jsonencode test results data. (Cause: %s)", e.message);
             end
 
             % Invoke the superclass method
