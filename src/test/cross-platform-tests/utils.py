@@ -34,8 +34,7 @@ def wait_for_completion(server, job_name, build_number, timeout_mins=10):
             pass
         time.sleep(10)
     
-    print(f"   [ERROR] Timeout: Build #{build_number} did not complete within {timeout_mins} minutes.")
-    return "TIMEOUT"
+    raise RuntimeError(f"Build #{build_number} timed out after {timeout_mins} minutes.")
 
 def print_console_output(server, job_name, build_number):
     print(f"   [ACTION] Printing Console Output...")
