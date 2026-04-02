@@ -36,7 +36,7 @@ Create a new project and configure it by following these steps:
 
 4. In the **Build Steps** section, select **Add build step > Run MATLAB Tests**. Then, specify the artifacts to generate in the project workspace. In this example, the plugin generates test results in JUnit-style XML format and code coverage results in Cobertura XML format. Furthermore, to generate the coverage results, the plugin uses only the code in the `source` folder located in the root of the repository. For more information about the build steps provided by the plugin, see [Plugin Configuration Guide](../CONFIGDOC.md).
 
-![Generate Test Artifacts and Generate Coverage Artifacts sections of the Run MATLAB Tests step with the JUnit‑style test results and Cobertura code coverage options selected](https://github.com/user-attachments/assets/b6b7b811-d998-4fb9-bbf8-5de624bb5bd6)
+<img width="1684" height="1030" alt="Generate Test Artifacts and Generate Coverage Artifacts sections of the Run MATLAB Tests step with the JUnit‑style test results and Cobertura code coverage options selected" src="https://github.com/user-attachments/assets/d025aaba-b57e-4ad8-affe-529b2a1df47c" />
 
 5. In the **Post-build Actions** section, add the **Publish JUnit test result report** post-build action to publish the test results in JUnit-style XML format. Specify the path to the test report in the **Test report XMLs** box.
 
