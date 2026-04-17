@@ -8,7 +8,15 @@ classdef TestResultsViewPlugin < matlab.unittest.plugins.TestRunnerPlugin
 
             testDetails = struct([]);
             for idx = 1:numel(pluginData.TestResult)
-                testDetails(idx).TestResult = pluginData.TestResult(idx);
+                testDetails(idx).TestResult.Duration = pluginData.TestResult(idx).Duration;
+                if ~isempty(pluginData.TestResult(idx).Details.DiagnosticRecord)
+                    testDetails(idx).TestResult.Details.DiagnosticRecord.Event = pluginData.TestResult(idx).Details.DiagnosticRecord.Event;
+                    testDetails(idx).TestResult.Details.DiagnosticRecord.Report = pluginData.TestResult(idx).Details.DiagnosticRecord.Report;
+                end
+                testDetails(idx).TestResult.Name = pluginData.TestResult(idx).Name;
+                testDetails(idx).TestResult.Passed = pluginData.TestResult(idx).Passed;
+                testDetails(idx).TestResult.Failed = pluginData.TestResult(idx).Failed;
+                testDetails(idx).TestResult.Incomplete = pluginData.TestResult(idx).Incomplete;
                 testDetails(idx).BaseFolder = pluginData.TestSuite(idx).BaseFolder;
             end
 
