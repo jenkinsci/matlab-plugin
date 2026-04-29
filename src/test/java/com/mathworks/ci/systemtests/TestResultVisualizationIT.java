@@ -12,7 +12,7 @@ import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
 import hudson.model.Result;
 import hudson.model.Run;
-import hudson.slaves.DumbSlave;
+
 import org.htmlunit.html.*;
 import org.jenkinsci.plugins.workflow.cps.CpsFlowDefinition;
 import org.jenkinsci.plugins.workflow.job.WorkflowJob;
@@ -71,9 +71,9 @@ public class TestResultVisualizationIT {
 
         FreeStyleBuild build = project.scheduleBuild2(0).get();
 
-        // Verify MATLAB Test Result summary
-        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
-        assertEquals(testResultSummaries.length, 2);
+    // Verify MATLAB Test Result summary
+    String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+    assertEquals(2, testResultSummaries.length);
         List.of(testResultSummaries).forEach(summary -> {
             assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
@@ -144,23 +144,23 @@ public class TestResultVisualizationIT {
         assertTrue(notRunButtonText.contains("Not Run"));
 
         // Verify the test filenames shown
-        String[] expectedTestFiles = {" testMultiply ", " squareTest ", " testSquare ", " testSum "};
-        String[] testFiles = getTestFilesInTable(build);
-        assertEquals(testFiles, expectedTestFiles);
+    String[] expectedTestFiles = {" testMultiply ", " squareTest ", " testSquare ", " testSum "};
+    String[] testFiles = getTestFilesInTable(build);
+    assertArrayEquals(expectedTestFiles, testFiles);
 
         // Verify Diagnostics are shown for a failed test.
-        List<String[]> testsContentForAFile = getTestsInfoForATestFile("testMultiply", build);
-        assertEquals(testsContentForAFile.size(),1);
-        assertEquals(testsContentForAFile.get(0)[0].trim(), "testMultiplication"); // 'testMultiply has 'testMultiplication' test
+    List<String[]> testsContentForAFile = getTestsInfoForATestFile("testMultiply", build);
+    assertEquals(1, testsContentForAFile.size());
+    assertEquals("testMultiplication", testsContentForAFile.get(0)[0].trim()); // 'testMultiply has 'testMultiplication' test
         assertNotNull(testsContentForAFile.get(0)[1]); // Diagnostics cant be null as 'testMultiply' fails
         assertTrue(testsContentForAFile.get(0)[1].contains("testMultiply/testMultiplication"));
         assertNotNull(testsContentForAFile.get(0)[2]); // Duration cannot be null
 
         // Verify Diagnostics is empty for passed test
-        List<String[]> testsContent= getTestsInfoForATestFile("testSum", build);
-        assertEquals(testsContent.size(),1);
-        assertEquals(testsContent.get(0)[0].trim(), "testAddition"); // 'testSum has 'testAddition' test
-        assertEquals(testsContent.get(0)[1], ""); // No diagnostics as 'testAddition' passes
+    List<String[]> testsContent= getTestsInfoForATestFile("testSum", build);
+    assertEquals(1, testsContent.size());
+    assertEquals("testAddition", testsContent.get(0)[0].trim()); // 'testSum has 'testAddition' test
+    assertEquals("", testsContent.get(0)[1]); // No diagnostics as 'testAddition' passes
     }
 
     // Verify in matrix project
@@ -239,7 +239,7 @@ public class TestResultVisualizationIT {
     // Verify Master Slave
     @Test
     public void verifyPipelineOnSlave() throws Exception {
-        DumbSlave s = jenkins.createOnlineSlave();
+    jenkins.createOnlineSlave();
         String script ="node('!built-in') {" +
                 Utilities.getEnvironmentScriptedPipeline() + "\n" +
                 addTestData()+"\n" +
