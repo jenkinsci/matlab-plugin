@@ -338,6 +338,50 @@ public class TestResultsViewActionTest {
         Assert.assertEquals("Incorrect action ID","abc123",actualActionID);
     }
 
+    @Test
+    public void verifyTestResultWithMissingDetails() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        TestResultsViewAction ac = setupTestResultsViewActionWithMissingDetails();
+        List<List<MatlabTestFile>> ta = ac.getTestResults();
+        Assert.assertEquals("Incorrect test sessions", 1, ta.size());
+        Assert.assertEquals("Incorrect test files", 1, ta.get(0).size());
+        Assert.assertEquals("Incorrect test results", 1, ta.get(0).get(0).getMatlabTestCases().size());
+
+        MatlabTestCase testCase = ta.get(0).get(0).getMatlabTestCases().get(0);
+        Assert.assertEquals("Incorrect test case name", "testNonLeapYear", testCase.getName());
+        Assert.assertEquals("Incorrect test case status", TestStatus.PASSED, testCase.getStatus());
+        Assert.assertTrue("Diagnostics should be empty", testCase.getDiagnostics().isEmpty());
+
+        Assert.assertEquals("Incorrect total count", 1, ac.getTotalCount());
+        Assert.assertEquals("Incorrect passed count", 1, ac.getPassedCount());
+        Assert.assertEquals("Incorrect failed count", 0, ac.getFailedCount());
+    }
+
+    private TestResultsViewAction setupTestResultsViewActionWithMissingDetails() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        FreeStyleBuild build = getFreestyleBuild();
+        final String actionID = "abc123";
+        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
+        FilePath artifactRoot = new FilePath(build.getRootDir());
+
+        String os = System.getProperty("os.name").toLowerCase();
+        String osName = "";
+        String workspaceParent = "";
+        if (os.contains("win")) {
+            osName = "windows";
+            workspaceParent = "C:\\";
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            osName = "linux";
+            workspaceParent = "/home/user/";
+        } else if (os.contains("mac")) {
+            osName = "mac";
+            workspaceParent = "/Users/username/";
+        } else {
+            throw new RuntimeException("Unsupported OS: " + os);
+        }
+        final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
+        copyFileInWorkspace("testArtifacts/t2/" + osName + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json", targetFile, artifactRoot);
+        return new TestResultsViewAction(build, workspace, actionID);
+    }
+
     private TestResultsViewAction setupTestResultsViewAction() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         FreeStyleBuild build = getFreestyleBuild();
         final String actionID = "abc123";
