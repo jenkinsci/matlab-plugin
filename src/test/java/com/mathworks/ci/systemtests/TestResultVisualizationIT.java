@@ -45,7 +45,7 @@ public class TestResultVisualizationIT {
     }
 
     @Before
-    public void createJenkinsWebClient(){
+    public void createJenkinsWebClient() {
         jenkinsWebClient = jenkins.createWebClient();
     }
 
@@ -71,9 +71,9 @@ public class TestResultVisualizationIT {
 
         FreeStyleBuild build = project.scheduleBuild2(0).get();
 
-    // Verify MATLAB Test Result summary
-    String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
-    assertEquals(2, testResultSummaries.length);
+        // Verify MATLAB Test Result summary
+        String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
+        assertEquals(2, testResultSummaries.length);
         List.of(testResultSummaries).forEach(summary -> {
             assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
@@ -107,7 +107,7 @@ public class TestResultVisualizationIT {
     }
 
     @Test
-    public void verifyContentInTestResultsTable() throws Exception{
+    public void verifyContentInTestResultsTable() throws Exception {
         FreeStyleProject project = jenkins.createFreeStyleProject();
         project.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
 
@@ -144,23 +144,23 @@ public class TestResultVisualizationIT {
         assertTrue(notRunButtonText.contains("Not Run"));
 
         // Verify the test filenames shown
-    String[] expectedTestFiles = {" testMultiply ", " squareTest ", " testSquare ", " testSum "};
-    String[] testFiles = getTestFilesInTable(build);
-    assertArrayEquals(expectedTestFiles, testFiles);
+        String[] expectedTestFiles = {" testMultiply ", " squareTest ", " testSquare ", " testSum "};
+        String[] testFiles = getTestFilesInTable(build);
+        assertArrayEquals(expectedTestFiles, testFiles);
 
         // Verify Diagnostics are shown for a failed test.
-    List<String[]> testsContentForAFile = getTestsInfoForATestFile("testMultiply", build);
-    assertEquals(1, testsContentForAFile.size());
-    assertEquals("testMultiplication", testsContentForAFile.get(0)[0].trim()); // 'testMultiply has 'testMultiplication' test
-        assertNotNull(testsContentForAFile.get(0)[1]); // Diagnostics cant be null as 'testMultiply' fails
+        List<String[]> testsContentForAFile = getTestsInfoForATestFile("testMultiply", build);
+        assertEquals(1, testsContentForAFile.size());
+        assertEquals("testMultiplication", testsContentForAFile.get(0)[0].trim());
+        assertNotNull(testsContentForAFile.get(0)[1]);
         assertTrue(testsContentForAFile.get(0)[1].contains("testMultiply/testMultiplication"));
-        assertNotNull(testsContentForAFile.get(0)[2]); // Duration cannot be null
+        assertNotNull(testsContentForAFile.get(0)[2]);
 
         // Verify Diagnostics is empty for passed test
-    List<String[]> testsContent= getTestsInfoForATestFile("testSum", build);
-    assertEquals(1, testsContent.size());
-    assertEquals("testAddition", testsContent.get(0)[0].trim()); // 'testSum has 'testAddition' test
-    assertEquals("", testsContent.get(0)[1]); // No diagnostics as 'testAddition' passes
+        List<String[]> testsContent = getTestsInfoForATestFile("testSum", build);
+        assertEquals(1, testsContent.size());
+        assertEquals("testAddition", testsContent.get(0)[0].trim());
+        assertEquals("", testsContent.get(0)[1]);
     }
 
     // Verify in matrix project
@@ -174,8 +174,8 @@ public class TestResultVisualizationIT {
         Utilities.setMatlabInstallation("MATLAB_PATH_22b", matlabRoot22b, jenkins);
 
         MatrixProject matrixProject = jenkins.createProject(MatrixProject.class);
-        MatlabInstallationAxis MATLABAxis = new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1", "MATLAB_PATH_22b"));
-        matrixProject.setAxes(new AxisList(MATLABAxis));
+        MatlabInstallationAxis matlabAxis = new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1", "MATLAB_PATH_22b"));
+        matrixProject.setAxes(new AxisList(matlabAxis));
         matrixProject.setScm(new ExtractResourceSCM(Utilities.getURLForTestData()));
 
         // Run tests through Run Build step
@@ -188,7 +188,7 @@ public class TestResultVisualizationIT {
         Combination c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_1"))), "MATLAB_PATH_1");
         MatrixRun run = build.getRun(c);
         String[] firstTestResultSummaries = getTestResultSummaryFromBuildStatusPage(run);
-        assertEquals(firstTestResultSummaries.length, 1);
+        assertEquals(1, firstTestResultSummaries.length);
         List.of(firstTestResultSummaries).forEach(summary -> {
             assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
@@ -200,8 +200,8 @@ public class TestResultVisualizationIT {
         c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_22b"))), "MATLAB_PATH_22b");
         run = build.getRun(c);
         String[] secondTestResultSummary = getTestResultSummaryFromBuildStatusPage(run);
-        assertEquals(secondTestResultSummary.length,0); // As for R2022b the view is not generated
-        jenkins.assertLogContains(matlabRoot22b,run);
+        assertEquals(0, secondTestResultSummary.length);
+        jenkins.assertLogContains(matlabRoot22b, run);
 
         jenkins.assertBuildStatus(Result.FAILURE, run); // As the test task fails
     }
@@ -226,7 +226,7 @@ public class TestResultVisualizationIT {
 
         // Verify MATLAB Test Result summary
         String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
-        assertEquals(testResultSummaries.length,1);
+        assertEquals(1, testResultSummaries.length);
         List.of(testResultSummaries).forEach(summary -> {
             assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
@@ -239,8 +239,8 @@ public class TestResultVisualizationIT {
     // Verify Master Slave
     @Test
     public void verifyPipelineOnSlave() throws Exception {
-    jenkins.createOnlineSlave();
-        String script ="node('!built-in') {" +
+        jenkins.createOnlineSlave();
+        String script = "node('!built-in') {" +
                 Utilities.getEnvironmentScriptedPipeline() + "\n" +
                 addTestData()+"\n" +
                 "runMATLABBuild(tasks: 'test') }";
@@ -248,8 +248,8 @@ public class TestResultVisualizationIT {
         WorkflowRun build = getPipelineBuild(script);
 
         // Verify MATLAB Test Result summary
-        String[] BuildResultSummary= getTestResultSummaryFromBuildStatusPage(build);
-        List.of(BuildResultSummary).forEach(summary -> {
+        String[] buildResultSummary = getTestResultSummaryFromBuildStatusPage(build);
+        List.of(buildResultSummary).forEach(summary -> {
             assertTrue(summary.contains("Total tests: 4"));
             assertTrue(summary.contains("Passed: 1"));
             assertTrue(summary.contains("Failed: 3"));
@@ -261,7 +261,7 @@ public class TestResultVisualizationIT {
     }
 
     @Test
-    public void verifyMultipleTestResultBuild() throws Exception{
+    public void verifyMultipleTestResultBuild() throws Exception {
         String script = "pipeline {\n" +
                 "  agent any\n" +
                 Utilities.getEnvironmentDSL() + "\n" +
@@ -280,7 +280,7 @@ public class TestResultVisualizationIT {
 
         // Verify MATLAB Test Result summary
         String[] testResultSummaries = getTestResultSummaryFromBuildStatusPage(build);
-        assertEquals(testResultSummaries.length, 2);
+        assertEquals(2, testResultSummaries.length);
 
         String testResultSummaryFromBuildStep = testResultSummaries[0];
         assertTrue(testResultSummaryFromBuildStep.contains("Total tests: 4"));
@@ -296,7 +296,6 @@ public class TestResultVisualizationIT {
         assertTrue(testResultSummaryFromCommandStep.contains("Incomplete: 0"));
         assertTrue(testResultSummaryFromCommandStep.contains("Not Run: 0"));
     }
-
 
     private String[] getTestResultSummaryFromBuildStatusPage(Run<?, ?> build) throws IOException, SAXException {
         HtmlPage buildPage = jenkinsWebClient.getPage(build);
@@ -370,9 +369,9 @@ public class TestResultVisualizationIT {
         return path;
     }
 
-    private WorkflowRun getPipelineBuild(String script) throws Exception{
+    private WorkflowRun getPipelineBuild(String script) throws Exception {
         WorkflowJob project = jenkins.createProject(WorkflowJob.class);
-        project.setDefinition(new CpsFlowDefinition(script,true));
+        project.setDefinition(new CpsFlowDefinition(script, true));
         return project.scheduleBuild2(0).get();
     }
 
