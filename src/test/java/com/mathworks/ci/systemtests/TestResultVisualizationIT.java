@@ -200,7 +200,7 @@ public class TestResultVisualizationIT {
         c = new Combination(new AxisList(new MatlabInstallationAxis(Arrays.asList("MATLAB_PATH_22b"))), "MATLAB_PATH_22b");
         run = build.getRun(c);
         String[] secondTestResultSummary = getTestResultSummaryFromBuildStatusPage(run);
-        assertEquals(0, secondTestResultSummary.length);
+        assertEquals(0, secondTestResultSummary.length); // As for R2022b the view is not generated
         jenkins.assertLogContains(matlabRoot22b, run);
 
         jenkins.assertBuildStatus(Result.FAILURE, run); // As the test task fails
