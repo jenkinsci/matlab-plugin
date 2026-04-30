@@ -63,7 +63,6 @@ public class MatlabAction {
             runner.addEnvironmentVariable(
                     "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE",
                     "ciplugins.jenkins.getDefaultPlugins");
-            runner.addEnvironmentVariable("MW_BUILD_PLUGIN_ACTION_ID", this.getActionID());
         }
     }
 

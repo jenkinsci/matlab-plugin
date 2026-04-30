@@ -6,12 +6,12 @@ classdef TaskRunProgressPlugin < matlab.buildtool.plugins.BuildRunnerPlugin
     methods (Access=protected)
 
         function runTask(plugin, pluginData)
-            disp("[MATLAB-Build-" + pluginData.TaskResults.Name + "-" + getenv('MW_BUILD_PLUGIN_ACTION_ID') +"]");
+            disp("[MATLAB-Build-" + pluginData.TaskResults.Name + "-" + getenv('MW_MATLAB_ACTION_ID') +"]");
             runTask@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
         end
 
         function skipTask(plugin, pluginData)
-            disp("[MATLAB-Build-" + pluginData.TaskResults.Name + "-" + getenv('MW_BUILD_PLUGIN_ACTION_ID') +"]");
+            disp("[MATLAB-Build-" + pluginData.TaskResults.Name + "-" + getenv('MW_MATLAB_ACTION_ID') +"]");
             skipTask@matlab.buildtool.plugins.BuildRunnerPlugin(plugin, pluginData);
         end
     end
