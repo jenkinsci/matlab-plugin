@@ -34,7 +34,7 @@ import jenkins.model.RunAction2;
 
 public class TestResultsViewAction implements RunAction2 {
     private transient Run<?, ?> build;
-    private FilePath workspace;
+    private String workspacePath;
     private String actionID;
     private int totalCount;
     private int passedCount;
@@ -51,7 +51,7 @@ public class TestResultsViewAction implements RunAction2 {
 
     public TestResultsViewAction(Run<?, ?> build, FilePath workspace, String actionID) throws InterruptedException, IOException {
         this.build = build;
-        this.workspace = workspace;
+        this.workspacePath = workspace.getRemote();
         this.actionID = actionID;
         
         this.totalCount = 0;
@@ -182,7 +182,7 @@ public class TestResultsViewAction implements RunAction2 {
 
         // Find relative path
         Path baseFolderPath = Paths.get(baseFolder.getRemote());
-        Path workspacePath = Paths.get(this.workspace.getRemote());
+        Path workspacePath = Paths.get(this.workspacePath);
         Path relativePath = workspacePath.relativize(baseFolderPath);
         Path normalizedPath = relativePath.normalize();
 
@@ -273,8 +273,8 @@ public class TestResultsViewAction implements RunAction2 {
         return "document.png";
     }
 
-    public FilePath getWorkspace() {
-        return this.workspace;
+    public String getWorkspacePath() {
+        return this.workspacePath;
     }
 
     public String getActionID() {
