@@ -22,17 +22,14 @@ classdef TestResultsViewPlugin < matlab.unittest.plugins.TestRunnerPlugin
                 testDetails(idx).BaseFolder = pluginData.TestSuite(idx).BaseFolder;
             end
 
-            % If test results artifact exists, update the same file
-            testArtifactFile = fullfile(getenv("MW_MATLAB_TEMP_FOLDER"),"matlabTestResults.json");
-            if isfile(testArtifactFile)
-                testResults = {jsondecode(fileread(testArtifactFile))};
-            else
-                testResults = {};
-            end
-            testResults{end+1} = testDetails;
+            % Write test results for this session to a unique file
+            tempFolder = getenv("MW_MATLAB_TEMP_FOLDER");
+            actionID = getenv("MW_MATLAB_ACTION_ID");
+            timestamp = string(datetime('now', 'Format', 'yyyyMMdd_HHmmss_SSS'));
+            testArtifactFile = fullfile(tempFolder, "matlabTestResults" + actionID + "_" + timestamp + ".json");
 
             try
-                jsonTestResults = jsonencode(testResults, "PrettyPrint", true);
+                jsonTestResults = jsonencode(testDetails, "PrettyPrint", true);
 
                 [fID, msg] = fopen(testArtifactFile, "w");
                 if fID == -1

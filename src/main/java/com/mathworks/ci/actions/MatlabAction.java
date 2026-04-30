@@ -57,6 +57,7 @@ public class MatlabAction {
         runner.addEnvironmentVariable(
                 "MW_MATLAB_TEMP_FOLDER",
                 runner.getTempFolder().toString());
+        runner.addEnvironmentVariable("MW_MATLAB_ACTION_ID", this.getActionID());
 
         if(this.annotator != null) {
             runner.addEnvironmentVariable(
@@ -69,10 +70,10 @@ public class MatlabAction {
     public void teardownAction(MatlabActionParameters params) {
         // Handle build result
         if(this.annotator != null) {
-            moveJsonArtifactToBuildRoot(params, MatlabBuilderConstants.BUILD_ARTIFACT);
+            moveBuildArtifactToBuildRoot(params);
         }
 
-        moveJsonArtifactToBuildRoot(params, MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT);
+        moveTestResultsToBuildRoot(params);
 
         try {
             this.runner.removeTempFolder();
@@ -81,29 +82,42 @@ public class MatlabAction {
         }
     }
 
-    private void moveJsonArtifactToBuildRoot(MatlabActionParameters params, String artifactBaseName) {
+    private void moveBuildArtifactToBuildRoot(MatlabActionParameters params) {
         try {
-            FilePath file = new FilePath(this.runner.getTempFolder(), artifactBaseName + ".json");
+            FilePath file = new FilePath(this.runner.getTempFolder(), MatlabBuilderConstants.BUILD_ARTIFACT + ".json");
             if (file.exists()) {
                 Run<?, ?> build = params.getBuild();
-                FilePath workspace = params.getWorkspace();
 
                 FilePath rootLocation = new FilePath(
                         new File(
                                 build.getRootDir().getAbsolutePath(),
-                                artifactBaseName + this.getActionID() + ".json"));
+                                MatlabBuilderConstants.BUILD_ARTIFACT + this.getActionID() + ".json"));
                 file.copyTo(rootLocation);
                 file.delete();
-                
-                switch (artifactBaseName) {
-                    case MatlabBuilderConstants.BUILD_ARTIFACT:
-                        build.addAction(new BuildArtifactAction(build, this.getActionID()));
-                        break;
-                    case MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT:
-                        build.addAction(new TestResultsViewAction(build, workspace, this.getActionID()));
-                        break;
-                    default:
+                build.addAction(new BuildArtifactAction(build, this.getActionID()));
+            }
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
+    }
+
+    private void moveTestResultsToBuildRoot(MatlabActionParameters params) {
+        try {
+            FilePath tempFolder = this.runner.getTempFolder();
+            FilePath[] sessionFiles = tempFolder.list(
+                    MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.getActionID() + "_*.json");
+
+            if (sessionFiles.length > 0) {
+                Run<?, ?> build = params.getBuild();
+                FilePath workspace = params.getWorkspace();
+                String buildRootPath = build.getRootDir().getAbsolutePath();
+
+                for (FilePath sessionFile : sessionFiles) {
+                    FilePath rootLocation = new FilePath(new File(buildRootPath, sessionFile.getName()));
+                    sessionFile.copyTo(rootLocation);
+                    sessionFile.delete();
                 }
+                build.addAction(new TestResultsViewAction(build, workspace, this.getActionID()));
             }
         } catch (Exception e) {
             // Don't want to override more important error

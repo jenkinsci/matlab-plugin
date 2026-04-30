@@ -72,44 +72,94 @@ public class TestResultsViewAction implements RunAction2 {
 
     public List<List<MatlabTestFile>> getTestResults() throws ParseException, InterruptedException, IOException {
         List<List<MatlabTestFile>> testResults = new ArrayList<>();
-        FilePath fl = new FilePath(this.build.getRootDir()).child(MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json");
-        try (InputStreamReader reader = new InputStreamReader(Files.newInputStream(Paths.get(fl.toURI())), StandardCharsets.UTF_8)) {
-            this.totalCount = 0;
-            this.passedCount = 0;
-            this.failedCount = 0;
-            this.incompleteCount = 0;
-            this.notRunCount = 0;
 
+        this.totalCount = 0;
+        this.passedCount = 0;
+        this.failedCount = 0;
+        this.incompleteCount = 0;
+        this.notRunCount = 0;
+
+        FilePath buildRoot = new FilePath(this.build.getRootDir());
+        FilePath[] sessionFiles = buildRoot.list(
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + "_*.json");
+
+        if (sessionFiles.length > 0) {
+            for (FilePath sessionFile : sessionFiles) {
+                parseSessionFile(sessionFile, testResults);
+            }
+        } else {
+            // Backward compatibility: fall back to legacy single-file format
+            FilePath legacyFile = buildRoot.child(
+                    MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + ".json");
+            if (legacyFile.exists()) {
+                parseLegacyFile(legacyFile, testResults);
+            }
+        }
+
+        return testResults;
+    }
+
+    private void parseSessionFile(FilePath sessionFile, List<List<MatlabTestFile>> testResults) throws IOException, InterruptedException {
+        try (InputStreamReader reader = new InputStreamReader(
+                Files.newInputStream(Paths.get(sessionFile.toURI())), StandardCharsets.UTF_8)) {
+            Object parsed = new JSONParser().parse(reader);
+
+            List<MatlabTestFile> testSessionResults = new ArrayList<>();
+            Map<String, MatlabTestFile> map = new HashMap<>();
+
+            if (parsed instanceof JSONArray) {
+                JSONArray jsonTestSessionResultsArray = (JSONArray) parsed;
+                Iterator<JSONObject> testSessionResultsIterator = jsonTestSessionResultsArray.iterator();
+
+                while (testSessionResultsIterator.hasNext()) {
+                    JSONObject jsonTestCase = testSessionResultsIterator.next();
+                    getTestSessionResults(testSessionResults, jsonTestCase, map);
+                }
+            } else if (parsed instanceof JSONObject) {
+                JSONObject jsonTestCase = (JSONObject) parsed;
+                getTestSessionResults(testSessionResults, jsonTestCase, map);
+            }
+
+            testResults.add(testSessionResults);
+        } catch (InterruptedException | IOException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IOException(e.getLocalizedMessage());
+        }
+    }
+
+    private void parseLegacyFile(FilePath legacyFile, List<List<MatlabTestFile>> testResults) throws IOException, InterruptedException {
+        try (InputStreamReader reader = new InputStreamReader(
+                Files.newInputStream(Paths.get(legacyFile.toURI())), StandardCharsets.UTF_8)) {
             JSONArray testArtifact = (JSONArray) new JSONParser().parse(reader);
-            Iterator<JSONArray> testArtifactIterator = testArtifact.iterator();
+            Iterator<Object> testArtifactIterator = testArtifact.iterator();
 
-            while(testArtifactIterator.hasNext()){
+            while (testArtifactIterator.hasNext()) {
                 Object jsonTestSessionResults = testArtifactIterator.next();
 
                 List<MatlabTestFile> testSessionResults = new ArrayList<>();
                 Map<String, MatlabTestFile> map = new HashMap<>();
 
-                if(jsonTestSessionResults instanceof JSONArray){
+                if (jsonTestSessionResults instanceof JSONArray) {
                     JSONArray jsonTestSessionResultsArray = (JSONArray) jsonTestSessionResults;
                     Iterator<JSONObject> testSessionResultsIterator = jsonTestSessionResultsArray.iterator();
 
-                    while(testSessionResultsIterator.hasNext()){
+                    while (testSessionResultsIterator.hasNext()) {
                         JSONObject jsonTestCase = testSessionResultsIterator.next();
                         getTestSessionResults(testSessionResults, jsonTestCase, map);
                     }
-                }
-                else if(jsonTestSessionResults instanceof JSONObject) {
+                } else if (jsonTestSessionResults instanceof JSONObject) {
                     JSONObject jsonTestCase = (JSONObject) jsonTestSessionResults;
                     getTestSessionResults(testSessionResults, jsonTestCase, map);
                 }
 
                 testResults.add(testSessionResults);
             }
+        } catch (InterruptedException | IOException e) {
+            throw e;
         } catch (Exception e) {
             throw new IOException(e.getLocalizedMessage());
         }
-
-        return testResults;
     }
 
     private void getTestSessionResults(List<MatlabTestFile> testSessionResults, JSONObject jsonTestCase, Map<String, MatlabTestFile> map) throws IOException, InterruptedException {

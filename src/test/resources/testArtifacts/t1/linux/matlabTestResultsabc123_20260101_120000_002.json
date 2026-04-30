@@ -1,0 +1,30 @@
+{
+  "TestResult": {
+    "Duration": 0.1,
+    "Details": {
+      "SimulinkTestManagerResults": [],
+      "DiagnosticRecord": {
+        "TestDiagnosticResults": [],
+        "FrameworkDiagnosticResults": {
+          "Artifacts": [],
+          "DiagnosticText": "SampleDiagnosticsText2"
+        },
+        "AdditionalDiagnosticResults": [],
+        "Stack": {
+          "file": "/home/user/workspace/visualization/duplicate_tests/TestExamples2.m",
+          "name": "TestExamples2.testNonLeapYear",
+          "line": 35
+        },
+        "Event": "SampleDiagnosticsEvent2",
+        "EventScope": "TestMethod",
+        "EventLocation": "TestExamples2/testNonLeapYear",
+        "Report": "SampleDiagnosticsReport2"
+      }
+    },
+    "Name": "TestExamples2/testNonLeapYear",
+    "Passed": false,
+    "Failed": false,
+    "Incomplete": true
+  },
+  "BaseFolder": "/home/user/workspace/visualization/duplicate_tests"
+}

@@ -11,4 +11,6 @@ src/main/resources/license.txt
 .idea/
 matlab.iml
 
+.claude/
+
 **/.DS_Store

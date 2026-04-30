@@ -339,6 +339,16 @@ public class TestResultsViewActionTest {
     }
 
     @Test
+    public void verifyLegacySingleFileFormat() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        TestResultsViewAction ac = setupTestResultsViewActionLegacy();
+        List<List<MatlabTestFile>> ta = ac.getTestResults();
+        Assert.assertEquals("Incorrect test sessions", 2, ta.size());
+        Assert.assertEquals("Incorrect total tests count", 10, ac.getTotalCount());
+        Assert.assertEquals("Incorrect passed tests count", 4, ac.getPassedCount());
+        Assert.assertEquals("Incorrect failed tests count", 3, ac.getFailedCount());
+    }
+
+    @Test
     public void verifyTestResultWithMissingDetails() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         TestResultsViewAction ac = setupTestResultsViewActionWithMissingDetails();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
@@ -359,7 +369,6 @@ public class TestResultsViewActionTest {
     private TestResultsViewAction setupTestResultsViewActionWithMissingDetails() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         FreeStyleBuild build = getFreestyleBuild();
         final String actionID = "abc123";
-        final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
         FilePath artifactRoot = new FilePath(build.getRootDir());
 
         String os = System.getProperty("os.name").toLowerCase();
@@ -378,11 +387,42 @@ public class TestResultsViewActionTest {
             throw new RuntimeException("Unsupported OS: " + os);
         }
         final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
-        copyFileInWorkspace("testArtifacts/t2/" + osName + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json", targetFile, artifactRoot);
+        String resourcePrefix = "testArtifacts/t2/" + osName + "/";
+        copyFileInWorkspace(resourcePrefix + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + "_20260101_120000_001.json",
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + "_20260101_120000_001.json", artifactRoot);
         return new TestResultsViewAction(build, workspace, actionID);
     }
 
     private TestResultsViewAction setupTestResultsViewAction() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        FreeStyleBuild build = getFreestyleBuild();
+        final String actionID = "abc123";
+        FilePath artifactRoot = new FilePath(build.getRootDir());
+
+        String os = System.getProperty("os.name").toLowerCase();
+        String osName = "";
+        String workspaceParent = "";
+        if (os.contains("win")) {
+            osName = "windows";
+            workspaceParent = "C:\\";
+        } else if (os.contains("nix") || os.contains("nux") || os.contains("aix")) {
+            osName = "linux";
+            workspaceParent = "/home/user/";
+        } else if (os.contains("mac")) {
+            osName = "mac";
+            workspaceParent = "/Users/username/";
+        } else {
+            throw new RuntimeException("Unsupported OS: " + os);
+        }
+        final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
+        String resourcePrefix = "testArtifacts/t1/" + osName + "/";
+        copyFileInWorkspace(resourcePrefix + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + "_20260101_120000_001.json",
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + "_20260101_120000_001.json", artifactRoot);
+        copyFileInWorkspace(resourcePrefix + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + "_20260101_120000_002.json",
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + "_20260101_120000_002.json", artifactRoot);
+        return new TestResultsViewAction(build, workspace, actionID);
+    }
+
+    private TestResultsViewAction setupTestResultsViewActionLegacy() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         FreeStyleBuild build = getFreestyleBuild();
         final String actionID = "abc123";
         final String targetFile = MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + actionID + ".json";
@@ -404,7 +444,7 @@ public class TestResultsViewActionTest {
             throw new RuntimeException("Unsupported OS: " + os);
         }
         final FilePath workspace = new FilePath(new File(workspaceParent + "workspace"));
-        copyFileInWorkspace("testArtifacts/t1/" + osName + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json",targetFile,artifactRoot);
+        copyFileInWorkspace("testArtifacts/t1/" + osName + "/" + MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + ".json", targetFile, artifactRoot);
         return new TestResultsViewAction(build, workspace, actionID);
     }
 
