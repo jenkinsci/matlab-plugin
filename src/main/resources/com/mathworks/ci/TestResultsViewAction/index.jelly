@@ -37,6 +37,7 @@
             </button>
 
             <j:forEach var="testSession" items="${it.testResults}" varStatus="status">
+              <j:if test="${!testSession.isEmpty()}">
                 <table class="jenkins-table sortable" id="testResultsTable">
                     <thead>
                         <tr>
@@ -143,6 +144,7 @@
                         </j:forEach>
                     </tbody>
                 </table>
+              </j:if>
             </j:forEach>
         </l:main-panel>
     </l:layout>
