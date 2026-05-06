@@ -2,9 +2,7 @@
   {
     "TestResult": {
       "Duration": 0.1,
-      "Details": {
-        "SimulinkTestManagerResults": []
-      },
+      "Details": {},
       "Name": "TestExamples1/testNonLeapYear",
       "Passed": true,
       "Failed": false,
@@ -15,9 +13,7 @@
   {
     "TestResult": {
       "Duration": 0.11,
-      "Details": {
-        "SimulinkTestManagerResults": []
-      },
+      "Details": {},
       "Name": "TestExamples1/testNonLeapYear2",
       "Passed": true,
       "Failed": false,
@@ -28,9 +24,7 @@
   {
     "TestResult": {
       "Duration": 0.111,
-      "Details": {
-        "SimulinkTestManagerResults": []
-      },
+      "Details": {},
       "Name": "TestExamples1/testNonLeapYear3",
       "Passed": true,
       "Failed": false,
@@ -41,9 +35,7 @@
   {
     "TestResult": {
       "Duration": 0.1111,
-      "Details": {
-        "SimulinkTestManagerResults": []
-      },
+      "Details": {},
       "Name": "TestExamples1/testNonLeapYear4",
       "Passed": true,
       "Failed": false,
@@ -55,22 +47,8 @@
     "TestResult": {
       "Duration": 0.4,
       "Details": {
-        "SimulinkTestManagerResults": [],
         "DiagnosticRecord": {
-          "TestDiagnosticResults": [],
-          "FrameworkDiagnosticResults": {
-            "Artifacts": [],
-            "DiagnosticText": "SampleDiagnosticsText1"
-          },
-          "AdditionalDiagnosticResults": [],
-          "Stack": {
-            "file": "/Users/username/workspace/visualization/tests/TestExamples1.m",
-            "name": "TestExamples1.testLeapYear",
-            "line": 35
-          },
           "Event": "SampleDiagnosticsEvent1",
-          "EventScope": "TestMethod",
-          "EventLocation": "TestExamples1/testLeapYear",
           "Report": "SampleDiagnosticsReport1"
         }
       },
@@ -85,22 +63,8 @@
     "TestResult": {
       "Duration": 0.4,
       "Details": {
-        "SimulinkTestManagerResults": [],
         "DiagnosticRecord": {
-          "TestDiagnosticResults": [],
-          "FrameworkDiagnosticResults": {
-            "Artifacts": [],
-            "DiagnosticText": "SampleDiagnosticsText1"
-          },
-          "AdditionalDiagnosticResults": [],
-          "Stack": {
-            "file": "/Users/username/workspace/visualization/tests/TestExamples1.m",
-            "name": "TestExamples1.testLeapYear2",
-            "line": 35
-          },
           "Event": "SampleDiagnosticsEvent1",
-          "EventScope": "TestMethod",
-          "EventLocation": "TestExamples1/testLeapYear2",
           "Report": "SampleDiagnosticsReport1"
         }
       },
@@ -115,22 +79,8 @@
     "TestResult": {
       "Duration": 0.4,
       "Details": {
-        "SimulinkTestManagerResults": [],
         "DiagnosticRecord": {
-          "TestDiagnosticResults": [],
-          "FrameworkDiagnosticResults": {
-            "Artifacts": [],
-            "DiagnosticText": "SampleDiagnosticsText1"
-          },
-          "AdditionalDiagnosticResults": [],
-          "Stack": {
-            "file": "/Users/username/workspace/visualization/tests/TestExamples1.m",
-            "name": "TestExamples1.testLeapYear3",
-            "line": 35
-          },
           "Event": "SampleDiagnosticsEvent1",
-          "EventScope": "TestMethod",
-          "EventLocation": "TestExamples1/testLeapYear3",
           "Report": "SampleDiagnosticsReport1"
         }
       },
@@ -145,22 +95,8 @@
     "TestResult": {
       "Duration": 0.1,
       "Details": {
-        "SimulinkTestManagerResults": [],
         "DiagnosticRecord": {
-          "TestDiagnosticResults": [],
-          "FrameworkDiagnosticResults": {
-            "Artifacts": [],
-            "DiagnosticText": "SampleDiagnosticsText2"
-          },
-          "AdditionalDiagnosticResults": [],
-          "Stack": {
-            "file": "/Users/username/workspace/visualization/tests/TestExamples1.m",
-            "name": "TestExamples1.testValidDateFormat",
-            "line": 35
-          },
           "Event": "SampleDiagnosticsEvent2",
-          "EventScope": "TestMethod",
-          "EventLocation": "TestExamples1/testValidDateFormat",
           "Report": "SampleDiagnosticsReport2"
         }
       },
@@ -174,9 +110,7 @@
   {
     "TestResult": {
       "Duration": 0,
-      "Details": {
-        "SimulinkTestManagerResults": []
-      },
+      "Details": {},
       "Name": "TestExamples1/testInvalidDateFormat",
       "Passed": false,
       "Failed": false,

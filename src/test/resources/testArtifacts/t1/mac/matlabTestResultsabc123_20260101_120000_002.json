@@ -2,22 +2,8 @@
   "TestResult": {
     "Duration": 0.1,
     "Details": {
-      "SimulinkTestManagerResults": [],
       "DiagnosticRecord": {
-        "TestDiagnosticResults": [],
-        "FrameworkDiagnosticResults": {
-          "Artifacts": [],
-          "DiagnosticText": "SampleDiagnosticsText2"
-        },
-        "AdditionalDiagnosticResults": [],
-        "Stack": {
-          "file": "/Users/username/workspace/visualization/duplicate_tests/TestExamples2.m",
-          "name": "TestExamples2.testNonLeapYear",
-          "line": 35
-        },
         "Event": "SampleDiagnosticsEvent2",
-        "EventScope": "TestMethod",
-        "EventLocation": "TestExamples2/testNonLeapYear",
         "Report": "SampleDiagnosticsReport2"
       }
     },
