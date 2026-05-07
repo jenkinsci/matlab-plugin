@@ -1,0 +1,68 @@
+[
+  {
+    "TestResult": {
+      "Duration": 0.5,
+      "Details": {
+        "DiagnosticRecord": [
+          {
+            "Event": "DiagEvent1",
+            "Report": "First diagnostic report"
+          },
+          {
+            "Event": "DiagEvent2",
+            "Report": "Second diagnostic report"
+          }
+        ]
+      },
+      "Name": "EdgeCaseTest/testMultipleDiags",
+      "Passed": false,
+      "Failed": true,
+      "Incomplete": false
+    },
+    "BaseFolder": "/home/user/workspace/src/tests"
+  },
+  {
+    "TestResult": {
+      "Duration": 0.3,
+      "Details": {},
+      "Name": "EdgeCaseTest/testNoDiag",
+      "Passed": true,
+      "Failed": false,
+      "Incomplete": false
+    },
+    "BaseFolder": "/home/user/workspace/src/tests"
+  },
+  {
+    "TestResult": {
+      "Duration": 0.1111,
+      "Details": {},
+      "Name": "EdgeCaseTest/testRounding1",
+      "Passed": true,
+      "Failed": false,
+      "Incomplete": false
+    },
+    "BaseFolder": "/home/user/workspace/src/tests"
+  },
+  {
+    "TestResult": {
+      "Duration": 0.9999,
+      "Details": {},
+      "Name": "EdgeCaseTest/testRounding2",
+      "Passed": true,
+      "Failed": false,
+      "Incomplete": false
+    },
+    "BaseFolder": "/home/user/workspace/src/tests"
+  },
+  {
+    "TestResult": {
+      "Duration": 0.005,
+      "Details": {},
+      "Name": "EdgeCaseTest/testRounding3",
+      "Passed": true,
+      "Failed": false,
+      "Incomplete": false
+    },
+    "BaseFolder": "/home/user/workspace/src/tests"
+  }
+]

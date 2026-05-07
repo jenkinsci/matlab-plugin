@@ -15,6 +15,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -84,6 +86,7 @@ public class TestResultsViewAction implements RunAction2 {
                 MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + this.actionID + "_*.json");
 
         if (sessionFiles.length > 0) {
+            Arrays.sort(sessionFiles, Comparator.comparing(FilePath::getName));
             for (FilePath sessionFile : sessionFiles) {
                 parseSessionFile(sessionFile, testResults);
             }
