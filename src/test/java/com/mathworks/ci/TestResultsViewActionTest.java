@@ -170,7 +170,7 @@ public class TestResultsViewActionTest {
         } else {
             throw new RuntimeException("Unsupported OS: " + os);
         }
-        
+
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         String actualPath1 = ta.get(0).get(0).getPath();
         Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests" + File.separator + "TestExamples1",actualPath1);
@@ -187,7 +187,7 @@ public class TestResultsViewActionTest {
     public void verifyMatlabTestFileLinuxStylePath() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         TestResultsViewAction ac = setupTestResultsViewAction();
         String expectedParentPath = "visualization/";
-        
+
         List<List<MatlabTestFile>> ta = ac.getTestResults();
         String actualPath1 = ta.get(0).get(0).getLinuxStylePath();
         Assert.assertEquals("Incorrect test file path",expectedParentPath + "tests/" + "TestExamples1",actualPath1);
@@ -312,7 +312,7 @@ public class TestResultsViewActionTest {
     public void verifyMatlabTestCaseDiagnostics() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         TestResultsViewAction ac = setupTestResultsViewAction();
         List<List<MatlabTestFile>> ta = ac.getTestResults();
-        
+
         MatlabTestDiagnostics diagnostics1 = ta.get(0).get(0).getMatlabTestCases().get(4).getDiagnostics().get(0);
         String actualDiagnosticsEvent1 = diagnostics1.getEvent();
         Assert.assertEquals("Incorrect test diagnostics event","SampleDiagnosticsEvent1",actualDiagnosticsEvent1);
