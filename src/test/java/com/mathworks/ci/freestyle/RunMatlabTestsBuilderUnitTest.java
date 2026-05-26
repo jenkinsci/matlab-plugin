@@ -1,7 +1,7 @@
 package com.mathworks.ci.freestyle;
 
 /**
- * Copyright 2024, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.IOException;
@@ -80,6 +80,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals(null, actual.getOutputDetail());
                 assertEquals("false", actual.getUseParallel());
                 assertEquals("false", actual.getStrict());
+                assertEquals(true, actual.getGenerateSummary());
                 assertEquals(null, actual.getSourceFolder());
                 assertEquals(null, actual.getSelectByFolder());
                 verify(action).run();
@@ -126,6 +127,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 builder.setOutputDetail("Concise");
                 builder.setUseParallel(true);
                 builder.setStrict(true);
+                builder.setGenerateSummary(false);
 
                 builder.perform(build, workspace, launcher, listener);
 
@@ -149,6 +151,7 @@ public class RunMatlabTestsBuilderUnitTest {
                 assertEquals("Concise", actual.getOutputDetail());
                 assertEquals("true", actual.getUseParallel());
                 assertEquals("true", actual.getStrict());
+                assertEquals(false, actual.getGenerateSummary());
                 assertEquals(2, actual.getSourceFolder().size());
                 assertEquals(2, actual.getSelectByFolder().size());
                 verify(action).run();

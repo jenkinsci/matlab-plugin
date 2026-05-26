@@ -1,7 +1,7 @@
 package com.mathworks.ci.parameters;
 
 /**
- * Copyright 2024 The MathWorks, Inc.
+ * Copyright 2024-26 The MathWorks, Inc.
  */
 
 import java.io.IOException;
@@ -15,15 +15,15 @@ import org.jenkinsci.plugins.workflow.steps.StepContext;
 public class CommandActionParameters extends MatlabActionParameters {
     private String command;
 
-    public CommandActionParameters(StepContext context, String startupOpts, String command)
-            throws IOException, InterruptedException {
-        super(context, startupOpts);
+    public CommandActionParameters(StepContext context, String startupOpts, String command,
+            boolean generateSummary) throws IOException, InterruptedException {
+        super(context, startupOpts, generateSummary);
         this.command = command;
     }
 
     public CommandActionParameters(Run<?, ?> build, FilePath workspace, EnvVars env, Launcher launcher,
-            TaskListener listener, String startupOpts, String command) {
-        super(build, workspace, env, launcher, listener, startupOpts);
+            TaskListener listener, String startupOpts, String command, boolean generateSummary) {
+        super(build, workspace, env, launcher, listener, startupOpts, generateSummary);
         this.command = command;
     }
 

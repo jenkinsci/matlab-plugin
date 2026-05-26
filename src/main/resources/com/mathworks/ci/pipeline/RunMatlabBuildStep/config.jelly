@@ -13,4 +13,8 @@
             <f:textbox/>
       </f:entry>
 
+      <f:entry field="generateSummary" title="generateSummary: ">
+        <f:checkbox default="true"/>
+      </f:entry>
+
 </j:jelly>

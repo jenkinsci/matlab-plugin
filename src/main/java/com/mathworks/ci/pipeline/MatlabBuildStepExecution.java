@@ -1,7 +1,7 @@
 package com.mathworks.ci.pipeline;
 
 /**
- * Copyright 2022-2024 The MathWorks, Inc.
+ * Copyright 2022-26 The MathWorks, Inc.
  */
 
 import java.io.IOException;
@@ -39,7 +39,8 @@ public class MatlabBuildStepExecution extends SynchronousNonBlockingStepExecutio
                 getContext(),
                 step.getStartupOptions(),
                 step.getTasks(),
-                step.getBuildOptions());
+                step.getBuildOptions(),
+                step.getGenerateSummary());
 
         RunMatlabBuildAction action = factory.createAction(params);
         try {

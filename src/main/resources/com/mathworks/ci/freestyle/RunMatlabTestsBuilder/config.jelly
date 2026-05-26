@@ -5,6 +5,9 @@
         <br></br>
         <f:optionalProperty field="sourceFolder" title="Source folder" />
         <f:optionalProperty field="startupOptions" title="Startup options" />
+        <f:entry field="generateSummary" title="Generate results summary" checked="${instance.generateSummary}">
+            <f:checkbox default="true"/>
+        </f:entry>
     </f:block>
 
     <br></br>
@@ -21,8 +24,8 @@
     <f:section title="Customize Test Run">
         <f:block>
             <f:entry field="strict" title="Strict " checked="${instance.strict}">
-                <f:checkbox/> 
-            </f:entry> 
+                <f:checkbox/>
+            </f:entry>
             <f:entry field="useParallel" title="Use parallel " checked="${instance.useParallel}">
                 <f:checkbox/>
             </f:entry>

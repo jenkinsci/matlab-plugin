@@ -1,7 +1,7 @@
 package com.mathworks.ci.actions;
 
 /**
- * Copyright 2024-2025, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import com.mathworks.ci.BuildArtifactAction;
@@ -38,22 +38,25 @@ public class MatlabAction {
         this.annotator = annotator;
     }
 
-    public void copyBuildPluginsToTemp() throws IOException, InterruptedException {
-        // Copy BuildRunner plugins and override default plugins function
+    public void copyPluginsToTemp(boolean generateSummary) throws IOException, InterruptedException {
         if(this.annotator != null) {
             runner.copyFileToTempFolder(MatlabBuilderConstants.DEFAULT_PLUGIN, MatlabBuilderConstants.DEFAULT_PLUGIN);
-            runner.copyFileToTempFolder(MatlabBuilderConstants.BUILD_REPORT_PLUGIN, MatlabBuilderConstants.BUILD_REPORT_PLUGIN);
-            runner.copyFileToTempFolder(MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN, MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN);
             runner.copyFileToTempFolder(MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN, MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN);
+
+            if (generateSummary) {
+                runner.copyFileToTempFolder(MatlabBuilderConstants.BUILD_REPORT_PLUGIN, MatlabBuilderConstants.BUILD_REPORT_PLUGIN);
+                runner.copyFileToTempFolder(MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN, MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN);
+            }
         }
 
-        // Copy TestRunner plugins and services
-        runner.copyFileToTempFolder(MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN);
-        runner.copyFileToTempFolder(MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE);
+        // Copy TestRunner plugins and services (only for summary generation)
+        if (generateSummary) {
+            runner.copyFileToTempFolder(MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN);
+            runner.copyFileToTempFolder(MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE);
+        }
     }
 
-    public void setBuildEnvVars() throws IOException, InterruptedException {
-        // Set environment variable
+    public void setBuildEnvVars(boolean generateSummary) throws IOException, InterruptedException {
         runner.addEnvironmentVariable(
                 "MW_MATLAB_TEMP_FOLDER",
                 runner.getTempFolder().toString());
@@ -63,16 +66,21 @@ public class MatlabAction {
             runner.addEnvironmentVariable(
                     "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE",
                     "ciplugins.jenkins.getDefaultPlugins");
+            runner.addEnvironmentVariable(
+                    "MW_GENERATE_SUMMARY",
+                    String.valueOf(generateSummary));
         }
     }
 
     public void teardownAction(MatlabActionParameters params) {
-        // Handle build result
-        if(this.annotator != null) {
-            moveBuildArtifactToBuildRoot(params);
-        }
+        if (params.getGenerateSummary()) {
+            // Handle build result
+            if (this.annotator != null) {
+                moveBuildArtifactToBuildRoot(params);
+            }
 
-        moveTestResultsToBuildRoot(params);
+            moveTestResultsToBuildRoot(params);
+        }
 
         try {
             this.runner.removeTempFolder();

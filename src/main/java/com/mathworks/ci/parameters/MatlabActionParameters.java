@@ -1,7 +1,7 @@
 package com.mathworks.ci.parameters;
 
 /**
- * Copyright 2024 The MathWorks, Inc.
+ * Copyright 2024-26 The MathWorks, Inc.
  */
 
 import java.io.IOException;
@@ -20,24 +20,28 @@ public class MatlabActionParameters {
     private TaskListener listener;
 
     private String startupOptions;
+    private boolean generateSummary;
 
-    public MatlabActionParameters(StepContext context, String startupOpts) throws IOException, InterruptedException {
+    public MatlabActionParameters(StepContext context, String startupOpts, boolean generateSummary)
+            throws IOException, InterruptedException {
         this.build = context.get(Run.class);
         this.workspace = context.get(FilePath.class);
         this.env = context.get(EnvVars.class);
         this.launcher = context.get(Launcher.class);
         this.listener = context.get(TaskListener.class);
         this.startupOptions = startupOpts;
+        this.generateSummary = generateSummary;
     }
 
     public MatlabActionParameters(Run build, FilePath workspace, EnvVars env, Launcher launcher, TaskListener listener,
-            String startupOpts) {
+            String startupOpts, boolean generateSummary) {
         this.build = build;
         this.workspace = workspace;
         this.env = env;
         this.launcher = launcher;
         this.listener = listener;
         this.startupOptions = startupOpts;
+        this.generateSummary = generateSummary;
     }
 
     public Run<?, ?> getBuild() {
@@ -62,5 +66,9 @@ public class MatlabActionParameters {
 
     public String getStartupOptions() {
         return startupOptions;
+    }
+
+    public boolean getGenerateSummary() {
+        return generateSummary;
     }
 }

@@ -6,7 +6,11 @@
 	  </f:entry> 
 
       <f:optionalProperty field="startupOptions" title="Startup options" />
-	  
+      
+      <f:entry field="generateSummary" title="Generate results summary" checked="${instance.generateSummary}">
+          <f:checkbox default="true"/>
+      </f:entry>
+      
       <f:optionalProperty field="buildOptions" title="Build options" />
 
 </j:jelly>

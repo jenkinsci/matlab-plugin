@@ -1,7 +1,7 @@
 package com.mathworks.ci.actions;
 
 /**
- * Copyright 2024-25, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.IOException;
@@ -29,8 +29,8 @@ public class RunMatlabBuildAction extends MatlabAction {
     }
 
     public void run() throws IOException, InterruptedException, MatlabExecutionException {
-        super.copyBuildPluginsToTemp();
-        super.setBuildEnvVars();
+        super.copyPluginsToTemp(this.params.getGenerateSummary());
+        super.setBuildEnvVars(this.params.getGenerateSummary());
 
         // Redirect output to the build annotator
         runner.redirectStdOut(annotator);

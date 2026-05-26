@@ -1,13 +1,14 @@
 package com.mathworks.ci.freestyle;
 
 /**
- * Copyright 2019-2024 The MathWorks, Inc.
+ * Copyright 2019-26 The MathWorks, Inc.
  * 
  * Script builder used to run custom MATLAB commands or scripts.
  */
 
 import hudson.util.FormValidation;
 import java.io.IOException;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import jenkins.model.Jenkins;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -44,6 +45,7 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
     // In use
     private String matlabCommand;
     private StartupOptions startupOptions;
+    private Boolean generateSummary;
 
     private MatlabActionFactory factory;
 
@@ -67,6 +69,11 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
         this.startupOptions = startupOptions;
     }
 
+    @DataBoundSetter
+    public void setGenerateSummary(Boolean generateSummary) {
+        this.generateSummary = generateSummary;
+    }
+
     public String getMatlabCommand() {
         return this.matlabCommand;
     }
@@ -79,6 +86,10 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
         return this.startupOptions == null
                 ? ""
                 : this.startupOptions.getOptions();
+    }
+
+    public boolean getGenerateSummary() {
+        return this.generateSummary == null || this.generateSummary;
     }
 
     @Extension
@@ -139,7 +150,8 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
                 build, workspace, env,
                 launcher, listener,
                 getStartupOptionsAsString(),
-                getMatlabCommand());
+                getMatlabCommand(),
+                getGenerateSummary());
         RunMatlabCommandAction action = factory.createAction(params);
 
         try {
@@ -152,6 +164,8 @@ public class RunMatlabCommandBuilder extends Builder implements SimpleBuildStep 
     // Added for backwards compatibility:
     // Called when object is loaded from persistent data.
     protected Object readResolve() {
+        this.generateSummary = Optional.ofNullable(this.generateSummary).orElse(true);
+
         if (factory == null) {
             factory = new MatlabActionFactory();
         }

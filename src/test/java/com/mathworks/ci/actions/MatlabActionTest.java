@@ -1,7 +1,7 @@
 package com.mathworks.ci.actions;
 
 /**
- * Copyright 2024, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.File;
@@ -18,7 +18,7 @@ import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 import hudson.FilePath;
@@ -68,6 +68,7 @@ public class MatlabActionTest {
             when(listener.getLogger()).thenReturn(out);
 
             when(params.getBuild()).thenReturn(build);
+            when(params.getGenerateSummary()).thenReturn(true);
         }
     }
 
@@ -80,11 +81,11 @@ public class MatlabActionTest {
         inOrder.verify(runner)
                 .copyFileToTempFolder(MatlabBuilderConstants.DEFAULT_PLUGIN, MatlabBuilderConstants.DEFAULT_PLUGIN);
         inOrder.verify(runner)
-                .copyFileToTempFolder(MatlabBuilderConstants.BUILD_REPORT_PLUGIN,
-                        MatlabBuilderConstants.BUILD_REPORT_PLUGIN);
-        inOrder.verify(runner)
                 .copyFileToTempFolder(MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN,
                         MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN);
+        inOrder.verify(runner)
+                .copyFileToTempFolder(MatlabBuilderConstants.BUILD_REPORT_PLUGIN,
+                        MatlabBuilderConstants.BUILD_REPORT_PLUGIN);
     }
 
     @Test
@@ -132,5 +133,89 @@ public class MatlabActionTest {
         action.run();
 
         verify(runner).removeTempFolder();
+    }
+
+    @Test
+    public void shouldOnlyCopyNonVisualizationPluginsWhenGenerateSummaryFalse()
+            throws IOException, InterruptedException {
+        MatlabCommandRunner localRunner = mock(MatlabCommandRunner.class);
+        BuildConsoleAnnotator localAnnotator = mock(BuildConsoleAnnotator.class);
+
+        MatlabAction matlabAction = new MatlabAction(localRunner, localAnnotator);
+        matlabAction.copyPluginsToTemp(false);
+
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.DEFAULT_PLUGIN, MatlabBuilderConstants.DEFAULT_PLUGIN);
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN, MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN);
+
+        verify(localRunner, never()).copyFileToTempFolder(
+                MatlabBuilderConstants.BUILD_REPORT_PLUGIN, MatlabBuilderConstants.BUILD_REPORT_PLUGIN);
+        verify(localRunner, never()).copyFileToTempFolder(
+                MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN, MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN);
+        verify(localRunner, never()).copyFileToTempFolder(
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN);
+        verify(localRunner, never()).copyFileToTempFolder(
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE);
+    }
+
+    @Test
+    public void shouldCopyAllPluginsWhenGenerateSummaryTrue()
+            throws IOException, InterruptedException {
+        MatlabCommandRunner localRunner = mock(MatlabCommandRunner.class);
+        BuildConsoleAnnotator localAnnotator = mock(BuildConsoleAnnotator.class);
+
+        MatlabAction matlabAction = new MatlabAction(localRunner, localAnnotator);
+        matlabAction.copyPluginsToTemp(true);
+
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.DEFAULT_PLUGIN, MatlabBuilderConstants.DEFAULT_PLUGIN);
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN, MatlabBuilderConstants.TASK_RUN_PROGRESS_PLUGIN);
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.BUILD_REPORT_PLUGIN, MatlabBuilderConstants.BUILD_REPORT_PLUGIN);
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN, MatlabBuilderConstants.PAR_BUILD_REPORT_PLUGIN);
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN);
+        verify(localRunner).copyFileToTempFolder(
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE, MatlabBuilderConstants.TEST_RESULTS_VIEW_PLUGIN_SERVICE);
+    }
+
+    @Test
+    public void shouldSetGenerateSummaryEnvVar()
+            throws IOException, InterruptedException {
+        MatlabCommandRunner localRunner = mock(MatlabCommandRunner.class);
+        BuildConsoleAnnotator localAnnotator = mock(BuildConsoleAnnotator.class);
+        FilePath localTempFolder = mock(FilePath.class);
+        when(localRunner.getTempFolder()).thenReturn(localTempFolder);
+
+        MatlabAction matlabAction = new MatlabAction(localRunner, localAnnotator);
+        matlabAction.setBuildEnvVars(true);
+        verify(localRunner).addEnvironmentVariable("MW_GENERATE_SUMMARY", "true");
+
+        MatlabCommandRunner localRunner2 = mock(MatlabCommandRunner.class);
+        FilePath localTempFolder2 = mock(FilePath.class);
+        when(localRunner2.getTempFolder()).thenReturn(localTempFolder2);
+
+        MatlabAction matlabAction2 = new MatlabAction(localRunner2, localAnnotator);
+        matlabAction2.setBuildEnvVars(false);
+        verify(localRunner2).addEnvironmentVariable("MW_GENERATE_SUMMARY", "false");
+    }
+
+    @Test
+    public void shouldAlwaysSetDefaultPluginsOverrideEnvVar()
+            throws IOException, InterruptedException {
+        MatlabCommandRunner localRunner = mock(MatlabCommandRunner.class);
+        BuildConsoleAnnotator localAnnotator = mock(BuildConsoleAnnotator.class);
+        FilePath localTempFolder = mock(FilePath.class);
+        when(localRunner.getTempFolder()).thenReturn(localTempFolder);
+
+        MatlabAction matlabAction = new MatlabAction(localRunner, localAnnotator);
+        matlabAction.setBuildEnvVars(false);
+
+        verify(localRunner).addEnvironmentVariable(
+                "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE",
+                "ciplugins.jenkins.getDefaultPlugins");
     }
 }

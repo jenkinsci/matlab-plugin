@@ -1,7 +1,7 @@
 package com.mathworks.ci.parameters;
 
 /**
- * Copyright 2024 The MathWorks, Inc.
+ * Copyright 2024-26 The MathWorks, Inc.
  */
 
 import java.io.IOException;
@@ -16,16 +16,17 @@ public class BuildActionParameters extends MatlabActionParameters {
     private String tasks;
     private String buildOptions;
 
-    public BuildActionParameters(StepContext context, String startupOpts, String tasks, String buildOpts)
-            throws IOException, InterruptedException {
-        super(context, startupOpts);
+    public BuildActionParameters(StepContext context, String startupOpts, String tasks, String buildOpts,
+            boolean generateSummary) throws IOException, InterruptedException {
+        super(context, startupOpts, generateSummary);
         this.tasks = tasks;
         this.buildOptions = buildOpts;
     }
 
     public BuildActionParameters(Run<?, ?> build, FilePath workspace, EnvVars env, Launcher launcher,
-            TaskListener listener, String startupOpts, String tasks, String buildOptions) {
-        super(build, workspace, env, launcher, listener, startupOpts);
+            TaskListener listener, String startupOpts, String tasks, String buildOptions,
+            boolean generateSummary) {
+        super(build, workspace, env, launcher, listener, startupOpts, generateSummary);
         this.tasks = tasks;
         this.buildOptions = buildOptions;
     }
