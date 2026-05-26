@@ -1,8 +1,7 @@
 <?jelly escape-by-default='true'?>
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
-    <f:block> 
-        <br></br>
+    <f:block>
         <f:optionalProperty field="sourceFolder" title="Source folder" />
         <f:optionalProperty field="startupOptions" title="Startup options" />
         <f:entry field="generateSummary" title="Generate results summary" checked="${instance.generateSummary}">
@@ -10,16 +9,12 @@
         </f:entry>
     </f:block>
 
-    <br></br>
-
     <f:section title="Filter Tests">
         <f:block>
             <f:optionalProperty field="selectByFolder" title="By folder name" />
-            <br></br>
             <f:optionalProperty field="selectByTag" title="By tag" /> 
         </f:block>
     </f:section>
-    <br></br>
 
     <f:section title="Customize Test Run">
         <f:block>
@@ -41,8 +36,6 @@
             </f:entry>
         </f:block>
     </f:section>
-
-    <br></br>
 
     <f:section title="Generate Test Artifacts">
         <f:block>
@@ -77,8 +70,6 @@
             </f:optionalBlock>
         </f:block>
     </f:section>
-    
-    <br></br>
 
     <f:section title="Generate Coverage Artifacts">
         <f:block>

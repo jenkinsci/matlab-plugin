@@ -67,7 +67,7 @@ public class MatlabAction {
                     "MW_MATLAB_BUILDTOOL_DEFAULT_PLUGINS_FCN_OVERRIDE",
                     "ciplugins.jenkins.getDefaultPlugins");
             runner.addEnvironmentVariable(
-                    "MW_GENERATE_SUMMARY",
+                    "MW_INPUT_GENERATE_SUMMARY",
                     String.valueOf(generateSummary));
         }
     }

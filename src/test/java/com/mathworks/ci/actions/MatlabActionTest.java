@@ -192,7 +192,7 @@ public class MatlabActionTest {
 
         MatlabAction matlabAction = new MatlabAction(localRunner, localAnnotator);
         matlabAction.setBuildEnvVars(true);
-        verify(localRunner).addEnvironmentVariable("MW_GENERATE_SUMMARY", "true");
+        verify(localRunner).addEnvironmentVariable("MW_INPUT_GENERATE_SUMMARY", "true");
 
         MatlabCommandRunner localRunner2 = mock(MatlabCommandRunner.class);
         FilePath localTempFolder2 = mock(FilePath.class);
@@ -200,7 +200,7 @@ public class MatlabActionTest {
 
         MatlabAction matlabAction2 = new MatlabAction(localRunner2, localAnnotator);
         matlabAction2.setBuildEnvVars(false);
-        verify(localRunner2).addEnvironmentVariable("MW_GENERATE_SUMMARY", "false");
+        verify(localRunner2).addEnvironmentVariable("MW_INPUT_GENERATE_SUMMARY", "false");
     }
 
     @Test

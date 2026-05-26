@@ -29,6 +29,7 @@ public class RunMatlabTestsAction extends MatlabAction {
     }
 
     public void run() throws IOException, InterruptedException, MatlabExecutionException {
+        // No annotator in this action, so only test related plugins are copied here
         super.copyPluginsToTemp(this.params.getGenerateSummary());
         super.setBuildEnvVars(this.params.getGenerateSummary());
 

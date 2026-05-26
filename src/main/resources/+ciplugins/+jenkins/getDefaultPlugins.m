@@ -11,7 +11,7 @@ plugins = [ ...
     ciplugins.jenkins.TaskRunProgressPlugin() ...
 ];
 
-if strcmp(getenv("MW_GENERATE_SUMMARY"), "true")
+if strcmp(getenv("MW_INPUT_GENERATE_SUMMARY"), "true")
     if isMATLABReleaseOlderThan("R2026a")
         reportPlugin = ciplugins.jenkins.BuildReportPlugin();
     else
