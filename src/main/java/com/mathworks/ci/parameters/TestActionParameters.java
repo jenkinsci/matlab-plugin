@@ -1,7 +1,7 @@
 package com.mathworks.ci.parameters;
 
 /**
- * Copyright 2024 The MathWorks, Inc.
+ * Copyright 2024-26 The MathWorks, Inc.
  */
 
 import java.util.List;
@@ -36,10 +36,10 @@ public class TestActionParameters extends MatlabActionParameters {
             String testResultsPDF, String testResultsHTML, String testResultsTAP, String testResultsJUnit,
             String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
             String selectByTag, String loggingLevel, String outputDetail,
-            boolean useParallel, boolean strict, List<String> sourceFolder,
-            List<String> selectByFolder)
+            boolean useParallel, boolean strict, boolean generateSummary,
+            List<String> sourceFolder, List<String> selectByFolder)
             throws IOException, InterruptedException {
-        super(context, startupOpts);
+        super(context, startupOpts, generateSummary);
         this.testResultsPDF = testResultsPDF;
         this.testResultsHTML = testResultsHTML;
         this.testResultsTAP = testResultsTAP;
@@ -63,9 +63,9 @@ public class TestActionParameters extends MatlabActionParameters {
             String testResultsPDF, String testResultsHTML, String testResultsTAP, String testResultsJUnit,
             String codeCoverageCobertura, String codeCoverageHTML, String testResultsSimulinkTest, String modelCoverageCobertura, String modelCoverageHTML,
             String selectByTag, String loggingLevel, String outputDetail,
-            boolean useParallel, boolean strict, List<String> sourceFolder,
-            List<String> selectByFolder) {
-        super(build, workspace, env, launcher, listener, startupOpts);
+            boolean useParallel, boolean strict, boolean generateSummary,
+            List<String> sourceFolder, List<String> selectByFolder) {
+        super(build, workspace, env, launcher, listener, startupOpts, generateSummary);
         this.testResultsPDF = testResultsPDF;
         this.testResultsHTML = testResultsHTML;
         this.testResultsTAP = testResultsTAP;

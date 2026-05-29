@@ -1,7 +1,7 @@
 package com.mathworks.ci.pipeline;
 
 /**
- * Copyright 2020-2024 The MathWorks, Inc.
+ * Copyright 2020-26 The MathWorks, Inc.
  */
 
 import java.io.IOException;
@@ -54,6 +54,7 @@ public class MatlabRunTestsStepExecution extends SynchronousNonBlockingStepExecu
                 step.getOutputDetail(),
                 step.getUseParallel(),
                 step.getStrict(),
+                step.getGenerateSummary(),
                 step.getSourceFolder(),
                 step.getSelectByFolder());
         RunMatlabTestsAction action = factory.createAction(params);

@@ -1,7 +1,7 @@
 package com.mathworks.ci.pipeline;
 
 /**
- * Copyright 2024, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.IOException;
@@ -64,6 +64,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals(null, params.getOutputDetail());
         assertEquals("false", params.getUseParallel());
         assertEquals("false", params.getStrict());
+        assertEquals(true, params.getGenerateSummary());
         assertEquals(null, params.getSourceFolder());
         assertEquals(null, params.getSelectByFolder());
 
@@ -89,6 +90,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         step.setOutputDetail("Concise");
         step.setUseParallel(true);
         step.setStrict(true);
+        step.setGenerateSummary(false);
 
         ArrayList<String> folders = new ArrayList<String>();
         folders.add("src");
@@ -120,6 +122,7 @@ public class MatlabRunTestsStepExecutionUnitTest {
         assertEquals("Concise", params.getOutputDetail());
         assertEquals("true", params.getUseParallel());
         assertEquals("true", params.getStrict());
+        assertEquals(false, params.getGenerateSummary());
         assertEquals(folders, params.getSourceFolder());
         assertEquals(folders, params.getSelectByFolder());
 

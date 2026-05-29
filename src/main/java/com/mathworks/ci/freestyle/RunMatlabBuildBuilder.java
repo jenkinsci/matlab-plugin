@@ -1,10 +1,11 @@
 package com.mathworks.ci.freestyle;
 
 /**
- * Copyright 2022-2024 The MathWorks, Inc.
+ * Copyright 2022-26 The MathWorks, Inc.
  */
 
 import java.io.IOException;
+import java.util.Optional;
 import javax.annotation.Nonnull;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.DataBoundSetter;
@@ -39,6 +40,7 @@ public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
     private String tasks;
     private StartupOptions startupOptions;
     private BuildOptions buildOptions;
+    private Boolean generateSummary;
 
     private MatlabActionFactory factory;
 
@@ -67,6 +69,11 @@ public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
         this.buildOptions = buildOptions;
     }
 
+    @DataBoundSetter
+    public void setGenerateSummary(Boolean generateSummary) {
+        this.generateSummary = generateSummary;
+    }
+
     public String getTasks() {
         return this.tasks;
     }
@@ -89,6 +96,10 @@ public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
         return this.buildOptions == null
                 ? null
                 : this.buildOptions.getOptions();
+    }
+
+    public boolean getGenerateSummary() {
+        return this.generateSummary == null || this.generateSummary;
     }
 
     @Extension
@@ -139,7 +150,8 @@ public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
                 build, workspace, env, launcher, listener,
                 this.getStartupOptionsAsString(),
                 this.getTasks(),
-                this.getBuildOptionsAsString());
+                this.getBuildOptionsAsString(),
+                this.getGenerateSummary());
         RunMatlabBuildAction action = factory.createAction(params);
 
         try {
@@ -152,6 +164,8 @@ public class RunMatlabBuildBuilder extends Builder implements SimpleBuildStep {
     // Added for backwards compatibility:
     // Called when object is loaded from persistent data.
     protected Object readResolve() {
+        this.generateSummary = Optional.ofNullable(this.generateSummary).orElse(true);
+
         if (factory == null) {
             factory = new MatlabActionFactory();
         }

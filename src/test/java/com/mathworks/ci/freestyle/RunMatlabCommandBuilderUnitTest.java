@@ -1,7 +1,7 @@
 package com.mathworks.ci.freestyle;
 
 /**
- * Copyright 2024, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.IOException;
@@ -66,6 +66,7 @@ public class RunMatlabCommandBuilderUnitTest {
 
         assertEquals("", actual.getStartupOptions());
         assertEquals(null, actual.getCommand());
+        assertEquals(true, actual.getGenerateSummary());
         verify(action).run();
     }
 
@@ -74,6 +75,7 @@ public class RunMatlabCommandBuilderUnitTest {
         RunMatlabCommandBuilder builder = new RunMatlabCommandBuilder(factory);
         builder.setMatlabCommand("SHAKE");
         builder.setStartupOptions(new StartupOptions("-nojvm -logfile mylog"));
+        builder.setGenerateSummary(false);
 
         builder.perform(build, workspace, launcher, listener);
 
@@ -84,6 +86,7 @@ public class RunMatlabCommandBuilderUnitTest {
 
         assertEquals("-nojvm -logfile mylog", actual.getStartupOptions());
         assertEquals("SHAKE", actual.getCommand());
+        assertEquals(false, actual.getGenerateSummary());
         verify(action).run();
     }
 

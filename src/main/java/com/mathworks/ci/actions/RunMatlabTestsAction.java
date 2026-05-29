@@ -1,7 +1,7 @@
 package com.mathworks.ci.actions;
 
 /**
- * Copyright 2024-25, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.IOException;
@@ -29,6 +29,10 @@ public class RunMatlabTestsAction extends MatlabAction {
     }
 
     public void run() throws IOException, InterruptedException, MatlabExecutionException {
+        // No annotator in this action, so only test related plugins are copied here
+        super.copyPluginsToTemp(this.params.getGenerateSummary());
+        super.setBuildEnvVars(this.params.getGenerateSummary());
+
         // Copy in genscript
         FilePath genScriptZip = runner.copyFileToTempFolder(
                 MatlabBuilderConstants.MATLAB_SCRIPT_GENERATOR,

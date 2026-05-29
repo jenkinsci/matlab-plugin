@@ -1,7 +1,7 @@
 package com.mathworks.ci.pipeline;
 
 /**
- * Copyright 2020-2024 The MathWorks, Inc.
+ * Copyright 2020-26 The MathWorks, Inc.
  */
 
 import java.io.Serializable;
@@ -46,6 +46,7 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     private List<String> selectByFolder;
 
     private String startupOptions;
+    private boolean generateSummary = true;
 
     @DataBoundConstructor
     public RunMatlabTestsStep() {
@@ -203,6 +204,15 @@ public class RunMatlabTestsStep extends Step implements Serializable {
     @DataBoundSetter
     public void setStartupOptions(String startupOptions) {
         this.startupOptions = startupOptions;
+    }
+
+    public boolean getGenerateSummary() {
+        return generateSummary;
+    }
+
+    @DataBoundSetter
+    public void setGenerateSummary(boolean generateSummary) {
+        this.generateSummary = generateSummary;
     }
 
     @Override

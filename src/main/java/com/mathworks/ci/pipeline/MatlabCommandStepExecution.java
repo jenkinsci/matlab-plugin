@@ -1,7 +1,7 @@
 package com.mathworks.ci.pipeline;
 
 /**
- * Copyright 2023-2024 The MathWorks, Inc.
+ * Copyright 2023-26 The MathWorks, Inc.
  */
 
 import java.io.IOException;
@@ -38,7 +38,8 @@ public class MatlabCommandStepExecution extends SynchronousNonBlockingStepExecut
         CommandActionParameters params = new CommandActionParameters(
                 getContext(),
                 step.getStartupOptions(),
-                step.getCommand());
+                step.getCommand(),
+                step.getGenerateSummary());
         RunMatlabCommandAction action = factory.createAction(params);
 
         try {

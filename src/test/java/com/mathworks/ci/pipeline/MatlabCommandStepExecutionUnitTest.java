@@ -1,7 +1,7 @@
 package com.mathworks.ci.pipeline;
 
 /**
- * Copyright 2024, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.IOException;
@@ -52,6 +52,7 @@ public class MatlabCommandStepExecutionUnitTest {
         CommandActionParameters params = captor.getValue();
         assertEquals("", params.getStartupOptions());
         assertEquals(null, params.getCommand());
+        assertEquals(true, params.getGenerateSummary());
 
         verify(action).run();
     }
@@ -61,6 +62,7 @@ public class MatlabCommandStepExecutionUnitTest {
             throws Exception, IOException, InterruptedException, MatlabExecutionException {
         RunMatlabCommandStep step = new RunMatlabCommandStep("mycommand");
         step.setStartupOptions("-nojvm -logfile file");
+        step.setGenerateSummary(false);
 
         MatlabCommandStepExecution ex = new MatlabCommandStepExecution(factory, context, step);
 
@@ -72,6 +74,7 @@ public class MatlabCommandStepExecutionUnitTest {
         CommandActionParameters params = captor.getValue();
         assertEquals("-nojvm -logfile file", params.getStartupOptions());
         assertEquals("mycommand", params.getCommand());
+        assertEquals(false, params.getGenerateSummary());
 
         verify(action).run();
     }

@@ -1,7 +1,7 @@
 package com.mathworks.ci.pipeline;
 
 /**
- * Copyright 2024, The MathWorks Inc.
+ * Copyright 2024-26, The MathWorks Inc.
  */
 
 import java.io.IOException;
@@ -51,6 +51,7 @@ public class MatlabBuildStepExecutionUnitTest {
         assertEquals("", params.getStartupOptions());
         assertEquals("", params.getTasks());
         assertEquals("", params.getBuildOptions());
+        assertEquals(true, params.getGenerateSummary());
 
         verify(action).run();
     }
@@ -62,6 +63,7 @@ public class MatlabBuildStepExecutionUnitTest {
         step.setStartupOptions("-nojvm -logfile file");
         step.setTasks("vacuum bills");
         step.setBuildOptions("-continueOnFailure");
+        step.setGenerateSummary(false);
 
         MatlabBuildStepExecution ex = new MatlabBuildStepExecution(factory, context, step);
 
@@ -75,6 +77,7 @@ public class MatlabBuildStepExecutionUnitTest {
         assertEquals("-nojvm -logfile file", params.getStartupOptions());
         assertEquals("vacuum bills", params.getTasks());
         assertEquals("-continueOnFailure", params.getBuildOptions());
+        assertEquals(false, params.getGenerateSummary());
 
         verify(action).run();
     }

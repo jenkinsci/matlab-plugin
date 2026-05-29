@@ -1,7 +1,7 @@
 package com.mathworks.ci.freestyle;
 
 /** 
- * Copyright 2019-2024 The MathWorks, Inc.  
+ * Copyright 2019-26 The MathWorks, Inc.  
  *  
  * MATLAB test run builder used to run all MATLAB & Simulink tests automatically and generate   
  * selected test artifacts. 
@@ -73,6 +73,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     private String outputDetail = "default";
     private boolean useParallel = false;
     private boolean strict = false;
+    private Boolean generateSummary;
 
     private MatlabActionFactory factory;
 
@@ -170,6 +171,11 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
     @DataBoundSetter
     public void setStrict(boolean strict) {
         this.strict = strict;
+    }
+
+    @DataBoundSetter
+    public void setGenerateSummary(Boolean generateSummary) {
+        this.generateSummary = generateSummary;
     }
 
     public String getTapReportFilePath() {
@@ -297,6 +303,10 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         return this.useParallel;
     }
 
+    public boolean getGenerateSummary() {
+        return this.generateSummary == null || this.generateSummary;
+    }
+
     public StartupOptions getStartupOptions() {
         return this.startupOptions;
     }
@@ -345,6 +355,8 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
         this.htmlModelCoverageArtifact = Optional.ofNullable(this.htmlModelCoverageArtifact)
                 .orElseGet(() -> this.getArtifactObject(htmlModelCoverageChkBx,
                         new HtmlModelCoverageArtifact("matlabTestArtifacts/htmlmodelcoverage")));
+
+        this.generateSummary = Optional.ofNullable(this.generateSummary).orElse(true);
 
         if (factory == null) {
             factory = new MatlabActionFactory();
@@ -469,6 +481,7 @@ public class RunMatlabTestsBuilder extends Builder implements SimpleBuildStep {
                 this.getOutputDetail(),
                 this.getUseParallel(),
                 this.getStrict(),
+                this.getGenerateSummary(),
                 this.getSourceFolderPaths(),
                 this.getSelectByFolderPaths());
         RunMatlabTestsAction action = factory.createAction(params);
