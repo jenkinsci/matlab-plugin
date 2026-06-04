@@ -70,6 +70,9 @@ If you use a source code management (SCM) system such as Git&trade;, then your p
 
 > :information_source: **Note:** By default, when you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** step, the root of your repository serves as the MATLAB startup folder. To run your MATLAB code using a different folder, specify the `-sd` startup option or include the `cd` command when using the **Run MATLAB Command** step.
 
+By default, the **Run MATLAB Build**, **Run MATLAB Tests**, and **Run MATLAB Command** steps enable you to access the results of running a MATLAB build and MATLAB and Simulink tests directly from your Jenkins interface. To disable a step from generating build and test summaries for display on the Jenkins build summary page, clear the **Generate summary** check box in the step configuration interface. For more information about build and test summaries, see [View MATLAB Build and Test Results](#view-matlab-build-and-test-results).
+
+
 #### Run MATLAB Build
 The **Run MATLAB Build** step lets you run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this step to run the tasks specified in a file named `buildfile.m` in the root of your repository. To use the **Run MATLAB Build** step, you need MATLAB R2022b or a later release.
 
