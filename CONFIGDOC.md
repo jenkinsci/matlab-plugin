@@ -494,16 +494,16 @@ pipeline {
 ```
 
 ## View MATLAB Build and Test Results
-You can access the results of running a MATLAB build and the results of running MATLAB and Simulink tests directly from your Jenkins interface. 
+You can access the results of running a MATLAB build and the results of running MATLAB and Simulink tests directly from your Jenkins interface. By default, plugin steps enable results summary generation. However, you can configure a step not to generate summaries on the Jenkins build summary page.
 
 ### View Build Results
-Starting in R2024a, if you run a MATLAB build using the **Run MATLAB Build** or `runMATLABBuild` step, you can view the MATLAB build results in your Jenkins interface. After your build runs, the Jenkins build summary page displays the number of tasks that ran, failed, and were skipped. You can click the **MATLAB Build Results** link on the page to access the table of task results. The table provides information about each task that was part of the MATLAB build. Click a task name in the table to go to the relevant build log information on the **Console Output** page.
+If you run a MATLAB build using the **Run MATLAB Build**,`runMATLABBuild`, **Run MATLAB Command**, or `runMATLABCommand` step, you can view the MATLAB build results in your Jenkins interface. After your build runs, the Jenkins build summary page displays the number of tasks that ran, failed, and were skipped. You can click the **MATLAB Build Results** link on the page to access the table of task results. The table provides information about each task that was part of the MATLAB build. Click a task name in the table to go to the relevant build log information on the **Console Output** page.
 
 <img width="1920" height="522" alt="Table of MATLAB build results including three tasks. Each table row includes a clickable task name, its status, description, and duration." src="https://github.com/user-attachments/assets/72089445-df56-43be-a41a-86feedac603e" />
 
 ### View Test Results
-Starting in R2024b, if you have a MATLAB Test&trade; license, you can view your MATLAB and Simulink test results in your Jenkins interface by taking any of these actions:
-- Run tests with a [`matlab.buildtool.tasks.TestTask`](https://www.mathworks.com/help/matlab/ref/matlab.buildtool.tasks.testtask-class.html) instance using the **Run MATLAB Build** or `runMATLABBuild` step.
+If you have a MATLAB Test&trade; license, you can view your MATLAB and Simulink test results in your Jenkins interface by taking any of these actions:
+- Run tests with a [`matlab.buildtool.tasks.TestTask`](https://www.mathworks.com/help/matlab/ref/matlab.buildtool.tasks.testtask-class.html) instance using the **Run MATLAB Build**,`runMATLABBuild`, **Run MATLAB Command**, or `runMATLABCommand` step.
 - Run tests using the **Run MATLAB Tests** or `runMATLABTests` step.  
 - Run tests with a default test runner using the **Run MATLAB Command** or `runMATLABCommand` step. You can create a default test runner using the [`matlab.unittest.TestRunner.withDefaultPlugins`](https://www.mathworks.com/help/matlab/ref/matlab.unittest.testrunner.withdefaultplugins.html) method.
 
