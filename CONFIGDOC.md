@@ -70,12 +70,15 @@ If you use a source code management (SCM) system such as Git&trade;, then your p
 
 > :information_source: **Note:** By default, when you use the **Run MATLAB Build**, **Run MATLAB Tests**, or **Run MATLAB Command** step, the root of your repository serves as the MATLAB startup folder. To run your MATLAB code using a different folder, specify the `-sd` startup option or include the `cd` command when using the **Run MATLAB Command** step.
 
+By default, the **Run MATLAB Build**, **Run MATLAB Tests**, and **Run MATLAB Command** steps generate a summary of build and test results that appears on the Jenkins build summary page. To disable this summary for any step, clear the **Generate summary** option in the step configuration interface. For more information about build and test summaries, see [View MATLAB Build and Test Results](#view-matlab-build-and-test-results).
+
+
 #### Run MATLAB Build
 The **Run MATLAB Build** step lets you run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this step to run the tasks specified in a file named `buildfile.m` in the root of your repository. To use the **Run MATLAB Build** step, you need MATLAB R2022b or a later release.
 
 Specify the tasks you want to execute in the **Tasks** box. If you specify more than one task, use a space to separate them. If you do not specify any tasks, the plugin runs the default tasks in `buildfile.m` as well as all the tasks on which they depend. For example, enter `mytask` in the **Tasks** box to run a task named `mytask` as well as all the tasks on which it depends.
 
-![Build Steps section showing a Run MATLAB Build step with a Tasks box populated with mytask and the Startup options and Build options settings](https://github.com/user-attachments/assets/5cb99625-a207-409e-9bc5-8aa0477a9c28)
+<img width="1691" height="694" alt="Build Steps section showing a Run MATLAB Build step with a Tasks box populated with mytask and the Startup options, Generate summary, and Build options settings" src="https://github.com/user-attachments/assets/a4027ea5-255a-4c68-97d5-11151f74e82e" />
 
 You can specify build options for your MATLAB build by first selecting **Build options**  and then populating the box that appears in the step configuration interface. For example, specify `-continueOnFailure` to continue running the MATLAB build upon a build environment setup or task failure. If you specify more than one build option, use a space to separate them (for example, `-continueOnFailure -skip test`).  The plugin supports the same [options](https://www.mathworks.com/help/matlab/ref/buildtool.html#mw_50c0f35e-93df-4579-963d-f59f2fba1dba) that you can pass to the `buildtool` command.
 
@@ -128,7 +131,7 @@ Specify the MATLAB script, function, or statement you want to execute in the **C
 
 For example, enter `myscript` in the **Command** box to run a script named `myscript.m` in the root of your repository.
 
-![Build Steps section showing a Run MATLAB Command step with a Command box populated with myscript and a Startup options setting](https://github.com/user-attachments/assets/7447add3-7877-4cc0-b11d-4d8cb3e09166)
+<img width="1681" height="469" alt="Build Steps section showing a Run MATLAB Command step with a Command box populated with myscript and the Startup options and Generate summary settings" src="https://github.com/user-attachments/assets/4dc4e80b-0c3e-463d-9573-1e6d81cae9a8" />
 
 MATLAB exits with exit code 0 if the specified script, function, or statement executes without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the step to fail. To fail the step in certain conditions, use the [`assert`](https://www.mathworks.com/help/matlab/ref/assert.html) or [`error`](https://www.mathworks.com/help/matlab/ref/error.html) function.
 
@@ -255,10 +258,11 @@ node {
 ### Use the `runMATLABBuild` Step
 Use the `runMATLABBuild` step in your pipeline to run a build using the [MATLAB build tool](https://www.mathworks.com/help/matlab/matlab_prog/overview-of-matlab-build-tool.html). You can use this step to run the tasks specified in a file named `buildfile.m` in the root of your repository. To use the `runMATLABBuild` step, you need MATLAB R2022b or a later release. The step accepts optional inputs. 
 
-Input                     | Description
-------------------------- | ---------------
-`tasks`                   | <p>(Optional) Tasks to run, specified as a list of task names separated by spaces. If you specify the step without this input (for example, `runMATLABBuild()`),  the plugin runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</p><p>MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the step to fail.</p><p>**Example:** `tasks: 'test'`<br/>**Example:** `tasks: 'compile test'`</p>
+Input                    | Description
+------------------------ | ---------------
+`tasks`                  | <p>(Optional) Tasks to run, specified as a list of task names separated by spaces. If you specify the step without this input (for example, `runMATLABBuild()`),  the plugin runs the default tasks in `buildfile.m` as well as all the tasks on which they depend.</p><p>MATLAB exits with exit code 0 if the tasks run without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the step to fail.</p><p>**Example:** `tasks: 'test'`<br/>**Example:** `tasks: 'compile test'`</p>
 `buildOptions`           | <p>(Optional) MATLAB build options, specified as a list of options separated by spaces. The plugin supports the same [options](https://www.mathworks.com/help/matlab/ref/buildtool.html#mw_50c0f35e-93df-4579-963d-f59f2fba1dba) that you can pass to the `buildtool` command.<p/><p>**Example:** `buildOptions: '-continueOnFailure'`<br/>**Example:** `buildOptions: '-continueOnFailure -skip test'`</p>
+`generateSummary`        | <p>(Optional) Option to generate summaries of build and test results on the Jenkins build summary page, specified as `true` or `false`. By default, the value is `true`. If you specify a value of `false`, the step does not generate build and test summaries. For more information, see [View MATLAB Build and Test Results](#view-matlab-build-and-test-results).</p><p>**Example:** `generateSummary: false`</p>
 `startupOptions`         | <p>(Optional) MATLAB startup options, specified as a list of options separated by spaces. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).</p><p>Using this input to specify the `-batch` or `-r` option is not supported.</p><p>**Example:** `startupOptions: '-nojvm'`<br/>**Example:** `startupOptions: '-nojvm -logfile output.log'`</p>
 
 For example, in your `Jenkinsfile`, define a declarative pipeline to run a task named `mytask` as well as all the tasks on which it depends.
@@ -339,6 +343,7 @@ Input                     | Description
 `codeCoverageCobertura`   | <p>(Optional) Location to write the code coverage results in Cobertura XML format, specified as a file path relative to the project root folder.</p><p>**Example:** `codeCoverageCobertura: 'code-coverage/coverage.xml'`</p>
 `modelCoverageHTML`       | <p>(Optional) Location to write the model coverage results in HTML format, specified as a folder path relative to the project root folder. This input requires a Simulink Coverage license and is supported in MATLAB R2018b and later.</p><p>**Example:** `modelCoverageHTML: 'model-coverage'`</p>
 `modelCoverageCobertura`  | <p>(Optional) Location to write the model coverage results in Cobertura XML format, specified as a file path relative to the project root folder. This input requires a Simulink Coverage license and is supported in MATLAB R2018b and later.</p><p>**Example:** `modelCoverageCobertura: 'model-coverage/coverage.xml'`</p>
+`generateSummary`        | <p>(Optional) Option to generate a summary of test results on the Jenkins build summary page, specified as `true` or `false`. By default, the value is `true`. If you specify a value of `false`, the step does not generate a test results summary. For more information, see [View Test Results](#view-test-results).</p><p>**Example:** `generateSummary: false`</p>
 `startupOptions`         | <p>(Optional) MATLAB startup options, specified as a list of options separated by spaces. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).</p><p>Using this input to specify the `-batch` or `-r` option is not supported.</p><p>**Example:** `startupOptions: '-nojvm'`<br/>**Example:** `startupOptions: '-nojvm -logfile output.log'`</p>
 
 For instance, define a declarative pipeline to run the tests in your MATLAB project, and then generate test results in JUnit-style XML format and code coverage results in Cobertura XML format at specified locations on the build agent. Generate the coverage results for only the code in the `source` folder in the root of your repository. 
@@ -374,11 +379,12 @@ node {
 After your tests run, you can access the test results directly from your Jenkins interface. For more information, see [View Test Results](#view-test-results).
 
 ### Use the `runMATLABCommand` Step
-Use the `runMATLABCommand` step in your pipeline to run MATLAB scripts, functions, and statements. You can use this step to customize your test run or execute any MATLAB commands. The step requires an input and also accepts an optional input.
+Use the `runMATLABCommand` step in your pipeline to run MATLAB scripts, functions, and statements. You can use this step to customize your test run or execute any MATLAB commands. The step requires an input and also accepts optional inputs.
 
 Input                     | Description
 ------------------------- | ---------------
 `command`                 | <p>(Required) Script, function, or statement to execute. If the value of `command` is the name of a MATLAB script or function, do not specify the file extension. If you specify more than one script, function, or statement, use a comma or semicolon to separate them.</p><p>MATLAB exits with exit code 0 if the specified script, function, or statement executes without error. Otherwise, MATLAB terminates with a nonzero exit code, which causes the step to fail. To fail the step in certain conditions, use the [`assert`](https://www.mathworks.com/help/matlab/ref/assert.html) or [`error`](https://www.mathworks.com/help/matlab/ref/error.html) function.</p><p>**Example:** `command: 'myscript'`<br/>**Example:** `command: 'results = runtests, assertSuccess(results);'`</p>
+`generateSummary`        | <p>(Optional) Option to generate summaries of build and test results on the Jenkins build summary page, specified as `true` or `false`. By default, the value is `true`. If you specify a value of `false`, the step does not generate build and test summaries. For more information, see [View MATLAB Build and Test Results](#view-matlab-build-and-test-results).</p><p>**Example:** `generateSummary: false`</p>
 `startupOptions`         | <p>(Optional) MATLAB startup options, specified as a list of options separated by spaces. For more information about startup options, see [Commonly Used Startup Options](https://www.mathworks.com/help/matlab/matlab_env/commonly-used-startup-options.html).</p><p>Using this input to specify the `-batch` or `-r` option is not supported.</p><p>**Example:** `startupOptions: '-nojvm'`<br/>**Example:** `startupOptions: '-nojvm -logfile output.log'`</p>
 
 For example, in your `Jenkinsfile`, define a declarative pipeline to run a script named `myscript.m`.
@@ -488,16 +494,16 @@ pipeline {
 ```
 
 ## View MATLAB Build and Test Results
-You can access the results of running a MATLAB build and the results of running MATLAB and Simulink tests directly from your Jenkins interface. 
+You can access the results of running a MATLAB build and the results of running MATLAB and Simulink tests directly from your Jenkins interface. By default, plugin steps generate summaries of build and test results on the Jenkins build summary page. However, you can configure a step so that it does not generate a summary.
 
 ### View Build Results
-Starting in R2024a, if you run a MATLAB build using the **Run MATLAB Build** or `runMATLABBuild` step, you can view the MATLAB build results in your Jenkins interface. After your build runs, the Jenkins build summary page displays the number of tasks that ran, failed, and were skipped. You can click the **MATLAB Build Results** link on the page to access the table of task results. The table provides information about each task that was part of the MATLAB build. Click a task name in the table to go to the relevant build log information on the **Console Output** page.
+If you run a MATLAB build using the **Run MATLAB Build**,`runMATLABBuild`, **Run MATLAB Command**, or `runMATLABCommand` step, you can view the MATLAB build results in your Jenkins interface. After your build runs, the Jenkins build summary page displays the number of tasks that ran, failed, and were skipped. You can click the **MATLAB Build Results** link on the page to access the table of task results. The table provides information about each task that was part of the MATLAB build. Click a task name in the table to go to the relevant build log information on the **Console Output** page.
 
 <img width="1920" height="522" alt="Table of MATLAB build results including three tasks. Each table row includes a clickable task name, its status, description, and duration." src="https://github.com/user-attachments/assets/72089445-df56-43be-a41a-86feedac603e" />
 
 ### View Test Results
-Starting in R2024b, if you have a MATLAB Test&trade; license, you can view your MATLAB and Simulink test results in your Jenkins interface by taking any of these actions:
-- Run tests with a [`matlab.buildtool.tasks.TestTask`](https://www.mathworks.com/help/matlab/ref/matlab.buildtool.tasks.testtask-class.html) instance using the **Run MATLAB Build** or `runMATLABBuild` step.
+If you have a MATLAB Test&trade; license, you can view your MATLAB and Simulink test results in your Jenkins interface by taking any of these actions:
+- Run tests with a [`matlab.buildtool.tasks.TestTask`](https://www.mathworks.com/help/matlab/ref/matlab.buildtool.tasks.testtask-class.html) instance using the **Run MATLAB Build**,`runMATLABBuild`, **Run MATLAB Command**, or `runMATLABCommand` step.
 - Run tests using the **Run MATLAB Tests** or `runMATLABTests` step.  
 - Run tests with a default test runner using the **Run MATLAB Command** or `runMATLABCommand` step. You can create a default test runner using the [`matlab.unittest.TestRunner.withDefaultPlugins`](https://www.mathworks.com/help/matlab/ref/matlab.unittest.testrunner.withdefaultplugins.html) method.
 
