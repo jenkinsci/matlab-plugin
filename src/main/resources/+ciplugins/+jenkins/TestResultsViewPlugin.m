@@ -3,9 +3,6 @@ classdef TestResultsViewPlugin < matlab.unittest.plugins.TestRunnerPlugin
     
     methods (Access=protected)
         function reportFinalizedSuite(plugin, pluginData)
-            % Checkout MATLAB Test license
-            license('checkout', 'matlab_test');
-
             testDetails = struct([]);
             for idx = 1:numel(pluginData.TestResult)
                 testDetails(idx).TestResult.Duration = pluginData.TestResult(idx).Duration;
