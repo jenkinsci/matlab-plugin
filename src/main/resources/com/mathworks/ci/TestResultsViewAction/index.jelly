@@ -8,29 +8,29 @@
                 <t:help href="https://github.com/jenkinsci/matlab-plugin/blob/master/CONFIGDOC.md#view-test-results" tooltip="Plugin Configuration Guide" />
             </l:app-bar>
 
-            <button id="TOTAL" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Total tests">
+            <button id="TOTAL" class="matlab-filter-btn jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Total tests">
                 <p>${it.totalCount}<br /><br />Total Tests</p>
             </button>
 
-            <button id="PASSED" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Passed tests">
+            <button id="PASSED" class="matlab-filter-btn jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Passed tests">
                 <p>${it.passedCount}<br>
                     <l:icon class="symbol-checkmark-circle-outline plugin-ionicons-api icon-lg jenkins-!-success-color"/>
                 </br><br />Passed</p>
             </button>
 
-            <button id="FAILED" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Failed tests">
+            <button id="FAILED" class="matlab-filter-btn jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Failed tests">
                 <p>${it.failedCount}<br>
                     <l:icon class="symbol-close-circle-outline plugin-ionicons-api icon-lg jenkins-!-error-color"/>
                 </br><br />Failed</p>
             </button>
 
-            <button id="INCOMPLETE" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Incomplete tests">
+            <button id="INCOMPLETE" class="matlab-filter-btn jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Incomplete tests">
                 <p>${it.incompleteCount}<br>
                     <l:icon class="symbol-alert-circle-outline plugin-ionicons-api icon-lg jenkins-!-warning-color"/>
                 </br><br />Incomplete</p>
             </button>
 
-            <button id="NOT_RUN" onclick="showTests(id)" class="jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Tests that have not run">
+            <button id="NOT_RUN" class="matlab-filter-btn jenkins-button jenkins-buttons-row jenkins-!-margin-4 jenkins-!-padding-0" style="display: inline; width:8em;" tooltip="Tests that have not run">
                 <p>${it.notRunCount}<br>
                     <l:icon class="symbol-remove-circle-outline plugin-ionicons-api icon-lg"/>
                 </br><br />Not Run</p>
@@ -75,10 +75,10 @@
                                         <j:whitespace trim="false"> ${matlabTestFile.name} </j:whitespace> 
                                     </div>
 
-                                    <a id="plus-${matlabTestFile.name}-${matlabTestFile.id}" onclick="toggleVisibilty('${matlabTestFile.name}-${matlabTestFile.id}');" style="display: inline;">
+                                    <a id="plus-${matlabTestFile.name}-${matlabTestFile.id}" style="display: inline;">
                                         <l:icon class="symbol-add plugin-ionicons-api icon-sm" tooltip="Show tests" />
                                     </a>
-                                    <a id="minus-${matlabTestFile.name}-${matlabTestFile.id}" onclick="toggleVisibilty('${matlabTestFile.name}-${matlabTestFile.id}');" style="display: none">
+                                    <a id="minus-${matlabTestFile.name}-${matlabTestFile.id}" style="display: none">
                                         <l:icon class="symbol-remove plugin-ionicons-api icon-sm" tooltip="Hide tests" />
                                     </a>
 
@@ -121,10 +121,10 @@
                                                         <j:forEach var="diagnostic" items="${matlabTestCase.diagnostics}" varStatus="status">
                                                             <div style="display: block;">
                                                                 <j:whitespace trim="false"> ${diagnostic.event} </j:whitespace>
-                                                                <a id="plus-${matlabTestCase.name}-${diagnostic.id}" onclick="stackTrace('${matlabTestCase.name}-${diagnostic.id}');" style="display: inline;">
+                                                                <a id="plus-${matlabTestCase.name}-${diagnostic.id}" style="display: inline;">
                                                                     <l:icon class="symbol-add plugin-ionicons-api icon-sm" tooltip="Show diagnostics" />
                                                                 </a>
-                                                                <a id="minus-${matlabTestCase.name}-${diagnostic.id}" onclick="stackTrace('${matlabTestCase.name}-${diagnostic.id}');" style="display: none">
+                                                                <a id="minus-${matlabTestCase.name}-${diagnostic.id}" style="display: none">
                                                                     <l:icon class="symbol-remove plugin-ionicons-api icon-sm" tooltip="Hide diagnostics" />
                                                                 </a>
                                                                 <div id="stack-${matlabTestCase.name}-${diagnostic.id}" style="display: none; white-space: pre-line;">
@@ -151,105 +151,7 @@
                 </table>
               </j:if>
             </j:forEach>
+            <st:adjunct includes="com.mathworks.ci.TestResultsViewAction.testResultsView"/>
         </l:main-panel>
     </l:layout>
-    <script type="text/javascript">
-        <![CDATA[
-            function toggleVisibilty(id) {
-                const matlabTestFile = document.getElementById(id);
-                const matlabTestCasesTable = document.getElementById("matlabTestCases-"+id);
-                const plusSymbol = document.getElementById("plus-"+id);
-                const minusSymbol = document.getElementById("minus-"+id);
-                const duration = document.getElementById("duration-"+id);
-
-                if (matlabTestCasesTable.style.display == "none"){
-                    matlabTestFile.colSpan = "2";
-                    matlabTestCasesTable.style.display = "inline";
-                    plusSymbol.style.display = "none";
-                    minusSymbol.style.display = "inline";
-                    duration.style.display = "none";
-                } else {
-                    matlabTestFile.colSpan = "1";
-                    matlabTestCasesTable.style.display = "none";
-                    plusSymbol.style.display = "inline";
-                    minusSymbol.style.display = "none";
-                    duration.style.display = "table-cell";
-                }
-            }
-
-            function stackTrace(id){
-                const matlabTestCaseStack = document.getElementById("stack-"+id);
-                const plusSymbol = document.getElementById("plus-"+id);
-                const minusSymbol = document.getElementById("minus-"+id);
-
-                if (matlabTestCaseStack.style.display == "none"){
-                    matlabTestCaseStack.style.display = "block";
-                    plusSymbol.style.display = "none";
-                    minusSymbol.style.display = "inline";
-                } else {
-                    matlabTestCaseStack.style.display = "none";
-                    plusSymbol.style.display = "inline";
-                    minusSymbol.style.display = "none";
-                }
-            }
-
-            let lastActiveButton = null;
-
-            function showTests(status){
-                const activeButton = document.getElementById(status);
-                
-                if (activeButton.classList.contains('jenkins-button--active')) {
-                    activeButton.classList.remove('jenkins-button--active');
-                    activeButton.classList.remove('jenkins-!-background-color-primary');
-                    showAllTests();
-                    lastActiveButton = null;
-                    return;
-                }
-
-                // Remove highlight only from last active button
-                if (lastActiveButton) {
-                    lastActiveButton.classList.remove('jenkins-button--active');
-                    // Can be uncommented later if button animation is as expected
-                    // lastActiveButton.classList.remove('jenkins-!-background-color-primary');
-                }
-
-                // Add highlight to clicked button
-                activeButton.classList.add('jenkins-button--active');
-                // activeButton.classList.add('jenkins-!-background-color-primary');
-                lastActiveButton = activeButton;
-
-                // Filter the tests
-                let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
-                allMatlabTestCaseRows.forEach((row) => {
-                    if (status === 'TOTAL' || row.classList.contains(status)) {
-                        row.style.display = '';
-                    } else {
-                        row.style.display = 'none';
-                    }
-                });
-
-                // Show/hide test file rows based on visible test cases
-                let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
-                matlabTestFileRows.forEach((row) => {
-                    let allNestedRows = row.querySelector('tbody').querySelectorAll('tr');
-                    let visibleRows = Array.from(allNestedRows).filter((nestedRow) => {
-                        return nestedRow.style.display === '';
-                    });
-                    row.style.display = visibleRows.length === 0 ? 'none' : '';
-                });
-            }
-
-            function showAllTests() {
-                let allMatlabTestCaseRows = document.querySelectorAll('#matlabTestCasesTableBody tr');
-                allMatlabTestCaseRows.forEach((row) => {
-                    row.style.display = '';
-                });
-
-                let matlabTestFileRows = document.querySelectorAll('#testResultsTable tr.test-file-row')
-                matlabTestFileRows.forEach((row) => {
-                    row.style.display = '';
-                });
-            }
-        ]]>
-    </script>
 </j:jelly>
