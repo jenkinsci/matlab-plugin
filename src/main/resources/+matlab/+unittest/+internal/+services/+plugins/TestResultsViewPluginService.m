@@ -3,12 +3,7 @@ classdef TestResultsViewPluginService < matlab.buildtool.internal.services.ciplu
 
     methods
         function plugins = providePlugins(~, ~)
-            % Check if MATLAB Test license is available
-            if license('test', 'matlab_test')
-                plugins = ciplugins.jenkins.TestResultsViewPlugin();
-            else
-                plugins = matlab.unittest.plugins.TestRunnerPlugin.empty(1,0);
-            end
+            plugins = ciplugins.jenkins.TestResultsViewPlugin();
         end
     end
 end
