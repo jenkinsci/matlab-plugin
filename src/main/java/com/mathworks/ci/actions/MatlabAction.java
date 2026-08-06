@@ -14,7 +14,7 @@ import com.mathworks.ci.utilities.MatlabCommandRunner;
 import hudson.FilePath;
 import hudson.model.Run;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import java.io.File;
 import java.io.IOException;
