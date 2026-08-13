@@ -7,7 +7,7 @@ package com.mathworks.ci;
  * 
  */
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 public class MatlabTestDiagnostics {
     private String event;

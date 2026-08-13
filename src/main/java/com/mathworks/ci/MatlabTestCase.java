@@ -11,7 +11,7 @@ import java.util.List;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import com.mathworks.ci.TestResultsViewAction.TestStatus;
 
