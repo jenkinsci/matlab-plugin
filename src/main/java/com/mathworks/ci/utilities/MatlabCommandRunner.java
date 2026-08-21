@@ -10,7 +10,7 @@ import java.io.OutputStream;
 import java.io.ByteArrayOutputStream;
 import java.util.Map;
 import java.util.HashMap;
-import org.apache.commons.lang.RandomStringUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 
 import hudson.FilePath;
 import hudson.EnvVars;
