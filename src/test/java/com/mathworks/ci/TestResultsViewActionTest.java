@@ -433,6 +433,31 @@ public class TestResultsViewActionTest {
         Assert.assertEquals("Incorrect failed count", 0, ac.getFailedCount());
     }
 
+    /**
+     *  Verify that session files sharing the same timestamp but differing only
+     *  by their unique token (as produced by parallel workers) are each parsed
+     *  as a separate session rather than overwriting one another.
+     *
+     */
+
+    @Test
+    public void verifyParallelSessionsWithSameTimestamp() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
+        TestResultsViewAction ac = setupTestResultsViewActionFromFiles("t4",
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + "abc123_20260101_120000_001_a1b2c3d4.json",
+                MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + "abc123_20260101_120000_001_e5f6a7b8.json");
+        List<List<MatlabTestFile>> ta = ac.getTestResults();
+
+        Assert.assertEquals("Both token-suffixed files should be parsed as separate sessions", 2, ta.size());
+        Assert.assertEquals("Incorrect test files in first session", 1, ta.get(0).size());
+        Assert.assertEquals("Incorrect test files in second session", 1, ta.get(1).size());
+        Assert.assertEquals("First session file name", "TestExamples1", ta.get(0).get(0).getName());
+        Assert.assertEquals("Second session file name", "TestExamples2", ta.get(1).get(0).getName());
+
+        Assert.assertEquals("Incorrect total count", 2, ac.getTotalCount());
+        Assert.assertEquals("Incorrect passed count", 1, ac.getPassedCount());
+        Assert.assertEquals("Incorrect incomplete count", 1, ac.getIncompleteCount());
+    }
+
     private TestResultsViewAction setupTestResultsViewActionWithMissingDetails() throws ExecutionException, InterruptedException, URISyntaxException, IOException, ParseException {
         return setupTestResultsViewActionFromFiles("t2",
                 MatlabBuilderConstants.TEST_RESULTS_VIEW_ARTIFACT + "abc123_20260101_120000_001.json");

@@ -1,0 +1,13 @@
+[
+  {
+    "TestResult": {
+      "Duration": 0.1,
+      "Details": {},
+      "Name": "TestExamples1/testNonLeapYear",
+      "Passed": true,
+      "Failed": false,
+      "Incomplete": false
+    },
+    "BaseFolder": "/Users/username/workspace/visualization/tests"
+  }
+]

@@ -1,0 +1,16 @@
+{
+  "TestResult": {
+    "Duration": 0.1,
+    "Details": {
+      "DiagnosticRecord": {
+        "Event": "SampleDiagnosticsEvent2",
+        "Report": "SampleDiagnosticsReport2"
+      }
+    },
+    "Name": "TestExamples2/testNonLeapYear",
+    "Passed": false,
+    "Failed": false,
+    "Incomplete": true
+  },
+  "BaseFolder": "/Users/username/workspace/visualization/duplicate_tests"
+}
