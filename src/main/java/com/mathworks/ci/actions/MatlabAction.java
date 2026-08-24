@@ -30,11 +30,11 @@ public class MatlabAction {
 
     public MatlabAction(MatlabCommandRunner runner) {
         this.runner = runner;
+        this.actionID = RandomStringUtils.randomAlphanumeric(8);
     }
 
     public MatlabAction(MatlabCommandRunner runner, BuildConsoleAnnotator annotator) {
-        this.runner = runner;
-        this.actionID = RandomStringUtils.randomAlphanumeric(8);
+        this(runner);
         this.annotator = annotator;
     }
 

@@ -59,6 +59,19 @@ public class RunMatlabTestsActionTest {
     }
 
     @Test
+    public void shouldGenerateNonEmptyActionID() {
+        String actionID = action.getActionID();
+        assertThat(actionID, is(notNullValue()));
+        assertEquals("Action ID should be 8 alphanumeric characters", 8, actionID.length());
+    }
+
+    @Test
+    public void shouldGenerateDistinctActionIDsPerAction() {
+        RunMatlabTestsAction otherAction = new RunMatlabTestsAction(runner, params);
+        assertThat(action.getActionID(), is(not(otherAction.getActionID())));
+    }
+
+    @Test
     public void shouldCopyGenscriptToTempDir() throws IOException, InterruptedException, MatlabExecutionException {
         action.run();
 
