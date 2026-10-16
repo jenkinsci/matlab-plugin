@@ -125,6 +125,7 @@ public class MatlabInstaller extends ToolInstaller {
             args.add("--release-status=Prerelease");
         }
         args.add("--destination=" + destination.getRemote());
+        args.add("--caller=CI_INTEG:JENKINS");
         addMatlabProductsToArgs(args, products);
 
         ByteArrayOutputStream err = new ByteArrayOutputStream();
