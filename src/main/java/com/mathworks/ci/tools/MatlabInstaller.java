@@ -96,7 +96,7 @@ public class MatlabInstaller extends ToolInstaller {
         FilePath tempMatlabBatch = fetchMatlabBatch(platform, tempDir);
 
         // Install with mpm
-        mpmInstall(mpm, release, this.getProducts(), matlabRoot, node, log);
+        mpmInstall(mpm, release, this.getProducts(), matlabRoot, platform, node, log);
 
         // Copy downloaded matlab-batch to tool directory
         FilePath matlabBin = new FilePath(matlabRoot, "bin");
@@ -110,8 +110,8 @@ public class MatlabInstaller extends ToolInstaller {
         return matlabRoot;
     }
 
-    private void mpmInstall(FilePath mpmPath, MatlabRelease release, String products, FilePath destination, Node node,
-            TaskListener log)
+    private void mpmInstall(FilePath mpmPath, MatlabRelease release, String products, FilePath destination,
+            String platform, Node node, TaskListener log)
             throws IOException, InterruptedException {
         makeDir(destination);
         Launcher matlabInstaller = node.createLauncher(log);
@@ -125,6 +125,10 @@ public class MatlabInstaller extends ToolInstaller {
             args.add("--release-status=Prerelease");
         }
         args.add("--destination=" + destination.getRemote());
+        // The maci64 mpm predates support for --caller
+        if (!platform.equals("maci64")) {
+            args.add("--caller=CI_INTEG:JENKINS");
+        }
         addMatlabProductsToArgs(args, products);
 
         ByteArrayOutputStream err = new ByteArrayOutputStream();
